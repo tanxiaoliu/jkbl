@@ -31,9 +31,41 @@ use Common\Controller\HomebaseController;
 class IndexController extends HomebaseController {
 	
     //首页 小夏是老猫除外最帅的男人了
-	public function index() {
-    	$this->display(":index");
-    }
+	public function index()
+	{
+		if (sp_is_weixin()) {
+			//微信登录
+			$options = array(
+				'token' => 'tokenaccesskey', //填写你设定的key
+				'encodingaeskey' => 'encodingaeskey', //填写加密用的EncodingAESKey
+				'appid' => 'wxdk1234567890', //填写高级调用功能的app id
+				'appsecret' => 'xxxxxxxxxxxxxxxxxxx' //填写高级调用功能的密钥
+			);
+			$weObj = new \Wechat($options);
+			$weObj->valid();
+			$type = $weObj->getRev()->getRevType();
+			switch ($type) {
+				case \Wechat::MSGTYPE_TEXT:
+					$weObj->text("hello, I'm wechat")->reply();
+					exit;
+					break;
+				case \Wechat::MSGTYPE_EVENT:
+//					$weObj->getUserInfo();//获取关注者详细信息
+//					$weObj->getOauthUserinfo();//获取授权后的用户资料
+					//....
+					break;
+				case \Wechat::MSGTYPE_IMAGE:
+					//...
+					break;
+				default:
+					$weObj->text("help info")->reply();
+			}
+
+		} else {
+			//提示请使用微信登录
+		}
+		$this->display(":index");
+	}
 
 	/**
 	 * 联盟
