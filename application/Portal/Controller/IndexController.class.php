@@ -35,6 +35,41 @@ class IndexController extends HomebaseController {
     	$this->display(":index");
     }
 
+	/**
+	 * 联盟
+	 * @author tanhuaxin
+     */
+	public function member()
+	{
+		$this->display(":member");
+	}
+
+	/**
+	 * 个人
+	 * @author tanhuaxin
+	 */
+	public function personal()
+	{
+		$this->display(":personal");
+	}
+
+	/**
+	 * 排行榜
+	 * @author tanhuaxin
+	 */
+	public function rank()
+	{
+		$this->display(":rank");
+	}
+
+	/**
+	 * 商城
+	 * @author tanhuaxin
+	 */
+	public function shop()
+	{
+		$this->display(":shop");
+	}
 }
 
 

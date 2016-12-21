@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <tc_include file="Public:head" />
+    <link rel="stylesheet" href="__TMPL__Public/assets/css/index.css">
+</head>
+<body>
+
+<div>
+    <tc_include file="Public:nav" />
+    <div class="content-nav">
+        <ul>
+            <li class="gray">毅力达人堂</li>
+            <li>腾币达人堂</li>
+            <li>爱心达人堂</li>
+        </ul>
+    </div>
+    <div class="content">
+        <p class="txt1">根据在“健康心指数”中上传运动数据次数进行排序</p>
+        <div class="one">
+            <img src="__TMPL__Public/assets/images/hg.png" class="hg">
+            <span class="head"></span>
+            <div class="r_orange">sixth</div>
+            <div class="r_blue">150次</div>
+        </div>
+        <div class="two">
+            <span class="head"></span>
+            <div class="r_orange">sixth</div>
+            <div class="r_blue">150次</div>
+        </div>
+        <div class="three">
+            <span class="head"></span>
+            <div class="r_orange">sixth</div>
+            <div class="r_blue">150次</div>
+        </div>
+        <div class="award"></div>
+        <div class="rank">
+            <div style="width:100%; height:11rem; overflow:scroll; margin-top: -7rem;">
+                <ul>
+                    <li class="rank-num">NO.1</li>
+                    <li>
+                        <span class="rank_head"></span>
+                        <div class="r_orange" style="margin-left: 1.1rem;">sixth</div>
+                    </li>
+                    <li class="count">1次</li>
+                </ul>
+                <ul>
+                    <li class="rank-num">NO.1</li>
+                    <li>
+                        <span class="rank_head"></span>
+                        <div class="r_orange" style="margin-left: 1.1rem;">sixth</div>
+                    </li>
+                    <li class="count">1次</li>
+                </ul>
+                <ul>
+                    <li class="rank-num">NO.1</li>
+                    <li>
+                        <span class="rank_head"></span>
+                        <div class="r_orange" style="margin-left: 1.1rem;">sixth</div>
+                    </li>
+                    <li class="count">1次</li>
+                </ul>
+                <ul>
+                    <li class="rank-num">NO.1</li>
+                    <li>
+                        <span class="rank_head"></span>
+                        <div class="r_orange" style="margin-left: 1.1rem;">sixth</div>
+                    </li>
+                    <li class="count">1次</li>
+                </ul>
+                <ul>
+                    <li class="rank-num">NO.1</li>
+                    <li>
+                        <span class="rank_head"></span>
+                        <div class="r_orange" style="margin-left: 1.1rem;">sixth</div>
+                    </li>
+                    <li class="count">1次</li>
+                </ul>
+                <ul>
+                    <li class="rank-num">NO.1</li>
+                    <li>
+                        <span class="rank_head"></span>
+                        <div class="r_orange" style="margin-left: 1.1rem;">sixth</div>
+                    </li>
+                    <li class="count">1次</li>
+                </ul>
+            </div>
+            <ul class="my-rank" style="background-color: #2372ad;">
+                <li class="rank-num">NO.95</li>
+                <li>
+                    <span class="rank_head"></span>
+                    <span class="r_orange">当前自己排名</span>
+                </li>
+                <li class="count">7次</li>
+            </ul>
+        </div>
+    </div>
+    <tc_include file="Public:footer" />
+</div>
+<script>
+    $(function(){
+        $(".top ul li").click(function(){
+            $(this).addClass("white").siblings().removeClass("white");
+        });
+        $(".content-nav ul li").click(function(){
+            $(this).addClass("gray").siblings().removeClass("gray");
+        });
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,15 @@
+<div class="bottom">
+	<ul>
+		<a href="#"><li class="blue">健康心部落</li></a>
+		<a href="{:U('index')}"><li>健康心指数</li></a>
+		<a href="{:U('shop')}"><li>健康福利社</li></a>
+	</ul>
+</div>
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<script>
+	$(function(){
+		$(".bottom ul li").click(function(){
+			$(this).addClass("blue").siblings().removeClass("blue");
+		});
+	});
+</script>

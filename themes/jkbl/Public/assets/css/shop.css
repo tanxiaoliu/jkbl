@@ -1,0 +1,127 @@
+.personal {
+    margin-top:2.1rem;
+    height: 4.5rem;
+}
+.name {
+    height: 4.5rem;
+    width: 4rem;
+    float: left;
+    padding: 1rem 0 0 1rem;
+    text-align: center;
+    color: #18abe1;
+}
+.img1{
+    display:block;
+    width:2rem;
+    height:2rem;
+    border-radius:50%;
+    margin-left: 0.9em;
+    border: 0.1rem solid #18abe1;
+}
+.bi {
+    height: 4.5rem;
+    width: 5.5rem;
+    float: left;
+    font-size: 0.60rem;
+    color: #18abe1;
+}
+.bi li{
+    line-height: 0.5rem;
+    padding: 1.2rem 0 0 0.3rem;
+}
+.btn {
+    height: 4.5rem;
+    width: 5.5rem;
+    float: left;
+    padding-left:1.2rem;
+}
+.btn li{
+    text-align: center;
+    margin-top: 0.8rem;
+    line-height: 1rem;
+    background: #18abe1;
+    height: 1rem;
+    width: 3rem;
+    -moz-border-radius: 0.2rem;
+    -webkit-border-radius: 0.2rem;
+    border-radius:0.2rem;
+}
+.health-title{
+    margin: 0 1rem;
+    height: 1.3rem;
+    line-height: 1.3rem;
+    background: #18abe1;
+    -moz-border-radius: 2rem;
+    -webkit-border-radius: 2rem;
+    border-radius:2rem;
+}
+.health-title ul li{
+    width: 5.8rem;
+    float: left;
+    margin-left: 0.3rem;
+}
+.health-shop {
+    margin: 0 1rem;
+}
+.health-shop ul{
+    overflow:hidden
+}
+.health-shop ul li{
+    height:7rem;
+    text-align: center;
+    border:0.5rem solid #18abe1;
+    width: 6rem;
+    float: left;
+    margin: 0.1rem 0.25rem 0.5rem 0.25rem;
+    background-color: #FFFFFF;
+}
+.health-shop ul li img{
+    width: 5rem;
+    height: 4rem;
+}
+.health-shop ul li span{
+    line-height: 1rem;
+    color: #18abe1;
+}
+.type {
+    font-size: 0.7rem;
+}
+.commonweal {
+    margin-bottom: 2.3rem;
+}
+.commonweal-title{
+    margin: 0 1rem;
+    height: 1.3rem;
+    line-height: 1.3rem;
+    background: #81c269;
+    -moz-border-radius: 2rem;
+    -webkit-border-radius: 2rem;
+    border-radius:2rem;
+}
+.commonweal-title ul li{
+    width: 5.8rem;
+    float: left;
+    margin-left: 0.3rem;
+}
+.commonweal-shop {
+    margin: 0 1rem;
+}
+.commonweal-shop ul{
+    overflow:hidden
+}
+.commonweal-shop ul li{
+    text-align: center;
+    border:0.5rem solid #81c269;
+    width: 6rem;
+    float: left;
+    margin: 0.1rem 0.25rem 0.5rem 0.25rem;
+    background-color: #FFFFFF;
+}
+.commonweal-shop ul li img{
+    width: 5rem;
+    height: 4rem;
+}
+.commonweal-shop ul li span{
+    line-height: 1rem;
+    color: #3CC3F5;
+}

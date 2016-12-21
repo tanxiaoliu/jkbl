@@ -1,0 +1,107 @@
+.content {
+    margin: 0.75rem 1rem 0 1rem;
+    height: 100%;
+    font-size: 0.55rem;
+    background: #b7eafd;
+}
+.award {
+    background-image: url('./../../credit/images/ljt.png');
+    background-size: 8.5rem 2.3rem;
+    background-repeat:no-repeat;
+    height:2.5rem;
+    margin-left: 2rem;
+    position: relative;
+    bottom: 6.65rem;
+}
+.one {
+    padding-left: 5.5rem;
+}
+.two {
+    padding-left: 2.3rem;
+    position: relative;
+    bottom: 2.45rem;
+}
+.three {
+    padding-left: 8.2rem;
+    position: relative;
+    bottom: 5.1rem;
+}
+.r_blue{
+    background: #7fccec;
+    width: 2rem;
+    text-align: center;
+    position:relative;
+    bottom: 0.45rem;
+    height: 0.6rem;
+    line-height: 0.6rem;
+}
+.r_orange{
+    background: #f36f2f;
+    text-align: center;
+    font-size: 0.5rem;
+    position: relative;
+    bottom: 0.5rem;
+    width: 2rem;
+    height: 0.55rem;
+    line-height: 0.55rem;
+}
+.head {
+    display:block;
+    width:2rem;
+    height:2rem;
+    border-radius:50%;
+    border: 0.1rem solid #e6de40;
+    background-image: url('./../../credit/images/timg.jpg');
+    background-size: 2rem 2rem;
+    margin-left: 0.1rem;
+}
+.rank_head {
+    display:block;
+    width:2rem;
+    height:2rem;
+    border-radius:50%;
+    border: 0.1rem solid #e6de40;
+    background-image: url('./../../credit/images/timg.jpg');
+    background-size: 2rem 2rem;
+    margin-left: 1.1rem;
+}
+.txt1{
+    padding: 0.4rem 0 0 0.5rem;
+    color: #39bbd8;
+    font-weight: bold;
+}
+.img1{
+    display:block;
+    width:1.5rem;
+    height:1.5rem;
+    border-radius:50%;
+    border: 0.1rem solid #e6de40;
+}
+.rank {
+    margin-top: 0.3rem;
+}
+.rank ul{
+    float: left;
+    text-align: center;
+    background: #b7eafd;
+}
+.rank ul li{
+    float: left;
+    width:4.33rem;
+    text-align: center;
+}
+.rank ul li img{
+    margin: 0.2rem 0 0 1.8rem;
+}
+.rank-num {
+    line-height: 2.5rem;
+    padding-left:2rem;
+}
+.count {
+    line-height:  2.5rem;
+    padding-right:2rem;
+}
+.my-rank{
+    bottom: 2.2rem;
+    position:fixed;
+}

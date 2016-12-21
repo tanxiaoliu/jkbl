@@ -1,0 +1,190 @@
+@charset "UTF-8";
+html,body{
+    height:100%;
+    background-image: url('./../../credit/images/bg.jpg');
+    -webkit-background-size: 100% 100%;
+    background-size: 100% 100%;
+    color: #FFFFFF;
+    background-repeat:no-repeat;
+    overflow: hidden;
+}
+.top {
+    width:100%;
+    height: 2.5rem;
+    line-height: 2.5rem;
+    font-size: 0.74rem;
+    text-align: center;
+    top: 0;
+    position:fixed;
+}
+.top ul li{
+    font-weight:bold;
+    width: 7.5rem;
+    float: left;
+    background:#18abe1;
+    color: #FFFFFF;
+ }
+.top .white,.white:hover{
+    background:#FFFFFF;
+    color: #18abe1;
+}
+.content-nav {
+    padding: 0.76rem 0 0 0.78rem;
+    height: 1.5rem;
+    line-height: 1.5rem;
+    font-size: 0.6rem;
+    margin-top: 2rem;
+}
+.content-nav ul li{
+    width: 4.04rem;
+    margin: 0 0.22rem;
+    background: #a9b8bc;
+    color: #FFFFFF;
+    float: left;
+    text-align: center;
+    -moz-border-radius: 0.2rem;
+    -webkit-border-radius: 0.2rem;
+    border-radius:0.2rem 0.2rem 0 0;
+}
+.content-nav .gray,.gray:hover{
+    background: #b7eafd;
+    color: #39bbd8;
+}
+.bottom {
+    width: 100%;
+    line-height: 2rem;
+    height: 2.6rem;
+    font-size: 0.65rem;
+    text-align: center;
+    background: #5bd9ef;
+    bottom: 0;
+    position:fixed;
+    font-weight:bold;
+}
+.bottom ul li{
+    width: 4.4rem;
+    float: left;
+    margin: 0.3rem;
+    -moz-border-radius: 0.2rem;
+    -webkit-border-radius: 0.2rem;
+    border-radius:0.2rem;
+    background:#FFFFFF;
+    color: #17acdf;
+}
+.bottom .blue,.blue:hover{
+    background:#17acdf;
+    color: #FFFFFF;
+}
+.rank-top {
+    width: 100%;
+    line-height: 2rem;
+    height: 2.5rem;
+    font-size: 0.65rem;
+    text-align: center;
+    top: 0;
+    position:fixed;
+    font-weight:bold;
+}
+.rank-top ul li{
+    width: 4.4rem;
+    float: left;
+    margin: 0.3rem;
+    -moz-border-radius: 0.2rem;
+    -webkit-border-radius: 0.2rem;
+    border-radius:0.2rem;
+    background:#FFFFFF;
+    color: #17acdf;
+}
+.rank-top .blue,.blue:hover{
+    background:#17acdf;
+    color: #FFFFFF;
+}
+.rank-content-nav {
+    padding-left:0.48rem;
+    height: 1.5rem;
+    line-height: 1.5rem;
+    font-size: 0.6rem;
+    position:relative;
+    z-index:2;
+    top: 2.7rem;
+}
+.rank-content-nav ul li{
+    width: 4.04rem;
+    margin: 0 1.3rem;
+    background: #00658d;
+    color: #FFFFFF;
+    float: left;
+    text-align: center;
+    -moz-border-radius: 0.2rem;
+    -webkit-border-radius: 0.2rem;
+    border-radius:0.2rem;
+}
+.rank-content-nav .gray_rank,.gray_rank:hover{
+    width: 4.8rem;
+    height: 1.8rem;
+    line-height: 1.8rem;
+    font-size: 0.7rem;
+}
+
+
+/*联盟页面*/
+.m-content-nav {
+    position:relative;
+    top: -1.3rem;
+    text-align: center;
+}
+.m-title img {
+    width: 13rem;
+    height: 3.5rem;
+}
+.m-count {
+    font-size: 0.8rem;
+    color: #00658d;
+}
+.m-content {
+    margin-top: 3.55rem;
+    /*margin: 3.55rem 1rem 0 1rem;*/
+    /*height: 100%;*/
+    /*font-size: 0.55rem;*/
+    /*background: #b7eafd;*/
+}
+.hg {
+    position: relative;
+    top: 0.6rem;
+    width: 1.3rem;
+    margin-left: 1.4rem;
+    transform: rotate(40deg);
+}
+
+/*个人页面*/
+.p-content {
+    background-image: url('./../../credit/images/gr.png');
+    background-size: 100% 100%;
+    height: 20rem;
+    margin-top: 3.5rem;
+}
+.p-img1{
+    display: block;
+    width: 3.1rem;
+    height: 3.1rem;
+    border-radius: 50%;
+    position: relative;
+    z-index: 2;
+    top: 8.1rem;
+    left: 0.83rem;
+}
+.p-name {
+    position: relative;
+    z-index: 2;
+    top: 8.3rem;
+    left: 1.2rem;
+    font-size: 0.7rem;
+}
+.p-kilometer {
+    position: relative;
+    z-index: 2;
+    top: 6.5rem;
+    left: 2.1rem;
+    font-size: 0.7rem;
+    color: #00658d;
+}
