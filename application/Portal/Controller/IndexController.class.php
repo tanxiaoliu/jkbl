@@ -43,6 +43,9 @@ class IndexController extends HomebaseController {
 			);
 			$weObj = new \Wechat($options);
 			$weObj->valid();
+			$result = $weObj->getOauthRedirect($weObj->getOauthAccessToken());
+			$UserInfo = $weObj->getOauthUserinfo($result['access_token'],$result['openid']);//获取授权后的用户资料
+			var_dump($UserInfo);exit;
 			$type = $weObj->getRev()->getRevType();
 			switch ($type) {
 				case \Wechat::MSGTYPE_TEXT:
@@ -50,8 +53,6 @@ class IndexController extends HomebaseController {
 					exit;
 					break;
 				case \Wechat::MSGTYPE_EVENT:
-//					$weObj->getUserInfo();//获取关注者详细信息
-//					$weObj->getOauthUserinfo();//获取授权后的用户资料
 					//....
 					break;
 				case \Wechat::MSGTYPE_IMAGE:
