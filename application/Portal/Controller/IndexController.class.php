@@ -29,13 +29,15 @@ use Common\Controller\HomebaseController;
  * 首页
  */
 class IndexController extends HomebaseController {
+	protected $theme = 'jkbl';
+
 	
     //首页 小夏是老猫除外最帅的男人了
 	public function index()
 	{
 		if (sp_is_weixin()) {
 			//微信登录
-			$options = array(
+			/*$options = array(
 				'token' => 'tokenaccesskey', //填写你设定的key
 				'encodingaeskey' => 'encodingaeskey', //填写加密用的EncodingAESKey
 				'appid' => 'wxdk1234567890', //填写高级调用功能的app id
@@ -61,7 +63,7 @@ class IndexController extends HomebaseController {
 				default:
 					$weObj->text("help info")->reply();
 			}
-
+*/
 		} else {
 			//提示请使用微信登录
 		}
