@@ -44,7 +44,7 @@ class IndexController extends HomebaseController {
 	{
 		if (sp_is_weixin()) {
 			$userInfo = S('userInfo');
-			if($userInfo == false){
+			if($userInfo == false && isset($userInfo->openid)){
 				//微信登录
 				$options = array(
 					'token' => 'test', //填写你设定的key
@@ -54,7 +54,7 @@ class IndexController extends HomebaseController {
 				$this->weObj = new Wechat($options);
 				$this->url = $this->weObj->getOauthRedirect('http://laoit.top/index.php?g=portal&m=index&a=test', '', 'snsapi_base');
 				redirect($this->url);
-			} else {
+			} else { 
 				$this->assign("userInfo", $userInfo);
 				$this->display(":index");
 			}
