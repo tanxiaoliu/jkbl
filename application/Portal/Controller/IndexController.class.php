@@ -34,7 +34,6 @@ class IndexController extends HomebaseController
 {
 
 	protected $weObj;
-	protected $userInfo;
 	const TOKEN = 'test';
 	const APPID = 'wx33d9402ea60d3681';
 	const APPSECRET = 'eb34a1662269b9027b7ed8635b04c6ed';
@@ -132,6 +131,8 @@ class IndexController extends HomebaseController
 	 */
 	public function personal()
 	{
+		$userInfo = $_COOKIE['userInfo'];
+		$this->assign("userInfo", json_decode($userInfo));
 		$this->display(":personal");
 	}
 
