@@ -3,6 +3,8 @@
 <head>
     <tc_include file="Public:head" />
     <link rel="stylesheet" href="__TMPL__Public/assets/css/shop.css">
+    <link rel="stylesheet" href="__TMPL__Public/assets/css/style.css">
+
 </head>
 <body style="overflow: auto">
 
@@ -37,17 +39,14 @@
                 </ul>
             </div>
             <div class="health-shop">
-                <ul>
-                    <li>
-                        <span>热水壶</span>
-                        <img src="__TMPL__Public/assets/images/shop.png">
-                        <span>6000 兑换</span>
-                    </li>
-                    <li>
-                        <span>热水壶</span>
-                        <img src="__TMPL__Public/assets/images/shop.png">
-                        <span>6000 兑换</span>
-                    </li>
+                <ul>      
+                    <foreach name="selfgood" item="vo">
+                        <li>
+                            <span>{$vo.name}</span>
+                            <img src="/data/upload/{$vo.url}">
+                            <span>{$vo.price} <a href="#loginmodal" class="flatbtn" id="modaltrigger">兑换</a></span>
+                        </li>
+                    </foreach> 
                 </ul>
             </div>
         </div>
@@ -60,38 +59,80 @@
             </div>
             <div class="commonweal-shop">
                 <ul>
-                    <li>
-                        <span>热水壶</span>
-                        <img src="__TMPL__Public/assets/images/shop.png">
-                        <span>6000 兑换</span>
-                    </li>
-                    <li>
-                        <span>热水壶</span>
-                        <img src="__TMPL__Public/assets/images/shop.png">
-                        <span>6000 兑换</span>
-                    </li>
-                    <li>
-                        <span>热水壶</span>
-                        <img src="__TMPL__Public/assets/images/shop.png">
-                        <span>6000 兑换</span>
-                    </li>
-                    <li>
-                        <span>热水壶</span>
-                        <img src="__TMPL__Public/assets/images/shop.png">
-                        <span>6000 兑换</span>
-                    </li>
+                   <foreach name="othergood" item="vo">
+                        <li>
+                            <span>{$vo.name}</span>
+                            <img src="/data/upload/{$data.url}">
+                            <input type="hidden" value="{$vo.id}">
+                            <span>{$vo.price} <a href="#loginmodal" class="flatbtn" id="modaltrigger">兑换</a></span>
+                        </li>
+                    </foreach> 
                 </ul>
             </div>
         </div>
     </div>
     <tc_include file="Public:footer" />
+
+      <div id="loginmodal" style="display:none;">
+
+        <h1>User Login</h1>
+
+        <form id="loginform" name="loginform" method="post" action="{:U('buy')}" onsubmit="return check(this)">
+          <input type="hidden" name="id" id="id">
+
+          <label for="username">收件人:</label>
+
+          <input type="text" name="username" id="username" class="txtfield" tabindex="1">
+          
+
+          <label for="password">联系电话:</label>
+
+          <input type="password" name="phone" id="phone" class="txtfield" tabindex="2">
+
+          <label for="password">地址:</label>
+
+          <input type="password" name="address" id="address" class="txtfield" tabindex="2">
+
+          
+          <div class="center"><input type="submit" name="loginbtn" id="loginbtn" class="flatbtn-blu hidemodal" value="提交" tabindex="3"></div>
+
+        </form>
+
+      </div>
 </div>
 <script>
     $(function(){
-        $(".top ul li").click(function(){
+        $('#modaltrigger').leanModal({ top: 110, overlay: 0.45, closeButton: ".hidemodal" });
+        $(".flatbtn").click(function(){
+            alert($(this).prev().text())
+        });
+         $(".top ul li").click(function(){
             $(this).addClass("white").siblings().removeClass("white");
         });
+
     });
+
+     function check(form) {
+          if(form.username.value=='') {
+                alert("请输入收件人!");
+                form.username.focus();
+                return false;
+           }
+           if(form.phone.value=='') {
+                alert("请输入联系电话!");
+                form.phone.focus();
+                return false;
+           }
+           if(form.address.value=='') {
+                alert("请输入地址!");
+                form.address.focus();
+                return false;
+           }
+         return true;
+         }
 </script>
+<script src="__TMPL__Public/assets/js/jquery-1.9.1.min.js"></script>
+<script src="__TMPL__Public/assets/js/jquery.leanModal.min.js"></script>
+
 </body>
 </html>

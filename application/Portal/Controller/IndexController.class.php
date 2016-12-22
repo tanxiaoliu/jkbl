@@ -34,6 +34,7 @@ class IndexController extends HomebaseController
 {
 
 	protected $weObj;
+	protected $theme = 'jkbl';
 	const TOKEN = 'test';
 	const APPID = 'wx33d9402ea60d3681';
 	const APPSECRET = 'eb34a1662269b9027b7ed8635b04c6ed';
@@ -145,14 +146,28 @@ class IndexController extends HomebaseController
 		$this->display(":rank");
 	}
 
+
 	/**
 	 * 商城
 	 * @author tanhuaxin
 	 */
 	public function shop()
 	{
+		$selfgood = M("Good")->where(array('type'=>1))->order('add_time desc')->select();
+		$othergood = M("Good")->where(array('type'=>2))->order('add_time desc')->select();
+		$this->assign("selfgood",$selfgood);
+		$this->assign("othergood",$othergood);
 		$this->display(":shop");
 	}
-}
+
+	/**
+	 * 商城
+	 * @author tanhuaxin
+	 */
+	public function buy()
+	{
+		print_r(I('post.'));exit();
+	}
+
 
 
