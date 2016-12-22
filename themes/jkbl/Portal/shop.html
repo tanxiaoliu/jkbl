@@ -14,8 +14,8 @@
         <div class="personal">
             <div class="name">
                 <ul>
-                    <li><img class="img1" src="__TMPL__Public/assets/images/timg.jpg"></li>
-                    <li>张财迷</li>
+                    <li><img class="img1" src="{$userInfo->headimgurl}"></li>
+                    <li>{$userInfo->nickname}</li>
                 </ul>
             </div>
             <div class="bi">
@@ -62,7 +62,7 @@
                    <foreach name="othergood" item="vo">
                         <li>
                             <span>{$vo.name}</span>
-                            <img src="/data/upload/{$data.url}">
+                            <img src="/data/upload/{$vo.url}">
                             <input type="hidden" value="{$vo.id}">
                             <span>{$vo.price} <a href="#loginmodal" class="flatbtn" id="modaltrigger">兑换</a></span>
                         </li>

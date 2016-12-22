@@ -1,7 +1,7 @@
 @charset "UTF-8";
 html,body{
     height:100%;
-    background-image: url('./../../credit/images/bg.jpg');
+    background-image: url('./../images/bg.jpg');
     -webkit-background-size: 100% 100%;
     background-size: 100% 100%;
     color: #FFFFFF;
@@ -158,10 +158,10 @@ html,body{
 
 /*个人页面*/
 .p-content {
-    background-image: url('./../../credit/images/gr.png');
+    background-image: url('./../images/gr.png');
     background-size: 100% 100%;
     height: 20rem;
-    margin-top: 3.5rem;
+    margin-top: 2.5rem;
 }
 .p-img1{
     display: block;
