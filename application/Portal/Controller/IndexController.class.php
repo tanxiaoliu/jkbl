@@ -34,7 +34,6 @@ class IndexController extends HomebaseController {
 
 	protected $weObj;
 	protected $url;
-	protected $userInfo;
 	public function __construct()
 	{
 		parent::__construct ();
@@ -44,8 +43,8 @@ class IndexController extends HomebaseController {
 	public function index()
 	{
 		if (sp_is_weixin()) {
-			$this->userInfo = S('userInfo');
-			if($this->userInfo == false){
+			$userInfo = S('userInfo');
+			if($userInfo == false){
 				//微信登录
 				$options = array(
 					'token' => 'test', //填写你设定的key
@@ -56,7 +55,7 @@ class IndexController extends HomebaseController {
 				$this->url = $this->weObj->getOauthRedirect('http://laoit.top/index.php?g=portal&m=index&a=test', '', 'snsapi_base');
 				redirect($this->url);
 			} else {
-				$this->assign("userInfo", $this->userInfo);
+				$this->assign("userInfo", $userInfo);
 				$this->display(":index");
 			}
 		} else {
@@ -67,11 +66,27 @@ class IndexController extends HomebaseController {
 
 	function test() {
         $code = $_GET['code'];
-		$url = 'https://api.weixin.qq.com/sns/oauth2/access_token?appid=wx33d9402ea60d3681&secret=eb34a1662269b9027b7ed8635b04c6ed&code='.$code.'&grant_type=authorization_code';
-		$result =  json_decode(file_get_contents($url));
+		$url1 = 'https://api.weixin.qq.com/sns/oauth2/access_token?appid=wx33d9402ea60d3681&secret=eb34a1662269b9027b7ed8635b04c6ed&code='.$code.'&grant_type=authorization_code';
+		$result =  json_decode(file_get_contents($url1));
 		$url2 = 'https://api.weixin.qq.com/sns/userinfo?access_token='.$result->access_token.'&openid='.$result->openid.'&lang=zh_CN';
-		$this->userInfo =  json_decode(file_get_contents($url2));
-		S('userInfo', $this->userInfo);
+		$userInfo =  json_decode(file_get_contents($url2));
+		$map['user_login'] = $userInfo->openid;
+		$users = D('users')->where($map)->find();
+		if($users){
+			$data['last_login_time'] = date("Y-m-d H:i:s",time());
+			D('users')->save($data);
+		} else {
+			$data['user_login'] = $userInfo->openid;
+			$data['user_pass'] = sp_password('123456');
+			$data['user_nicename'] = $userInfo->nickname;
+			$data['avatar'] = $userInfo->headimgurl;
+			$data['sex'] = $userInfo->sex;
+			$data['last_login_time'] = date("Y-m-d H:i:s",time());
+			$data['create_time'] = date("Y-m-d H:i:s",time());
+			$data['user_type'] = 2;
+			D('users')->add($data);
+		}
+		S('userInfo', $userInfo);
 		redirect('http://laoit.top');
 	}
 	/**
