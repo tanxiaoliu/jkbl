@@ -39,18 +39,20 @@ class GoodsController extends AdminbaseController{
 			} else {
 				$this->error($this->goods_model->getError());
 			}
+		}else{
+			if (isset($_GET['id'])&&!empty($_GET['id'])) {
+				$id = I("get.id",0,'intval');
+				$data   =  $this->goods_model->find($id);
+			}
+			if (!empty($data)) {
+				$this->assign('data',$data);
+		    	$this->display(":Goods/edit");
+			}
+			else{
+				$this->display();
+			}
 		}
-		if (isset($_GET['id'])&&!empty($_GET['id'])) {
-			$id = I("get.id",0,'intval');
-			$data   =  $this->goods_model->find($id);
-		}
-		if (!empty($data)) {
-			$this->assign('data',$data);
-	    	$this->display(":Goods/edit");
-		}
-		else{
-			$this->display();
-		}
+		
 	}
 	// 删除导航分类
 	public function delete(){

@@ -25,5 +25,8 @@ return array(
     "ThinkOauth" => SPAPP_PATH . 'Lib/Extend/ThinkSDK/ThinkOauth.class.php',
     
     // PHPZip
-    "PHPZip" => SPAPP_PATH . 'Lib/Util/phpzip.php'
+    "PHPZip" => SPAPP_PATH . 'Lib/Util/phpzip.php',
+
+    // 微信
+    "Wechat" => SPAPP_PATH . 'Lib/Util/wechat.class.php'
 );
