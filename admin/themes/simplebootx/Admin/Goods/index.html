@@ -3,20 +3,20 @@
 <body>
 	<div class="wrap js-check-wrap">
 		<ul class="nav nav-tabs">
-			<li class="active"><a href="{:U('goods/index')}">{:L('ADMIN_GOODS_INDEX')}</a></li>
-			<li><a href="{:U('goods/add')}">{:L('ADMIN_GOODS_ADD')}</a></li>
+			<li class="active"><a href="{:U('goods/index')}">物品管理</a></li>
+			<li><a href="{:U('goods/add')}">添加物品</a></li>
 		</ul>
 		<form class="form-horizontal js-ajax-form" method="post">
 			<table class="table table-hover table-bordered">
 				<thead>
 					<tr>
 						<th>ID</th>
-						<th>{:L('ADMIN_GOODS_NAME')}</th>
-						<th>{:L('ADMIN_GOODS_PRICE')}</th>
-						<th>{:L('ADMIN_GOODS_NUMS')}</th>
+						<th>物品名称</th>
+						<th>物品价格</th>
+						<th>物品类型</th>
 						<!-- <th width="120">{:L('ADMIN_GOODS_URL')}</th> -->
 						<!-- <th width="120">{:L('ADMIN_GOODS_TYPE')}</th> -->
-						<th>{:L('ADMIN_GOODS_ADD_TIME')}</th>
+						<th>物品时间</th>
 						<th>{:L('ACTIONS')}</th>
 					</tr>
 				</thead>
@@ -25,7 +25,7 @@
 					<td>{$vo.id}</td>
 					<td>{$vo.name}</td>
 					<td>{$vo.price}</td>
-					<td>{$vo.nums}</td>
+					<td>{$vo.type}</td>
 					<!-- <td>{$vo.url}</td> -->
 					<!-- <td><php>$vo['type']=1?'健身福利':'公益福利';</php></td> -->
 					<td>{:date('Y-m-d H:i:s', $vo['add_time'])}</td>

@@ -1,0 +1,45 @@
+<admintpl file="header" />
+</head>
+<body>
+	<div class="wrap js-check-wrap">
+		<ul class="nav nav-tabs">
+			<li class="active"><a href="{:U('order/index')}">订单列表</a></li>
+		</ul>
+		<form class="form-horizontal js-ajax-form" method="post">
+			<table class="table table-hover table-bordered">
+				<thead>
+					<tr>
+						<th>ID</th>
+						<th>商品名字</th>
+						<th>收件人</th>
+						<th>联系方式</th>
+						<th>地址</th>
+						<th>状态</th>
+						<th>类型</th>
+						<th>时间</th>
+						<th>{:L('ACTIONS')}</th>
+					</tr>
+				</thead>
+				<foreach name="orders" item="vo">
+				<tr>
+					<td>{$vo.id}</td>
+					<td>{$vo.name}</td>
+					<td>{$vo.username}</td>
+					<td>{$vo.addres}</td>
+					<td>{$vo.phone}</td>
+					<td><if condition="$vo.status eq 1" >已发货<else />未发货</if></td>
+					<td><if condition="$vo.type eq 1" >健身福利<else />公益福利</if></td>
+					<td>{:date('Y-m-d H:i:s', $vo['add_time'])}</td>
+					<td>
+						<a href="{:U('order/sendGood',array('id'=>$vo['id']))}"><if condition="$vo.status eq 1" >取消发货<else />标为已发货</if></a>|
+						<a href="{:U('order/delete',array('id'=>$vo['id']))}" class="js-ajax-delete">{:L('DELETE')}</a>
+					</td>
+				</tr>
+				</foreach>
+			</table>
+		<div class="pagination">{$page}</div>
+		</form>
+	</div>
+	<script src="__PUBLIC__/js/common.js"></script>
+</body>
+</html>

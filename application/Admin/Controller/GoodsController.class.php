@@ -21,6 +21,7 @@ class GoodsController extends AdminbaseController{
 		$data =array();
 		if(!empty($_POST)){
 			$data=I("post.");
+			$data['nums'] = 0;
 			$data['add_time'] = time();
 			if ($this->goods_model->create($data)!==false) {
 				if (isset($data['id'])) {
@@ -57,7 +58,7 @@ class GoodsController extends AdminbaseController{
 	// 删除导航分类
 	public function delete(){
 		$id = I("get.id",0,'intval');
-		if ($this->goods_model->where(array('navcid'=>$id))->delete()!==false) {
+		if ($this->goods_model->where(array('id'=>$id))->delete()!==false) {
 			$this->success("删除成功！");
 		} else {
 			$this->error("删除失败！");

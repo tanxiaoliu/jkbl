@@ -68,7 +68,7 @@ class IndexController extends HomebaseController
             }
         } else {
             //提示请使用微信登录
-            die ('这是微信请求的接口地址，直接在浏览器里无效');
+	        redirect(U('error'));
         }
     }
 
@@ -110,7 +110,7 @@ class IndexController extends HomebaseController
     }
 
     /**
-     * 达人堂 小强是爸爸除外最帅的男人了
+     * 达人堂 小强是(爸爸&&最帅的男人)了
      * @author tanhuaxin
      */
     public function index()
@@ -195,23 +195,88 @@ class IndexController extends HomebaseController
      */
     public function shop()
     {
+        $userInfo = $this->checkLogin();
+        $map['openid'] = $userInfo->openid;
+        // $map['openid'] = 'admin';
+    	$map['user_login'] = $data['openid'];
+        $score = current(M('Users')->where($map)->getField('user_login,score,coin',1));
         $selfgood = M("Good")->where(array('type' => 1))->order('add_time desc')->select();
         $othergood = M("Good")->where(array('type' => 2))->order('add_time desc')->select();
+        $this->assign("nowscore",$score['score']-$score['coin']);
+        $this->assign("allscore",$score['score']);
+        $this->assign("selfgood", $selfgood);
         $this->assign("selfgood", $selfgood);
         $this->assign("othergood", $othergood);
-        $this->assign("userInfo", $this->checkLogin());
+        $this->assign("userInfo", $userInfo);
         $this->display(":shop");
     }
 
     /**
-     * 商城
+     * 下单
      * @author tanhuaxin
      */
     public function buy()
     {
-        print_r(I('post.'));
-        exit();
+        $data =array();
+        if(!empty($_POST)){
+            $userInfo = $this->checkLogin();
+	        $data['openid'] = $userInfo->openid;
+	        // $data['openid'] = 'admin';
+			$map['user_login'] = $data['openid'];
+            $score = current(M('Users')->where($map)->getField('user_login,score,coin',1));
+            if ($score['score']<=$score['coin']||$score['score']<=0) {
+				$this->success("腾币不足", U('Index/shop'),true);
+            }
+            $score = $score['score']-$score['coin'];//余额
+	        $data['goodid'] = I('goodid', 0, 'intval');
+	        $data['username'] = I('username', '', 'htmlspecialchars');
+	        $data['address'] = I('address', 0, 'htmlspecialchars');
+	        $data['phone'] = I('phone', 0, 'string');
+			$data['nums'] = 1;
+			$data['add_time'] = time();
+	        $good = M('Good')->find($data['goodid']);
+	        if ($good) {
+	        	$data['name'] = $good['name'];
+	        	$data['price'] = $good['price'];
+	        	$data['type'] = $good['type'];
+	        }else{
+			    $this->error("下单失败,该商品不存在",true);
+	        }
+	        if ($score<$data['price']) {
+				$this->success("腾币不足", U('Index/shop'),true);
+            }
+			if (M('GoodOrder')->create($data)!==false) {
+				$id = M('GoodOrder')->add();
+				if ($id!==false) {
+					//更新用户余额
+		            $map['user_login'] = $data['openid'];
+		            $users = M('users')->where($map)->find();
+		            if ($users) {
+		                $users['coin'] += $good['price'];
+		                if(M('users')->save($users))$this->success("下单成功", U('Index/shop'),true);
+		                else {
+		                	M('GoodOrder')->where(array('id'=>$id))->delete();
+		                	$this->error("下单失败",true);
+		                }
+		            }else {
+		                	M('GoodOrder')->where(array('id'=>$id))->delete();
+		                	$this->error("下单失败",true);
+					}					
+				} else {
+					$this->error("下单失败",true);
+				}
+			} else {
+				$this->error("下单失败",true);
+				// $this->error(M('GoodOrder')->getError());
+			}
+		}else {
+            //提示请使用微信登录
+            die ('这是微信请求的接口地址，直接在浏览器里无效');
+        }
     }
 
+    public function error(){
+    	$this->display(":error");
+    }
 }
 
