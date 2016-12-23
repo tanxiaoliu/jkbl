@@ -25,7 +25,7 @@
 					<td>{$vo.id}</td>
 					<td>{$vo.name}</td>
 					<td>{$vo.price}</td>
-					<td>{$vo.type}</td>
+					<td><if condition="$vo.type eq 1" >健身福利<else />公益福利</if></td>
 					<!-- <td>{$vo.url}</td> -->
 					<!-- <td><php>$vo['type']=1?'健身福利':'公益福利';</php></td> -->
 					<td>{:date('Y-m-d H:i:s', $vo['add_time'])}</td>
@@ -36,6 +36,7 @@
 				</tr>
 				</foreach>
 			</table>
+			<div class="pagination">{$page}</div>
 		</form>
 	</div>
 	<script src="__PUBLIC__/js/common.js"></script>

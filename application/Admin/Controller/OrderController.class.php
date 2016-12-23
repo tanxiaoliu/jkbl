@@ -12,6 +12,7 @@ class OrderController extends AdminbaseController{
 		$this->order_model = M("GoodOrder");
 	}
 	public function index(){
+		$where = array();
 		$count=$this->order_model->count();
 		$page = $this->page($count, 20);
         $orders = $this->order_model
@@ -19,6 +20,7 @@ class OrderController extends AdminbaseController{
             ->order("add_time DESC")
             ->limit($page->firstRow, $page->listRows)
             ->select();
+		$this->assign("page",$page);
 		$this->assign("orders",$orders);
 		$this->display();
 	}

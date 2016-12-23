@@ -12,7 +12,15 @@ class GoodsController extends AdminbaseController{
 		$this->goods_model = M("Good");
 	}
 	public function index(){
-		$goods = $this->goods_model->select();
+		$where = array();
+		$count=$this->goods_model->count();
+		$page = $this->page($count, 20);
+        $goods = $this->goods_model
+            ->where($where)
+            ->order("add_time DESC")
+            ->limit($page->firstRow, $page->listRows)
+            ->select();
+		$this->assign("page",$page);
 		$this->assign("goods",$goods);
 		$this->display();
 	}
