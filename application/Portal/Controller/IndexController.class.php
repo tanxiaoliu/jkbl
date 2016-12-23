@@ -274,7 +274,44 @@ class IndexController extends HomebaseController
             die ('这是微信请求的接口地址，直接在浏览器里无效');
         }
     }
-
+    /**
+     * [orderList 订单记录]
+     * @return [type] [description]
+     */
+    public function orderList(){
+		$userInfo = $this->checkLogin();
+        $map['openid'] = $userInfo->openid;
+        // $map['openid'] = 'admin';
+        $orders = M('GoodOrder')->where($map)->order('add_time desc')->select();
+        foreach ($orders as $key => &$value) {
+        	$good = M('Good')->find($value['goodid']);
+	        if ($good) {
+	        	$value['url'] = $good['url'];
+	        }
+        }
+        // $this->assign("userInfo", $userInfo);
+        $this->assign("orders", $orders);
+        $this->display(":orderlist");
+    }
+    /**
+     * [orderList 腾币记录]
+     * @return [type] [description]
+     */
+    public function coinList(){
+		$userInfo = $this->checkLogin();
+        $map['openid'] = $userInfo->openid;
+        // $map['openid'] = 'admin';
+        $orders = M('GoodOrder')->where($map)->order('add_time desc')->select();
+        foreach ($orders as $key => &$value) {
+        	$good = M('Good')->find($value['goodid']);
+	        if ($good) {
+	        	$value['url'] = $good['url'];
+	        }
+        }
+        // $this->assign("userInfo", $userInfo);
+        $this->assign("orders", $orders);
+        $this->display(":orderlist");
+    }
     public function error(){
     	$this->display(":error");
     }
