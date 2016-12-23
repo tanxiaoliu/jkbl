@@ -38,12 +38,11 @@
 .r_orange{
     background: #f36f2f;
     text-align: center;
-    font-size: 0.5rem;
+    font-size: 0.2rem;
     position: relative;
     bottom: 0.5rem;
     width: 2rem;
-    height: 0.55rem;
-    line-height: 0.55rem;
+    line-height: 0.65rem;
 }
 .head {
     display:block;

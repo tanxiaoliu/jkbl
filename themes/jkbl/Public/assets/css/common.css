@@ -183,8 +183,16 @@ html,body{
 .p-kilometer {
     position: relative;
     z-index: 2;
-    top: 6.5rem;
+    top: 6.3rem;
     left: 2.1rem;
     font-size: 0.7rem;
     color: #00658d;
+}
+.detail-btn {
+    background: #18abe1;
+    -moz-border-radius: 0.2rem;
+    border-radius: 0.2rem;
+    color: #ffffff;
+    font-size: 0.5rem;
+    padding: 0.2rem 0.3rem;
 }
