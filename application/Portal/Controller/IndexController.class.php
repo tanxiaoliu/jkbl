@@ -310,7 +310,7 @@ class IndexController extends HomebaseController
         }
         // $this->assign("userInfo", $userInfo);
         $this->assign("orders", $orders);
-        $this->display(":orderlist");
+        $this->display(":coinlist");
     }
     public function error(){
     	$this->display(":error");
