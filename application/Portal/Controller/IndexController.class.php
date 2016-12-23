@@ -253,8 +253,22 @@ class IndexController extends HomebaseController
 		            $users = M('users')->where($map)->find();
 		            if ($users) {
 		                $users['coin'] += $good['price'];
-		                if(M('users')->save($users))$this->success("下单成功", U('Index/shop'),true);
-		                else {
+		                if(M('users')->save($users)){
+		                	$data = array(
+		                		'openid'=>$map['user_login'],
+								'type'=>2,
+								'coin'=>$good['price'],
+								'add_time'=>time(),
+								'type_id'=>$id,
+		                		);
+		                	if(M('CoinRecord')->create($data)&&M('CoinRecord')->add())$this->success("下单成功", U('Index/shop'),true);
+		                	else {
+				                $users['coin'] -= $good['price'];
+				                M('users')->save($users);
+			                	M('GoodOrder')->where(array('id'=>$id))->delete();
+			                	$this->error("下单失败",true);
+			                }
+		                }else {
 		                	M('GoodOrder')->where(array('id'=>$id))->delete();
 		                	$this->error("下单失败",true);
 		                }
@@ -301,15 +315,19 @@ class IndexController extends HomebaseController
 		$userInfo = $this->checkLogin();
         $map['openid'] = $userInfo->openid;
         // $map['openid'] = 'admin';
-        $orders = M('GoodOrder')->where($map)->order('add_time desc')->select();
-        foreach ($orders as $key => &$value) {
-        	$good = M('Good')->find($value['goodid']);
-	        if ($good) {
-	        	$value['url'] = $good['url'];
-	        }
+        $Records = M('CoinRecord')->where($map)->order('add_time desc')->select(); 	
+        foreach ($Records as $key => &$value) {
+        	if ($value['type']==2) {
+        		$good = M('GoodOrder')->find($value['type_id']);
+        		if ($good) {
+		        	$value['name'] = $good['name'];
+		        	$value['status'] = $good['status'];
+		        	$value['goodtype'] = $good['type'];
+		        }
+        	}
         }
         // $this->assign("userInfo", $userInfo);
-        $this->assign("orders", $orders);
+        $this->assign("Records", $Records);
         $this->display(":coinlist");
     }
     public function error(){

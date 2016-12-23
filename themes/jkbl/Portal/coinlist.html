@@ -62,7 +62,7 @@ weixin://* blob: *.51ping.com *.meituan.net 192.168.141.54:8080 172.30.19.239:80
     .field-load{padding-left:20px;}
     .field-load-loading:before{content:"";display:inline-block;position:relative;left:-11px;padding:0;border:0;background:0;width:2px;height:2px;border-radius:100%;box-shadow:0 -7px 0 .9px #666,7px 0 #999,0 7px #999,-7px 0 #999,-5px -5px 0 .4px #999,5px -5px 0 1.1px #666,5px 5px #999,-5px 5px #999;transform:rotate(360deg);animation:spin 1.5s linear infinite;-webkit-transform:rotate(360deg);-webkit-animation:spin 1.5s linear infinite;top:-4px;}
     </style>
-    <link rel="stylesheet" href="__TMPL__Public/assets/css/list.css">
+    <link rel="stylesheet" href="__TMPL__Public/assets/css/coinlist.css">
 
 </head>
 <body class="i"> 
@@ -72,30 +72,37 @@ weixin://* blob: *.51ping.com *.meituan.net 192.168.141.54:8080 172.30.19.239:80
       <h1 class="j-page-name page-name" style="float:left;margin-left:2%;"><a style="color:white;" href="{:U('shop')}">返回</a></h1>
       <h1 class="j-page-name page-name">我的腾币记录</h1>
 	</header>
-<foreach name="orders" item="vo">
-	<div class="field">
-		<div class="field-head">
-	        <span class="field-head-left">{$vo.name}</span>
-	        <span class="field-head-right">{$vo.username}-{$vo.phone}</span>
-	    </div>
-	    <a class="field-item clearfix" href="javascript:void;">
-	        <div class="avatar">
-	            <img src="/data/upload/{$vo.url}" data-src-retina="http://p0.meituan.net/xianfu/1084a0e62f04475e3612ab843a9709288192.jpg" class="j-avatar-img avatar-img">
-	        </div>
-	        <div class="content">
-	            <p class="price">{$vo.address}</p>
-
-	            <p class="order-time">{:date('Y-m-d H:i:s', $vo['add_time'])}</p>
-
-	            <p class="delivery_tip"><if condition="$vo.type eq 1" >健身福利<else />公益福利</if></p>
-	        </div>
-	        <i class="field-arrow icon-arrow-right"><span style="color:red;">￥{$vo.price}    <if condition="$vo.status eq 1" >已发货<else />未发货</if></span></i>
-	    </a>
-	</div>
+<foreach name="Records" item="vo">
+    <if condition="$vo.type eq 1" >
+        <div class="field">
+            <div class="field-head">
+                <span class="field-head-left">新增步数获得腾币：{$vo.coin}</span>
+                <span class="field-head-right">增加</span>
+            </div>
+            <a class="field-item clearfix" href="javascript:void;">
+                <div class="content">
+                    <p class="price">步数：{$vo.coin}</p>
+                    <p class="order-time">{:date('Y-m-d', $vo['add_time'])}</p>
+                </div>
+                <i class="field-arrow icon-arrow-right"><span style="color:red;">￥{$vo.coin}    <if condition="$vo.status eq 1" >已发货<else />未发货</if></span></i>
+            </a>
+        </div>
+    <else />
+        <div class="field">
+            <div class="field-head">
+                <span class="field-head-left">商城消费腾币：{$vo.coin}</span>
+                <span class="field-head-right">消费</span>
+            </div>
+            <a class="field-item clearfix" href="javascript:void;">
+                <div class="content">
+                    <p class="price"><if condition="$vo.goodtype eq 1" >健身福利<else />公益福利</if>：{$vo.name}</p>
+                    <p class="order-time">{:date('Y-m-d', $vo['add_time'])}</p>
+                </div>
+                <i class="field-arrow icon-arrow-right"><span style="color:red;">￥{$vo.coin}    <if condition="$vo.status eq 1" >已发货<else />未发货</if></span></i>
+            </a>
+        </div>
+    </if>
 </foreach>
-
-
-
 
 <!-- 
 <div id="j-load" data-page="0" data-type="1" data-hasmore="1" style="display: none;"></div>
