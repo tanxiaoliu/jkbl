@@ -15,7 +15,7 @@
         </ul>
     </div>
     <div class="content" style="margin-top:2rem;">
-        <a class="detail-btn" href="#" style="position: relative;top: 1.6rem;left: 10.6rem;">详情</a>
+        <a class="detail-btn flatbtn modaltrigger" href="#loginmodal" style="position: relative;top: 1.6rem;left: 10.6rem;">详情</a>
         <div class="one" style="padding-top: 1rem;">
             <img src="__TMPL__Public/assets/images/hg.png" class="hg">
             <span class="head" style="background-image: url('{$data[0]['avatar']}');"></span>
@@ -57,9 +57,22 @@
         </div>
     </div>
     <tc_include file="Public:footer" />
+    <div id="loginmodal" style="display:none;">
+        <form id="loginform" name="loginform" method="post" action="{:U('buy')}">
+            <div class="center" style="margin: 0.5rem 0;"><a href=""><input type="button" class="flatbtn-blu hidemodal" value="昨日记录"></a></div>
+            <div class="center" style="margin-top: 1rem;"><a href=""><input type="button" class="flatbtn-blu hidemodal" value="本周记录"></a></div>
+            <div class="center" style="margin-top: 1rem;"><a href=""><input type="button" class="flatbtn-blu hidemodal" value="本月记录"></a></div>
+        </form>
+    </div>
 </div>
 <script>
     $(function(){
+        $('.modaltrigger').leanModal({ top: 110, overlay: 0.45});
+        $(".flatbtn").each(function(i){
+            $(this).click(function(){
+                $("#goodid").val($(this).parent().prev().val())
+            })
+        });
         $(".rank-top ul li").click(function(){
             $(this).addClass("blue").siblings().removeClass("blue");
         });
@@ -68,5 +81,7 @@
         });
     });
 </script>
+<script src="__TMPL__Public/assets/js/jquery-1.9.1.min.js"></script>
+<script src="__TMPL__Public/assets/js/jquery.leanModal.min.js"></script>
 </body>
 </html>
