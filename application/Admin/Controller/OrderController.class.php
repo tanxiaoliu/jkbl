@@ -20,7 +20,7 @@ class OrderController extends AdminbaseController{
             ->order("add_time DESC")
             ->limit($page->firstRow, $page->listRows)
             ->select();
-		$this->assign("page",$page);
+		$this->assign("page",$page->show('Admin'));
 		$this->assign("orders",$orders);
 		$this->display();
 	}

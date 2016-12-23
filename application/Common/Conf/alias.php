@@ -28,5 +28,8 @@ return array(
     "PHPZip" => SPAPP_PATH . 'Lib/Util/phpzip.php',
 
     // 微信
-    "Wechat" => SPAPP_PATH . 'Lib/Util/wechat.class.php'
+    "Wechat" => SPAPP_PATH . 'Lib/Util/wechat.class.php',
+
+    // PHPExcel
+    "PHPExcel" => SPAPP_PATH . 'Lib/Util/PHPExcel'
 );
