@@ -200,7 +200,6 @@ class IndexController extends HomebaseController
         // $data['openid'] = 'admin';
     	$map['user_login'] = $data['openid'];
         $score = current(M('Users')->where($map)->getField('user_login,score,coin',1));
-        print_r($score);exit();
         $selfgood = M("Good")->where(array('type' => 1))->order('add_time desc')->select();
         $othergood = M("Good")->where(array('type' => 2))->order('add_time desc')->select();
         $this->assign("nowscore",$score['score']-$score['coin']);
