@@ -69,7 +69,7 @@
 .health-shop ul li{
     height:7rem;
     text-align: center;
-    border:0.5rem solid #18abe1;
+    border:0.35rem solid #18abe1;
     width: 6rem;
     float: left;
     margin: 0.1rem 0.25rem 0.5rem 0.25rem;
@@ -111,7 +111,7 @@
 }
 .commonweal-shop ul li{
     text-align: center;
-    border:0.5rem solid #81c269;
+    border:0.35rem solid #81c269;
     width: 6rem;
     float: left;
     margin: 0.1rem 0.25rem 0.5rem 0.25rem;
