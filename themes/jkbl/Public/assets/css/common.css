@@ -21,12 +21,12 @@ html,body{
     font-weight:bold;
     width: 7.5rem;
     float: left;
-    background:#18abe1;
-    color: #FFFFFF;
- }
-.top .white,.white:hover{
     background:#FFFFFF;
     color: #18abe1;
+ }
+.top .blue,.white:hover{
+    background:#18abe1;
+    color: #FFFFFF;
 }
 .content-nav {
     padding: 0.76rem 0 0 0.78rem;
@@ -45,6 +45,9 @@ html,body{
     -moz-border-radius: 0.2rem;
     -webkit-border-radius: 0.2rem;
     border-radius:0.2rem 0.2rem 0 0;
+}
+.content-nav ul li a{
+    color: #ffffff;
 }
 .content-nav .gray,.gray:hover{
     background: #b7eafd;

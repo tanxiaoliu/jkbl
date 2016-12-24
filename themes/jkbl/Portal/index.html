@@ -10,9 +10,9 @@
     <tc_include file="Public:nav" />
     <div class="content-nav">
         <ul>
-            <li class="gray">毅力达人堂</li>
-            <li>腾币达人堂</li>
-            <li>爱心达人堂</li>
+            <li <eq name="{type}" value="0">class="gray"</eq>><a href="{:U('Index/index', array('type'=>0))}">毅力达人堂</a></li>
+            <li <eq name="{type}" value="1">class="gray"</eq>><a href="{:U('Index/index', array('type'=>1))}">腾币达人堂</a></li>
+            <li <eq name="{type}" value="2">class="gray"</eq>><a href="{:U('Index/index', array('type'=>2))}">爱心达人堂</a></li>
         </ul>
     </div>
     <div class="content">
@@ -20,18 +20,18 @@
         <div class="one">
             <img src="__TMPL__Public/assets/images/hg.png" class="hg">
             <span class="head" style="background-image: url('{$data[0]['avatar']}');"></span>
-            <div class="r_orange">{$data[0]['nick_name']}</div>
-            <div class="r_blue">{$data[0]['num']}次</div>
+            <div class="r_orange">{$data[0]['nick_name']|default='待定'}</div>
+            <div class="r_blue">{$data[0]['num']|default='0'}{$type == 1 ? '币':'次'}</div>
         </div>
         <div class="two">
             <span class="head" style="background-image: url('{$data[1]['avatar']}');"></span>
-            <div class="r_orange">{$data[1]['nick_name']}</div>
-            <div class="r_blue">{$data[1]['num']}次</div>
+            <div class="r_orange">{$data[1]['nick_name']|default='待定'}</div>
+            <div class="r_blue">{$data[1]['num']|default='0'}{$type == 1 ? '币':'次'}</div>
         </div>
         <div class="three">
             <span class="head" style="background-image: url('{$data[2]['avatar']}');"></span>
-            <div class="r_orange">{$data[2]['nick_name']}</div>
-            <div class="r_blue">{$data[3]['num']}次</div>
+            <div class="r_orange">{$data[2]['nick_name']|default='待定'}</div>
+            <div class="r_blue">{$data[3]['num']|default='0'}{$type == 1 ? '币':'次'}</div>
         </div>
         <div class="award"></div>
         <div class="rank">
@@ -43,7 +43,7 @@
                             <span class="rank_head" style="background-image: url('{$vo.avatar}');"></span>
                             <div class="r_orange" style="margin-left: 1.1rem;">{$vo.nick_name}</div>
                         </li>
-                        <li class="count">{$vo.num}次</li>
+                        <li class="count">{$vo.num}{$type == 1 ? '币':'次'}</li>
                     </ul>
                 </volist>
             </div>
@@ -53,7 +53,7 @@
                     <span class="rank_head" style="background-image: url('{$user['avatar']}');"></span>
                     <span class="r_orange">当前自己排名</span>
                 </li>
-                <li class="count">{$user['num']}次</li>
+                <li class="count">{$user['num']}{$type == 1 ? '币':'次'}</li>
             </ul>
         </div>
     </div>

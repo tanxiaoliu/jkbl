@@ -68,7 +68,7 @@ class IndexController extends HomebaseController
             }
         } else {
             //提示请使用微信登录
-	        redirect(U('error'));
+            redirect(U('error'));
         }
     }
 
@@ -118,9 +118,32 @@ class IndexController extends HomebaseController
 
         $userInfo = $this->checkLogin();
         $type = I('type', 0, 'int');
-        if($type == 0) {
-            $data = D('sport_record')->field('openid,nick_name,count(step_nums) as num')->group('openid')->order('num DESC')->select();
-            $usersModel = D('users');
+        $usersModel = D('users');
+        $user = array();
+        if ($type == 1) {//腾币
+            $data = $usersModel->field('user_login as openid,user_nicename as nick_name,score as num, avatar')->order('score DESC')->select();
+            foreach ($data as $key => $vl) {
+                if ($userInfo->openid == $vl['openid']) {
+                    $user['rank'] = $key + 1;
+                    $user['nick_name'] = $vl['nick_name'];
+                    $user['num'] = $vl['num'];
+                    $user['avatar'] = $userInfo->headimgurl;
+                }
+            }
+        } elseif ($type == 2) {//爱心
+            $data = D('good_order')->join('cmf_users ON cmf_good_order.openid = cmf_users.user_login')
+                ->field('cmf_users.user_login as openid,cmf_users.user_nicename as nick_name,cmf_users.avatar,count(cmf_good_order.id) as num')
+                ->where('cmf_good_order.type = 2')->order('num DESC')->select();
+            foreach ($data as $key => $vl) {
+                if ($userInfo->openid == $vl['openid']) {
+                    $user['rank'] = $key + 1;
+                    $user['nick_name'] = $vl['nick_name'];
+                    $user['num'] = $vl['num'];
+                    $user['avatar'] = $userInfo->headimgurl;
+                }
+            }
+        } else {//次数
+            $data = D('sport_record')->field('openid,nick_name,count(id) as num')->group('openid')->order('num DESC')->select();
             foreach ($data as $key => $vl) {
                 $map['user_login'] = $vl['openid'];
                 $data[$key]['avatar'] = $usersModel->where($map)->getField('avatar');
@@ -134,6 +157,8 @@ class IndexController extends HomebaseController
         }
         $this->assign("data", $data);
         $this->assign("user", $user);
+        $this->assign("type", $type);
+        $this->assign("footer", "fuli");
         $this->display(":index");
     }
 
@@ -144,6 +169,7 @@ class IndexController extends HomebaseController
     public function member()
     {
         $this->assign("userInfo", $this->checkLogin());
+        $this->assign("footer", "zhishu");
         $this->display(":member");
     }
 
@@ -158,6 +184,7 @@ class IndexController extends HomebaseController
         $num = D('sport_record')->where($map)->sum('step_nums');
         $this->assign("userInfo", $userInfo);
         $this->assign("num", $num);
+        $this->assign("footer", "zhishu");
         $this->display(":personal");
     }
 
@@ -170,23 +197,22 @@ class IndexController extends HomebaseController
         $userInfo = $this->checkLogin();
         $type = I('type', 0, 'int');
         $map = '';
-        if(IS_POST){
+        if (IS_POST) {//时间段
             $startTime = strtotime(I('startTime'));
             $endTime = strtotime(I('endTime'));
             $map['add_time'] = array('between', array($startTime, $endTime));
         }
-        //总排行榜
-        if ($type == 1){//昨天
-            $startYesterday=mktime(0,0,0,date('m'),date('d')-1,date('Y'));
-            $endYesterday=mktime(0,0,0,date('m'),date('d'),date('Y'))-1;
+        if ($type == 1) {//昨天
+            $startYesterday = mktime(0, 0, 0, date('m'), date('d') - 1, date('Y'));
+            $endYesterday = mktime(0, 0, 0, date('m'), date('d'), date('Y')) - 1;
             $map['add_time'] = array('between', array($startYesterday, $endYesterday));
-        } elseif ($type == 2){//上周
-            $beginLastweek=mktime(0,0,0,date('m'),date('d')-date('w')+1-7,date('Y'));
-            $endLastweek=mktime(23,59,59,date('m'),date('d')-date('w')+7-7,date('Y'));
+        } elseif ($type == 2) {//上周
+            $beginLastweek = mktime(0, 0, 0, date('m'), date('d') - date('w') + 1 - 7, date('Y'));
+            $endLastweek = mktime(23, 59, 59, date('m'), date('d') - date('w') + 7 - 7, date('Y'));
             $map['add_time'] = array('between', array($beginLastweek, $endLastweek));
-        } elseif ($type == 3){//上月
-            $beginThismonth=mktime(0,0,0,date('m'),1,date('Y'));
-            $endThismonth=mktime(23,59,59,date('m'),date('t'),date('Y'));
+        } elseif ($type == 3) {//上月
+            $beginThismonth = mktime(0, 0, 0, date('m'), 1, date('Y'));
+            $endThismonth = mktime(23, 59, 59, date('m'), date('t'), date('Y'));
             $map['add_time'] = array('between', array($beginThismonth, $endThismonth));
         }
         $data = D('sport_record')->where($map)->field('openid,nick_name,sum(step_nums) as num')->group('openid')->order('num DESC')->select();
@@ -203,6 +229,7 @@ class IndexController extends HomebaseController
         }
         $this->assign("data", $data);
         $this->assign("user", $user);
+        $this->assign("footer", "zhishu");
         $this->display(":rank");
     }
 
@@ -215,16 +242,17 @@ class IndexController extends HomebaseController
     {
         $userInfo = $this->checkLogin();
         $data['openid'] = $userInfo->openid;
-    	$map['user_login'] = $data['openid'];
-        $score = current(M('Users')->where($map)->getField('user_login,score,coin',1));
+        $map['user_login'] = $data['openid'];
+        $score = current(M('Users')->where($map)->getField('user_login,score,coin', 1));
         $selfgood = M("Good")->where(array('type' => 1))->order('add_time desc')->select();
         $othergood = M("Good")->where(array('type' => 2))->order('add_time desc')->select();
-        $this->assign("nowscore",$score['score']-$score['coin']);
-        $this->assign("allscore",$score['score']);
+        $this->assign("nowscore", $score['score'] - $score['coin']);
+        $this->assign("allscore", $score['score']);
         $this->assign("selfgood", $selfgood);
         $this->assign("selfgood", $selfgood);
         $this->assign("othergood", $othergood);
         $this->assign("userInfo", $userInfo);
+        $this->assign("footer", "fuli");
         $this->display(":shop");
     }
 
@@ -234,121 +262,127 @@ class IndexController extends HomebaseController
      */
     public function buy()
     {
-        $data =array();
-        if(!empty($_POST)){
+        $data = array();
+        if (!empty($_POST)) {
             $userInfo = $this->checkLogin();
-	        $data['openid'] = $userInfo->openid;
-	        // $data['openid'] = 'admin';
-			$map['user_login'] = $data['openid'];
-            $score = current(M('Users')->where($map)->getField('user_login,score,coin',1));
-            if ($score['score']<=$score['coin']||$score['score']<=0) {
-				$this->success("腾币不足", U('Index/shop'),true);
+            $data['openid'] = $userInfo->openid;
+            // $data['openid'] = 'admin';
+            $map['user_login'] = $data['openid'];
+            $score = current(M('Users')->where($map)->getField('user_login,score,coin', 1));
+            if ($score['score'] <= $score['coin'] || $score['score'] <= 0) {
+                $this->success("腾币不足", U('Index/shop'), true);
             }
-            $score = $score['score']-$score['coin'];//余额
-	        $data['goodid'] = I('goodid', 0, 'intval');
-	        $data['username'] = I('username', '', 'htmlspecialchars');
-	        $data['address'] = I('address', 0, 'htmlspecialchars');
-	        $data['phone'] = I('phone', 0, 'string');
-			$data['nums'] = 1;
-			$data['add_time'] = time();
-	        $good = M('Good')->find($data['goodid']);
-	        if ($good) {
-	        	$data['name'] = $good['name'];
-	        	$data['price'] = $good['price'];
-	        	$data['type'] = $good['type'];
-	        }else{
-			    $this->error("下单失败,该商品不存在",true);
-	        }
-	        if ($score<$data['price']) {
-				$this->success("腾币不足", U('Index/shop'),true);
+            $score = $score['score'] - $score['coin'];//余额
+            $data['goodid'] = I('goodid', 0, 'intval');
+            $data['username'] = I('username', '', 'htmlspecialchars');
+            $data['address'] = I('address', 0, 'htmlspecialchars');
+            $data['phone'] = I('phone', 0, 'string');
+            $data['nums'] = 1;
+            $data['add_time'] = time();
+            $good = M('Good')->find($data['goodid']);
+            if ($good) {
+                $data['name'] = $good['name'];
+                $data['price'] = $good['price'];
+                $data['type'] = $good['type'];
+            } else {
+                $this->error("下单失败,该商品不存在", true);
             }
-			if (M('GoodOrder')->create($data)!==false) {
-				$id = M('GoodOrder')->add();
-				if ($id!==false) {
-					//更新用户余额
-		            $map['user_login'] = $data['openid'];
-		            $users = M('users')->where($map)->find();
-		            if ($users) {
-		                $users['coin'] += $good['price'];
-		                if(M('users')->save($users)){
-		                	$data = array(
-		                		'openid'=>$map['user_login'],
-								'type'=>2,
-								'coin'=>$good['price'],
-								'add_time'=>time(),
-								'type_id'=>$id,
-		                		);
-		                	if(M('CoinRecord')->create($data)&&M('CoinRecord')->add())$this->success("下单成功", U('Index/shop'),true);
-		                	else {
-				                $users['coin'] -= $good['price'];
-				                M('users')->save($users);
-			                	M('GoodOrder')->where(array('id'=>$id))->delete();
-			                	$this->error("下单失败",true);
-			                }
-		                }else {
-		                	M('GoodOrder')->where(array('id'=>$id))->delete();
-		                	$this->error("下单失败",true);
-		                }
-		            }else {
-		                	M('GoodOrder')->where(array('id'=>$id))->delete();
-		                	$this->error("下单失败",true);
-					}					
-				} else {
-					$this->error("下单失败",true);
-				}
-			} else {
-				$this->error("下单失败",true);
-				// $this->error(M('GoodOrder')->getError());
-			}
-		}else {
+            if ($score < $data['price']) {
+                $this->success("腾币不足", U('Index/shop'), true);
+            }
+            if (M('GoodOrder')->create($data) !== false) {
+                $id = M('GoodOrder')->add();
+                if ($id !== false) {
+                    //更新用户余额
+                    $map['user_login'] = $data['openid'];
+                    $users = M('users')->where($map)->find();
+                    if ($users) {
+                        $users['coin'] += $good['price'];
+                        if (M('users')->save($users)) {
+                            $data = array(
+                                'openid' => $map['user_login'],
+                                'type' => 2,
+                                'coin' => $good['price'],
+                                'add_time' => time(),
+                                'type_id' => $id,
+                            );
+                            if (M('CoinRecord')->create($data) && M('CoinRecord')->add()) $this->success("下单成功", U('Index/shop'), true);
+                            else {
+                                $users['coin'] -= $good['price'];
+                                M('users')->save($users);
+                                M('GoodOrder')->where(array('id' => $id))->delete();
+                                $this->error("下单失败", true);
+                            }
+                        } else {
+                            M('GoodOrder')->where(array('id' => $id))->delete();
+                            $this->error("下单失败", true);
+                        }
+                    } else {
+                        M('GoodOrder')->where(array('id' => $id))->delete();
+                        $this->error("下单失败", true);
+                    }
+                } else {
+                    $this->error("下单失败", true);
+                }
+            } else {
+                $this->error("下单失败", true);
+                // $this->error(M('GoodOrder')->getError());
+            }
+        } else {
             //提示请使用微信登录
             die ('这是微信请求的接口地址，直接在浏览器里无效');
         }
     }
+
     /**
      * [orderList 订单记录]
      * @return [type] [description]
      */
-    public function orderList(){
-		$userInfo = $this->checkLogin();
+    public function orderList()
+    {
+        $userInfo = $this->checkLogin();
         $map['openid'] = $userInfo->openid;
         // $map['openid'] = 'admin';
         $orders = M('GoodOrder')->where($map)->order('add_time desc')->select();
         foreach ($orders as $key => &$value) {
-        	$good = M('Good')->find($value['goodid']);
-	        if ($good) {
-	        	$value['url'] = $good['url'];
-	        }
+            $good = M('Good')->find($value['goodid']);
+            if ($good) {
+                $value['url'] = $good['url'];
+            }
         }
         // $this->assign("userInfo", $userInfo);
         $this->assign("orders", $orders);
         $this->display(":orderlist");
     }
+
     /**
      * [orderList 腾币记录]
      * @return [type] [description]
      */
-    public function coinList(){
-		$userInfo = $this->checkLogin();
+    public function coinList()
+    {
+        $userInfo = $this->checkLogin();
         $map['openid'] = $userInfo->openid;
         // $map['openid'] = 'admin';
-        $Records = M('CoinRecord')->where($map)->order('add_time desc')->select(); 	
+        $Records = M('CoinRecord')->where($map)->order('add_time desc')->select();
         foreach ($Records as $key => &$value) {
-        	if ($value['type']==2) {
-        		$good = M('GoodOrder')->find($value['type_id']);
-        		if ($good) {
-		        	$value['name'] = $good['name'];
-		        	$value['status'] = $good['status'];
-		        	$value['goodtype'] = $good['type'];
-		        }
-        	}
+            if ($value['type'] == 2) {
+                $good = M('GoodOrder')->find($value['type_id']);
+                if ($good) {
+                    $value['name'] = $good['name'];
+                    $value['status'] = $good['status'];
+                    $value['goodtype'] = $good['type'];
+                }
+            }
         }
         // $this->assign("userInfo", $userInfo);
         $this->assign("Records", $Records);
         $this->display(":coinlist");
     }
-    public function error(){
-    	$this->display(":error");
+
+    public function error()
+    {
+        $this->display(":error");
     }
 }
 
