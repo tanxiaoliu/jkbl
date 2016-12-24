@@ -115,7 +115,6 @@ class IndexController extends HomebaseController
      */
     public function index()
     {
-
         $userInfo = $this->checkLogin();
         $type = I('type', 0, 'int');
         $usersModel = D('users');
@@ -159,6 +158,7 @@ class IndexController extends HomebaseController
         $this->assign("user", $user);
         $this->assign("type", $type);
         $this->assign("footer", "fuli");
+        $this->assign("userInfo", $userInfo);
         $this->display(":index");
     }
 
@@ -230,6 +230,7 @@ class IndexController extends HomebaseController
         $this->assign("data", $data);
         $this->assign("user", $user);
         $this->assign("footer", "zhishu");
+        $this->assign("userInfo", $userInfo);
         $this->display(":rank");
     }
 
