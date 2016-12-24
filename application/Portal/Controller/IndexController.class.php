@@ -169,18 +169,36 @@ class IndexController extends HomebaseController
     {
         $userInfo = $this->checkLogin();
         $type = I('type', 0, 'int');
-        if($type == 0) {
-            $data = D('sport_record')->field('openid,nick_name,sum(step_nums) as num')->group('openid')->order('num DESC')->select();
-            $usersModel = D('users');
-            foreach ($data as $key => $vl) {
-                $map['user_login'] = $vl['openid'];
-                $data[$key]['avatar'] = $usersModel->where($map)->getField('avatar');
-                if ($userInfo->openid == $vl['openid']) {
-                    $user['rank'] = $key + 1;
-                    $user['nick_name'] = $vl['nick_name'];
-                    $user['num'] = $vl['num'];
-                    $user['avatar'] = $userInfo->headimgurl;
-                }
+        $map = '';
+        if(IS_POST){
+            $startTime = strtotime(I('startTime'));
+            $endTime = strtotime(I('endTime'));
+            $map['add_time'] = array('between', array($startTime, $endTime));
+        }
+        //总排行榜
+        if ($type == 1){//昨天
+            $startYesterday=mktime(0,0,0,date('m'),date('d')-1,date('Y'));
+            $endYesterday=mktime(0,0,0,date('m'),date('d'),date('Y'))-1;
+            $map['add_time'] = array('between', array($startYesterday, $endYesterday));
+        } elseif ($type == 2){//上周
+            $beginLastweek=mktime(0,0,0,date('m'),date('d')-date('w')+1-7,date('Y'));
+            $endLastweek=mktime(23,59,59,date('m'),date('d')-date('w')+7-7,date('Y'));
+            $map['add_time'] = array('between', array($beginLastweek, $endLastweek));
+        } elseif ($type == 3){//上月
+            $beginThismonth=mktime(0,0,0,date('m'),1,date('Y'));
+            $endThismonth=mktime(23,59,59,date('m'),date('t'),date('Y'));
+            $map['add_time'] = array('between', array($beginThismonth, $endThismonth));
+        }
+        $data = D('sport_record')->where($map)->field('openid,nick_name,sum(step_nums) as num')->group('openid')->order('num DESC')->select();
+        $usersModel = D('users');
+        foreach ($data as $key => $vl) {
+            $map['user_login'] = $vl['openid'];
+            $data[$key]['avatar'] = $usersModel->where($map)->getField('avatar');
+            if ($userInfo->openid == $vl['openid']) {
+                $user['rank'] = $key + 1;
+                $user['nick_name'] = $vl['nick_name'];
+                $user['num'] = $vl['num'];
+                $user['avatar'] = $userInfo->headimgurl;
             }
         }
         $this->assign("data", $data);
@@ -197,7 +215,6 @@ class IndexController extends HomebaseController
     {
         $userInfo = $this->checkLogin();
         $data['openid'] = $userInfo->openid;
-        // $data['openid'] = 'admin';
     	$map['user_login'] = $data['openid'];
         $score = current(M('Users')->where($map)->getField('user_login,score,coin',1));
         $selfgood = M("Good")->where(array('type' => 1))->order('add_time desc')->select();
