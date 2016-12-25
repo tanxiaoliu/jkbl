@@ -146,16 +146,11 @@ html,body{
 }
 .m-content {
     margin-top: 3.55rem;
-    /*margin: 3.55rem 1rem 0 1rem;*/
-    /*height: 100%;*/
-    /*font-size: 0.55rem;*/
-    /*background: #b7eafd;*/
 }
 .hg {
     position: relative;
-    top: 0.6rem;
-    width: 1.3rem;
-    margin-left: 1.4rem;
+    width: 1.1rem;
+    margin-left: 1.2rem;
     transform: rotate(40deg);
 }
 
@@ -186,10 +181,12 @@ html,body{
 .p-kilometer {
     position: relative;
     z-index: 2;
-    top: 6.3rem;
-    left: 2.1rem;
+    top: 5.3rem;
+    left: 4rem;
     font-size: 0.7rem;
     color: #00658d;
+    width: 3rem;
+    text-align: center;
 }
 .detail-btn {
     background: #18abe1;

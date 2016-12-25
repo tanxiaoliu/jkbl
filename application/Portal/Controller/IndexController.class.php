@@ -174,6 +174,17 @@ class IndexController extends HomebaseController
     }
 
     /**
+     * 社区
+     * @author tanhuaxin
+     */
+    public function community()
+    {
+        $this->assign("userInfo", $this->checkLogin());
+        $this->assign("footer", "shequ");
+        $this->display(":community");
+    }
+
+    /**
      * 个人
      * @author tanhuaxin
      */

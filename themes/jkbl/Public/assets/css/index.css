@@ -6,32 +6,33 @@
 }
 .award {
     background-image: url('./../images/ljt.png');
-    background-size: 8.5rem 2.3rem;
+    background-size: 8.5rem 2.1rem;
     background-repeat:no-repeat;
-    height:2.5rem;
+    height:2.1rem;
     margin-left: 2rem;
     position: relative;
     bottom: 6.65rem;
 }
 .one {
     padding-left: 5.5rem;
+    margin-bottom: 0.5rem;
 }
 .two {
-    padding-left: 2.3rem;
+    padding-left: 2.5rem;
     position: relative;
-    bottom: 2.45rem;
+    bottom: 2.6rem;
 }
 .three {
     padding-left: 8.2rem;
     position: relative;
-    bottom: 5.1rem;
+    bottom: 4.9rem;
 }
 .r_blue{
     background: #7fccec;
     width: 2rem;
     text-align: center;
     position:relative;
-    bottom: 0.45rem;
+    bottom: 0.75rem;
     height: 0.6rem;
     line-height: 0.6rem;
 }
@@ -46,22 +47,24 @@
 }
 .head {
     display:block;
-    width:2rem;
-    height:2rem;
+    width:1.5rem;
+    height:1.5rem;
     border-radius:50%;
     border: 0.1rem solid #e6de40;
     background-image: url('./../images/timg.jpg');
-    background-size: 2rem 2rem;
-    margin-left: 0.1rem;
+    background-size: 1.5rem 1.5rem;
+    position: relative;
+    bottom: 0.5rem;
+    left: 0.3rem;
 }
 .rank_head {
     display:block;
-    width:2rem;
-    height:2rem;
+    width:1.5rem;
+    height:1.5rem;
     border-radius:50%;
     border: 0.1rem solid #e6de40;
-    background-size: 2rem 2rem;
-    margin-left: 1.1rem;
+    background-size: 1.5rem 1.5rem;
+    margin-left: 1.4rem;
 }
 .txt1{
     padding: 0.4rem 0 0 0.5rem;
@@ -70,8 +73,8 @@
 }
 .img1{
     display:block;
-    width:1.5rem;
-    height:1.5rem;
+    width:1rem;
+    height:1rem;
     border-radius:50%;
     border: 0.1rem solid #e6de40;
 }
@@ -92,11 +95,11 @@
     margin: 0.2rem 0 0 1.8rem;
 }
 .rank-num {
-    line-height: 2.5rem;
+    line-height: 1.5rem;
     padding-left:2rem;
 }
 .count {
-    line-height:  2.5rem;
+    line-height:  1.5rem;
     padding-right:2rem;
 }
 .my-rank{
