@@ -91,6 +91,8 @@ class IndexController extends HomebaseController
             if ($users) {
                 $data['last_login_time'] = date("Y-m-d H:i:s", time());
                 D('users')->save($data);
+                $userInfo->nickname = $users['user_nicename'];
+                setcookie('userInfo', json_encode($userInfo));
             } else {
                 $data['user_login'] = $userInfo->openid;
                 $data['user_pass'] = sp_password('123456');
@@ -101,8 +103,8 @@ class IndexController extends HomebaseController
                 $data['create_time'] = date("Y-m-d H:i:s", time());
                 $data['user_type'] = 2;
                 D('users')->add($data);
+                setcookie('userInfo', $result2);
             }
-            setcookie('userInfo', $result2);
             redirect(U('index'));
         } else {
             die ('获取用户信息失败，请联系管理员');
@@ -141,14 +143,16 @@ class IndexController extends HomebaseController
                     $user['avatar'] = $userInfo->headimgurl;
                 }
             }
-        } else {//次数
-            $data = D('sport_record')->field('openid,nick_name,count(id) as num')->group('openid')->order('num DESC')->select();
+        } else {//毅力
+            $data = D('sport_record')->field('openid,count(id) as num')->group('openid')->order('num DESC')->select();
             foreach ($data as $key => $vl) {
                 $map['user_login'] = $vl['openid'];
-                $data[$key]['avatar'] = $usersModel->where($map)->getField('avatar');
+                $users = $usersModel->where($map)->find();
+                $data[$key]['avatar'] = $users['avatar'];
+                $data[$key]['nick_name'] = $users['user_nicename'];
                 if ($userInfo->openid == $vl['openid']) {
                     $user['rank'] = $key + 1;
-                    $user['nick_name'] = $vl['nick_name'];
+                    $user['nick_name'] = $users['user_nicename'];
                     $user['num'] = $vl['num'];
                     $user['avatar'] = $userInfo->headimgurl;
                 }
@@ -193,10 +197,33 @@ class IndexController extends HomebaseController
         $userInfo = $this->checkLogin();
         $map['openid'] = $userInfo->openid;
         $num = D('sport_record')->where($map)->sum('step_nums');
+        $umap['user_login'] = $userInfo->openid;
+        $status = D('users')->where($umap)->getField('status');
         $this->assign("userInfo", $userInfo);
         $this->assign("num", $num);
+        $this->assign("status", $status);
         $this->assign("footer", "zhishu");
         $this->display(":personal");
+    }
+
+    /**
+     * 修改名字
+     */
+    public function editName()
+    {
+        $userInfo = $this->checkLogin();
+        if (IS_POST) {
+            $user_nicename = I('user_nicename');
+            $map['user_login'] = $userInfo->openid;
+            $usersModel = D('users');
+            $status = $usersModel->where($map)->getField('status');
+            if ($status == 0) {
+                $data['user_nicename'] = $user_nicename;
+                $data['status'] = 1;
+                $usersModel->where($map)->save($data);
+            }
+        }
+        redirect(U('personal'));
     }
 
     /**
@@ -226,14 +253,16 @@ class IndexController extends HomebaseController
             $endThismonth = mktime(23, 59, 59, date('m'), date('t'), date('Y'));
             $map['add_time'] = array('between', array($beginThismonth, $endThismonth));
         }
-        $data = D('sport_record')->where($map)->field('openid,nick_name,sum(step_nums) as num')->group('openid')->order('num DESC')->select();
+        $data = D('sport_record')->where($map)->field('openid,sum(step_nums) as num')->group('openid')->order('num DESC')->select();
         $usersModel = D('users');
         foreach ($data as $key => $vl) {
             $map['user_login'] = $vl['openid'];
-            $data[$key]['avatar'] = $usersModel->where($map)->getField('avatar');
+            $users = $usersModel->where($map)->find();
+            $data[$key]['avatar'] = $users['avatar'];
+            $data[$key]['nick_name'] = $users['user_nicename'];
             if ($userInfo->openid == $vl['openid']) {
                 $user['rank'] = $key + 1;
-                $user['nick_name'] = $vl['nick_name'];
+                $user['nick_name'] = $users['user_nicename'];
                 $user['num'] = $vl['num'];
                 $user['avatar'] = $userInfo->headimgurl;
             }

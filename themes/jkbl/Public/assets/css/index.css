@@ -35,11 +35,12 @@
     bottom: 0.75rem;
     height: 0.6rem;
     line-height: 0.6rem;
+    font-size: 0.4rem;
 }
 .r_orange{
     background: #f36f2f;
     text-align: center;
-    font-size: 0.2rem;
+    font-size: 0.4rem;
     position: relative;
     bottom: 0.5rem;
     width: 2rem;
@@ -79,7 +80,7 @@
     border: 0.1rem solid #e6de40;
 }
 .rank {
-    margin-top: 0.3rem;
+    margin-top: 0.6rem;
 }
 .rank ul{
     float: left;
@@ -90,6 +91,7 @@
     float: left;
     width:4.33rem;
     text-align: center;
+    height: 2.1rem;
 }
 .rank ul li img{
     margin: 0.2rem 0 0 1.8rem;
