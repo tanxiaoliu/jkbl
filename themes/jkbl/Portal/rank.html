@@ -10,8 +10,8 @@
     <tc_include file="Public:nav1" />
     <div class="rank-content-nav">
         <ul>
-            <li class="gray_rank">个人排名</li>
-            <li>联盟排名</li>
+            <li <if condition="$type lt 4">class="gray_rank"</if>><a style="color:white;" href="{:U('Index/rank')}">个人排名</a></li>
+            <li <if condition="3 lt $type">class="gray_rank"</if>><a style="color:white;" href="{:U('Index/rank', array('type'=>4))}">联盟排名</a></li>
         </ul>
     </div>
     <div class="content" style="margin-top:2rem;">
@@ -50,7 +50,7 @@
                 <li class="rank-num">NO.{$user['rank']|default='无'}</li>
                 <li>
                     <span class="rank_head" style="background-image: url('{$userInfo->headimgurl|default='__TMPL__Public/assets/images/0.png'}');"></span>
-                    <span class="r_orange">当前自己排名</span>
+                    <span class="r_orange"><if condition="$type lt 4">当前自己排名<else/>当前自组排名</if></span>
                 </li>
                 <li class="count">{$user['num']|default='0'}KG</li>
             </ul>

@@ -2162,3 +2162,11 @@ function sp_mobile_code_log($mobile,$code,$expire_time){
     
     return $result;
 }
+
+function sortByNum($a, $b) {  
+	if ($a['num']==$b['num']) {  
+	return 0;  
+	} else {  
+	return ($a['num']>$b['num']) ? 1 : -1;  
+	}  
+}  

@@ -172,7 +172,17 @@ class IndexController extends HomebaseController
      */
     public function member()
     {
+        $sum =  0;
+        $data =  '[';
+        $users = M('Users')->field('user_nicename,groupid,score')->where('groupid = 1')->select();
+        foreach ($users as $value) {
+            $sum+=$value['score'];
+            $data.="{value:{$value['score']}, name:'{$value['user_nicename']}'},";
+        }
+        $data = rtrim($data,',').']';
         $this->assign("userInfo", $this->checkLogin());
+        $this->assign("sum", $sum);
+        $this->assign("data", $data);
         $this->assign("footer", "zhishu");
         $this->display(":member");
     }
@@ -186,6 +196,15 @@ class IndexController extends HomebaseController
         $this->assign("userInfo", $this->checkLogin());
         $this->assign("footer", "shequ");
         $this->display(":community");
+    }
+    /**
+     * 社区
+     * @author tanhuaxin
+     */
+    public function post()
+    {
+       print_r($_POST);
+       exit();
     }
 
     /**
@@ -231,11 +250,13 @@ class IndexController extends HomebaseController
      * @author tanhuaxin
      */
     public function rank()
-    {
+    {   
+        $data = array();
+        $user = array();
         $userInfo = $this->checkLogin();
         $type = I('type', 0, 'int');
         $map = '';
-        if (IS_POST) {//时间段
+        if (!empty($_POST)) {//时间段
             $startTime = strtotime(I('startTime'));
             $endTime = strtotime(I('endTime'));
             $map['add_time'] = array('between', array($startTime, $endTime));
@@ -254,19 +275,50 @@ class IndexController extends HomebaseController
             $map['add_time'] = array('between', array($beginThismonth, $endThismonth));
         }
         $data = D('sport_record')->where($map)->field('openid,sum(step_nums) as num')->group('openid')->order('num DESC')->select();
+        $data[0]['openid'] = 'admin';
+        $data[0]['step_nums'] = 100;
         $usersModel = D('users');
-        foreach ($data as $key => $vl) {
-            $map['user_login'] = $vl['openid'];
-            $users = $usersModel->where($map)->find();
-            $data[$key]['avatar'] = $users['avatar'];
-            $data[$key]['nick_name'] = $users['user_nicename'];
-            if ($userInfo->openid == $vl['openid']) {
-                $user['rank'] = $key + 1;
-                $user['nick_name'] = $users['user_nicename'];
-                $user['num'] = $vl['num'];
-                $user['avatar'] = $userInfo->headimgurl;
+        if ($type<4){
+            foreach ($data as $key => $vl) {
+                $map['user_login'] = $vl['openid'];
+                $users = $usersModel->where($map)->find();
+                $data[$key]['avatar'] = $users['avatar'];
+                $data[$key]['nick_name'] = $users['user_nicename'];
+                if ($userInfo->openid == $vl['openid']) {
+                    $user['rank'] = $key + 1;
+                    $user['nick_name'] = $users['user_nicename'];
+                    $user['num'] = $vl['num'];
+                    $user['avatar'] = $userInfo->headimgurl;
+                }
+            }    
+        }elseif ($type>=4){
+            $groups = array();
+            foreach ($data as $key => $vl) {
+                $map['user_login'] = $vl['openid'];
+                $users = $usersModel->where($map)->find();
+                if (!isset($groups[$users['groupid']])) {
+                    $groups[$users['groupid']]['num'] = 0;
+                    $group = M('Group')->find($users['groupid']);
+                    $groups[$users['groupid']]['id'] = $group['id'];
+                    $groups[$users['groupid']]['nick_name'] = $group['name'];
+                    $groups[$users['groupid']]['avatar'] = $group['nick_name'];
+                }
+                $groups[$users['groupid']]['num'] += $vl['step_nums'];
             }
+            usort($groups, 'sortByNum');
+            foreach ($groups as $key => $vl) {
+                $map['user_login'] = $userInfo['openid'];
+                $users = $usersModel->where($map)->find();
+                if ($vl['id']==$users['groupid']) {
+                    $user['rank'] = $key + 1;
+                    $user['nick_name'] = $vl['nick_name'];
+                    $user['num'] = $vl['num'];
+                    $user['avatar'] = $vl['nick_name'];
+                }
+            }
+            $data = $groups;
         }
+        $this->assign("type", $type);
         $this->assign("data", $data);
         $this->assign("user", $user);
         $this->assign("footer", "zhishu");

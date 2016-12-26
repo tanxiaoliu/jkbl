@@ -10,8 +10,9 @@
     <div class="m-content">
         <div class="m-content-nav">
             <div class="m-title"><img src="__TMPL__Public/assets/images/caidai.png"></div>
-            <div class="m-count">成员总计：600 KG<a class="detail-btn flatbtn modaltrigger" href="#loginmodal"  style="position: relative;left: 2rem;bottom: 0.2rem;">详情</a></div>
+            <div class="m-count">成员总计：{$sum} KG<a class="detail-btn flatbtn modaltrigger" href="#loginmodal"  style="position: relative;left: 2rem;bottom: 0.2rem;">详情</a></div>
         </div>
+        <input id="data" type="hidden" value="{$data}">
         <div id="main" style="height:16rem; position: relative; top: -1rem;"></div>
     </div>
     <tc_include file="Public:footer" />
@@ -31,6 +32,7 @@
 <script src="__TMPL__Public/assets/js/jquery.leanModal.min.js"></script>
 <script>
     $(function(){
+
         $('.modaltrigger').leanModal({ top: 110, overlay: 0.45});
         $(".flatbtn").each(function(i){
             $(this).click(function(){
@@ -43,6 +45,11 @@
     });
 </script>
 <script type="text/javascript">
+    // var data1 = $("#data1").val();
+    // data1 = eval(data1);
+    var data = $("#data").val();
+    data = eval(data);
+
     var theme = {
         // 默认色板
         color: [
@@ -79,20 +86,33 @@
                     legend: {
                         orient: 'vertical',
                         bottom: 'bottom',
-                        data: ['直接访问','邮件营销','联盟广告','视频广告','搜索引擎']
+                        // data: ['直接访问','邮件营销','联盟广告','视频广告','搜索引擎','视频广告1','视频广告2','视频广告3']
+                        data: []
                     },
+                    color: [
+                        '#2ec7c9','#b6a2de','#5ab1ef','#ffb980','#d87a80',
+                        '#8d98b3','#e5cf0d','#97b552','#95706d','#dc69aa',
+                        '#07a2a4','#9a7fd1','#588dd5','#f5994e','#c05050',
+                        '#59678c','#c9ab00','#7eb00a','#6f5553','#c14089'
+                    ],
                     series : [
                         {
-                            name: '访问来源',
+                            name: '成员贡献表',
                             type: 'pie',
                             radius : '55%',
                             center: ['50%', '60%'],
+                            // data:[
+                            //     arrays
+                            // ],
                             data:[
-                                {value:335, name:'直接访问'},
-                                {value:310, name:'邮件营销'},
-                                {value:234, name:'联盟广告'},
-                                {value:135, name:'视频广告'},
-                                {value:1548, name:'搜索引擎'}
+                                /*{value:1, name:'直接访问'},
+                                {value:1, name:'邮件营销'},
+                                {value:1, name:'联盟广告'},
+                                {value:1, name:'视频广告'},
+                                {value:1, name:'视频广告1'},
+                                {value:1, name:'视频广告2'},
+                                {value:1, name:'视频广告3'},
+                                {value:1, name:'搜索引擎'}*/
                             ],
                             itemStyle: {
                                 emphasis: {
@@ -104,7 +124,10 @@
                         }
                     ]
                 };
-
+                for (var i = data.length - 1; i >= 0; i--) {
+                    option.series[0].data.push(data[i])
+                };
+                // console.log(option.series[0].data)
                 myChart.setOption(option);
             }
     );
