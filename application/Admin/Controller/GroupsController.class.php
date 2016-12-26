@@ -59,13 +59,13 @@ class GroupsController extends AdminbaseController{
 			if ($this->group_model->create($data)!==false) {
 				if (isset($data['id'])) {
 					if ($this->group_model->save()!==false) {
-						$this->success("保存成功！", U("Group/index"));
+						$this->success("保存成功！", U("Groups/index"));
 					} else {
 						$this->error("保存失败！");
 					}
 				}else{
 					if ($this->group_model->add()!==false) {
-						$this->success("添加成功！", U("Group/index"));
+						$this->success("添加成功！", U("Groups/index"));
 					} else {
 						$this->error("添加失败！");
 					}
@@ -82,7 +82,7 @@ class GroupsController extends AdminbaseController{
 			if (!empty($data)) {
 				$this->assign('data',$data);
 				$this->assign('members',$data['members']);
-		    	$this->display(":Group/edit");
+		    	$this->display(":Groups/edit");
 			}
 			else{
 				$this->display();
@@ -109,10 +109,10 @@ class GroupsController extends AdminbaseController{
 			$groupid=intval($_GET['groupid']);
 			$id=intval($_GET['id']);
 			if ( M('Users')->where(array('id'=>$id))->save($data)!==false) {
-				$this->redirect(U("Group/add",array('id'=>$groupid)));
-				// $this->success("移除成功！",U("group/add",array('id'=>$groupid)));
+				$this->redirect(U("Groups/add",array('id'=>$groupid)));
+				// $this->success("移除成功！",U("Groups/add",array('id'=>$groupid)));
 			} else {
-				$this->error("移除失败！",U("Group/add",array('id'=>$groupid)));
+				$this->error("移除失败！",U("Groups/add",array('id'=>$groupid)));
 			}
 		}
 	}
