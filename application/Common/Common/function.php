@@ -2167,6 +2167,6 @@ function sortByNum($a, $b) {
 	if ($a['num']==$b['num']) {  
 	return 0;  
 	} else {  
-	return ($a['num']>$b['num']) ? 1 : -1;  
+	return ($a['num']<$b['num']) ? 1 : -1;  
 	}  
 }  

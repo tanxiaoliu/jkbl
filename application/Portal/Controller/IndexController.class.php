@@ -172,13 +172,56 @@ class IndexController extends HomebaseController
      */
     public function member()
     {
+        $userInfo = $this->checkLogin();
+        $map['user_login'] = $userInfo->openid;
+        $users = M('Users')->where($map)->find();
+        $map = array();
+        $record = array();
+        $type = I('type', 0, 'int');
+        if (!empty($_POST)) {//时间段
+            $startTime = strtotime(I('startTime'));
+            $endTime = strtotime(I('endTime'));
+            $map['add_time'] = array('between', array($startTime, $endTime));
+        }
+        if ($type == 1) {//昨天
+            $startYesterday = mktime(0, 0, 0, date('m'), date('d') - 1, date('Y'));
+            $endYesterday = mktime(0, 0, 0, date('m'), date('d'), date('Y')) - 1;
+            $map['add_time'] = array('between', array($startYesterday, $endYesterday));
+        } elseif ($type == 2) {//上周
+            $beginLastweek = mktime(0, 0, 0, date('m'), date('d') - date('w') + 1 - 7, date('Y'));
+            $endLastweek = mktime(23, 59, 59, date('m'), date('d') - date('w') + 7 - 7, date('Y'));
+            $map['add_time'] = array('between', array($beginLastweek, $endLastweek));
+        } elseif ($type == 3) {//上月
+            $beginThismonth = mktime(0, 0, 0, date('m'), 1, date('Y'));
+            $endThismonth = mktime(23, 59, 59, date('m'), date('t'), date('Y'));
+            $map['add_time'] = array('between', array($beginThismonth, $endThismonth));
+        }
         $sum =  0;
         $data =  '[';
-        $users = M('Users')->field('user_nicename,groupid,score')->where('groupid = 1')->select();
-        foreach ($users as $value) {
-            $sum+=$value['score'];
-            $data.="{value:{$value['score']}, name:'{$value['user_nicename']}'},";
+        if (!empty($map)) {
+            $users = M('Users')->field('user_login,groupid,score')->where(array('groupid'=>$users['groupid']) )->select();
+            $ids = '';
+            foreach ($users as $value) {
+                $ids.=$value["user_login"].',';
+            }  
+            $ids = rtrim($ids,',');
+            $map['openid'] = array('in',$ids);
+            $record = D('sport_record')->where($map)->field('openid,sum(step_nums) as num')->group('openid')->order('num DESC')->select();
+            foreach ($record as $value) {
+                $map['user_login'] = $value['openid'];
+                $users = M('Users')->where($map)->find();
+                $sum+=$value['num'];
+                $data.="{value:{$value['num']}, name:'{$users['user_nicename']}'},";
+            }
+        }else{
+            $users = M('Users')->field('user_nicename,groupid,score')->where(array('groupid'=>$users['groupid']) )->select();
+            foreach ($users as $value) {
+                $sum+=$value['score'];
+                $data.="{value:{$value['score']}, name:'{$value['user_nicename']}'},";
+            }  
         }
+        
+       
         $data = rtrim($data,',').']';
         $this->assign("userInfo", $this->checkLogin());
         $this->assign("sum", $sum);
@@ -193,7 +236,9 @@ class IndexController extends HomebaseController
      */
     public function community()
     {
-        $this->assign("userInfo", $this->checkLogin());
+        // $this->assign("userInfo", $this->checkLogin());
+        $posts = M('Posts')->field('id,post_title,post_date')->order('istop desc,recommended desc,post_date desc')->limit(5)->select();
+        $this->assign("posts", "posts");
         $this->assign("footer", "shequ");
         $this->display(":community");
     }
@@ -255,6 +300,7 @@ class IndexController extends HomebaseController
         $user = array();
         $userInfo = $this->checkLogin();
         $type = I('type', 0, 'int');
+        $grouptype = I('grouptype', 0, 'int');
         $map = '';
         if (!empty($_POST)) {//时间段
             $startTime = strtotime(I('startTime'));
@@ -275,10 +321,8 @@ class IndexController extends HomebaseController
             $map['add_time'] = array('between', array($beginThismonth, $endThismonth));
         }
         $data = D('sport_record')->where($map)->field('openid,sum(step_nums) as num')->group('openid')->order('num DESC')->select();
-        $data[0]['openid'] = 'admin';
-        $data[0]['step_nums'] = 100;
         $usersModel = D('users');
-        if ($type<4){
+        if ($grouptype==0){
             foreach ($data as $key => $vl) {
                 $map['user_login'] = $vl['openid'];
                 $users = $usersModel->where($map)->find();
@@ -291,34 +335,37 @@ class IndexController extends HomebaseController
                     $user['avatar'] = $userInfo->headimgurl;
                 }
             }    
-        }elseif ($type>=4){
+        }elseif ($grouptype==1){
             $groups = array();
             foreach ($data as $key => $vl) {
                 $map['user_login'] = $vl['openid'];
                 $users = $usersModel->where($map)->find();
-                if (!isset($groups[$users['groupid']])) {
-                    $groups[$users['groupid']]['num'] = 0;
-                    $group = M('Group')->find($users['groupid']);
-                    $groups[$users['groupid']]['id'] = $group['id'];
-                    $groups[$users['groupid']]['nick_name'] = $group['name'];
-                    $groups[$users['groupid']]['avatar'] = $group['nick_name'];
+                if ($users['groupid']>0) {
+                    if (!isset($groups[$users['groupid']])) {
+                        $groups[$users['groupid']]['num'] = 0;
+                        $group = M('Group')->find($users['groupid']);
+                        $groups[$users['groupid']]['id'] = $group['id'];
+                        $groups[$users['groupid']]['nick_name'] = $group['name'];
+                        $groups[$users['groupid']]['avatar'] = '/data/upload/'.$group['logo'];
+                    }
+                    $groups[$users['groupid']]['num'] += $vl['num'];
                 }
-                $groups[$users['groupid']]['num'] += $vl['step_nums'];
             }
+            unset($groups[0]);
             usort($groups, 'sortByNum');
             foreach ($groups as $key => $vl) {
-                $map['user_login'] = $userInfo['openid'];
+                $map['user_login'] = $userInfo->openid;
                 $users = $usersModel->where($map)->find();
                 if ($vl['id']==$users['groupid']) {
                     $user['rank'] = $key + 1;
                     $user['nick_name'] = $vl['nick_name'];
                     $user['num'] = $vl['num'];
-                    $user['avatar'] = $vl['nick_name'];
+                    $user['avatar'] = $vl['avatar'];
                 }
             }
             $data = $groups;
         }
-        $this->assign("type", $type);
+        $this->assign("grouptype", $grouptype);
         $this->assign("data", $data);
         $this->assign("user", $user);
         $this->assign("footer", "zhishu");

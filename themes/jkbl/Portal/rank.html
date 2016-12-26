@@ -10,8 +10,8 @@
     <tc_include file="Public:nav1" />
     <div class="rank-content-nav">
         <ul>
-            <li <if condition="$type lt 4">class="gray_rank"</if>><a style="color:white;" href="{:U('Index/rank')}">个人排名</a></li>
-            <li <if condition="3 lt $type">class="gray_rank"</if>><a style="color:white;" href="{:U('Index/rank', array('type'=>4))}">联盟排名</a></li>
+            <li <if condition="$grouptype eq 0">class="gray_rank"</if>><a style="color:white;" href="{:U('Index/rank')}">个人排名</a></li>
+            <li <if condition="$grouptype eq 1">class="gray_rank"</if>><a style="color:white;" href="{:U('Index/rank', array('grouptype'=>1))}">联盟排名</a></li>
         </ul>
     </div>
     <div class="content" style="margin-top:2rem;">
@@ -58,10 +58,11 @@
     </div>
     <tc_include file="Public:footer" />
     <div id="loginmodal" style="display:none;">
-            <div class="center" style="margin: 0.5rem 0;"><a href="{:U('Index/rank', array('type'=>1))}"><input type="button" class="flatbtn-blu hidemodal" value="昨日记录"></a></div>
-            <div class="center" style="margin: 0.5rem 0;"><a href="{:U('Index/rank', array('type'=>2))}"><input type="button" class="flatbtn-blu hidemodal" value="上周记录"></a></div>
-            <div class="center" style="margin: 0.5rem 0;"><a href="{:U('Index/rank', array('type'=>3))}"><input type="button" class="flatbtn-blu hidemodal" value="上月记录"></a></div>
+            <div class="center" style="margin: 0.5rem 0;"><a href="{:U('Index/rank', array('type'=>1,'grouptype'=>$grouptype))}"><input type="button" class="flatbtn-blu hidemodal" value="昨日记录"></a></div>
+            <div class="center" style="margin: 0.5rem 0;"><a href="{:U('Index/rank', array('type'=>2,'grouptype'=>$grouptype))}"><input type="button" class="flatbtn-blu hidemodal" value="上周记录"></a></div>
+            <div class="center" style="margin: 0.5rem 0;"><a href="{:U('Index/rank', array('type'=>3,'grouptype'=>$grouptype))}"><input type="button" class="flatbtn-blu hidemodal" value="上月记录"></a></div>
         <form id="loginform" name="loginform" method="post" action="{:U('Index/rank')}" onsubmit="return check(this)">
+            <input type="hidden" value="{$grouptype}">
             <div class="center" style="margin: 0.5rem 0;padding-right: 2rem;"><span style="color: #18abe1;">结束时间：</span><span><input type="date" name="startTime" id="startTime" style="height: 1rem;"></span></div>
             <div class="center" style="margin: 0.5rem 0;padding-right: 2rem;"><span style="color: #18abe1;">开始时间：</span><span><input type="date" name="endTime" id="endTime" style="height: 1rem;"></span></div>
             <div class="center" style="margin: 0.5rem 0;"><input type="submit" class="flatbtn-blu hidemodal" value="搜索"></a></div>

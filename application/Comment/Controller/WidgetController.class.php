@@ -33,7 +33,7 @@ class WidgetController extends Controller{
 		$this->assign("comments",$new_comments);
 		$this->assign("params",$params);
 		$this->assign("parent_comments",$parent_comments);
-		$tpl= (isset($params['tpl'])&& !empty($params['tpl']) )?$params['tpl']:"comment";
+		$tpl= (isset($params['tpl'])&& !empty($params['tpl']) )?$params['tpl']:"reply";
 		return $this->fetch(":$tpl");
 	}
 	
