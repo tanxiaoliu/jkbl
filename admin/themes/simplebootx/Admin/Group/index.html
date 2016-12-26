@@ -1,0 +1,42 @@
+<admintpl file="header" />
+</head>
+<body>
+	<div class="wrap js-check-wrap">
+		<ul class="nav nav-tabs">
+			<li class="active"><a href="{:U('group/index')}">分组管理</a></li>
+			<li><a href="{:U('group/add')}">添加分组</a></li>
+			<li><a href="{:U('group/members')}">成员管理</a></li>
+		</ul>
+		<form class="form-horizontal js-ajax-form" method="post">
+			<table class="table table-hover table-bordered">
+				<thead>
+					<tr>
+						<th>ID</th>
+						<th>组名</th>
+						<th>组员</th>
+						<th>团队总积分</th>
+						<th>创建时间</th>
+						<th>{:L('ACTIONS')}</th>
+					</tr>
+				</thead>
+				<foreach name="group" item="vo">
+				<tr>
+					<td>{$vo.id}</td>
+					<td>{$vo.name}</td>
+					<td><if condition="!empty($vo['members'])">{$vo.members}<else />暂无成员</if></td>
+					<td><if condition="!empty($vo['coin'])">{$vo.coin}<else />0</if></td>
+					<!-- <td><if condition="$vo.type eq 1" >健身福利<else />公益福利</if></td> -->
+					<td>{:date('Y-m-d H:i:s', $vo['add_time'])}</td>
+					<td>
+						<a href="{:U('group/add',array('id'=>$vo['id']))}">{:L('EDIT')}</a>|
+						<a href="{:U('group/delete',array('id'=>$vo['id']))}" class="js-ajax-delete">{:L('DELETE')}</a>
+					</td>
+				</tr>
+				</foreach>
+			</table>
+			<div class="pagination">{$page}</div>
+		</form>
+	</div>
+	<script src="__PUBLIC__/js/common.js"></script>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<admintpl file="header" />
+</head>
+<body>
+	<div class="wrap">
+		<ul class="nav nav-tabs">
+			<li><a href="{:U('group/index')}">分组管理</a></li>
+			<li class="active"><a href="{:U('group/add')}">添加分组</a></li>
+			<li><a href="{:U('group/members')}">成员管理</a></li>
+		</ul>
+		<form method="post" class="form-horizontal " action="{:U('group/add')}">
+			<fieldset>
+				<div class="control-group">
+					<label class="control-label">分组名称</label>
+					<div class="controls">
+						<input type="text" name="name">
+						<span class="form-required">*</span>
+					</div>
+				</div>
+				<!-- <div class="control-group">
+					<label class="control-label">物品数量</label>
+					<div class="controls">
+						<input type="text" name="nums">
+						<span class="form-required">*</span>
+					</div>
+				</div>
+				 --><div class="control-group">							
+					<label class="control-label">团队logo</label>
+					<div class="controls">
+						<input type="hidden" name="logo" id="thumb" value="">
+						<a href="javascript:upload_one_image('图片上传','#thumb');">
+							<img src="__TMPL__Public/assets/images/default-thumbnail.png" id="thumb-preview" width="135" style="cursor: hand" />
+						</a>
+						<input type="button" class="btn btn-small" onclick="$('#thumb-preview').attr('src','__TMPL__Public/assets/images/default-thumbnail.png');$('#thumb').val('');return false;" value="取消图片">
+						<span class="form-required">*</span>
+					</div>	
+				</div>
+			</fieldset>
+			<div class="form-actions">
+				<button type="submit" class="btn btn-primary js-ajax-submit">{:L('ADD')}</button>
+				<a class="btn" href="javascript:history.back(-1);">{:L('BACK')}</a>
+			</div>
+		</form>
+	</div>
+	<script src="__PUBLIC__/js/common.js"></script>
+</body>
+</html>
