@@ -28,7 +28,7 @@
 					<!-- <td><if condition="$vo.type eq 1" >健身福利<else />公益福利</if></td> -->
 					<td>{:date('Y-m-d H:i:s', $vo['add_time'])}</td>
 					<td>
-						<a href="{:U('Groups/add',array('id'=>$vo['id']))}">{:L('EDIT')}</a>|
+						<a href="{:U('Groups/add',array('id'=>$vo['id']))}">分组信息管理</a>|
 						<a href="{:U('Groups/delete',array('id'=>$vo['id']))}" class="js-ajax-delete">{:L('DELETE')}</a>
 					</td>
 				</tr>

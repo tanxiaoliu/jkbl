@@ -21,8 +21,8 @@ class GroupsController extends AdminbaseController{
             ->limit($page->firstRow, $page->listRows)
             ->select();
         foreach ($group as $key => &$value) {
-        	$members = M('Users')->where(array('group'=>$value['id']))->order("create_time DESC")->select();
-        	$value['coin'] = M('Users')->where(array('group'=>$value['id']))->sum('score');
+        	$members = M('Users')->where(array('groupid'=>$value['id']))->order("create_time DESC")->select();
+        	$value['coin'] = M('Users')->where(array('groupid'=>$value['id']))->sum('score');
         	$value['members'] = '';
         	if (!empty($members)&&is_array(($members))) {
         		foreach ($members as  $val) {
@@ -46,8 +46,8 @@ class GroupsController extends AdminbaseController{
             ->select();
         $group = $this->group_model->select();
         foreach ($users as $key => &$value) {
-        	$value['group'] = $this->group_model->find($value['group']);
-        	$value['group'] = $value['group']['name'];
+        	$value['groupid'] = $this->group_model->find($value['groupid']);
+        	$value['groupid'] = $value['groupid']['name'];
         }
 		$this->assign("page",$page->show('Admin'));
 		$this->assign("group",$group);
@@ -81,7 +81,7 @@ class GroupsController extends AdminbaseController{
 			if (isset($_GET['id'])&&!empty($_GET['id'])) {
 				$id = I("get.id",0,'intval');
 				$data   =  $this->group_model->find($id);
-		        $data['members'] = M('Users')->where(array('group'=>$data['id']))->order("create_time DESC")->select();
+		        $data['members'] = M('Users')->where(array('groupid'=>$data['id']))->order("create_time DESC")->select();
 			}
 			if (!empty($data)) {
 				$this->assign('data',$data);
@@ -97,7 +97,7 @@ class GroupsController extends AdminbaseController{
 
 	public function joinGroup(){
 		if(isset($_POST['ids']) && $_GET["joinGroup"]){
-			$data["group"]=$_POST['groupid'];
+			$data["groupid"]=$_POST['groupid'];
 			$ids=join(",",$_POST['ids']);
 			if ( M('Users')->where("id in ($ids)")->save($data)!==false) {
 				$this->success("加入成功！");
@@ -109,7 +109,7 @@ class GroupsController extends AdminbaseController{
 
 	public function cancel(){
 		if(isset($_GET['groupid']) && $_GET["groupid"] && isset($_GET['id']) && $_GET["id"]){
-			$data["group"] = '';
+			$data["groupid"] = '';
 			$groupid=intval($_GET['groupid']);
 			$id=intval($_GET['id']);
 			if ( M('Users')->where(array('id'=>$id))->save($data)!==false) {
