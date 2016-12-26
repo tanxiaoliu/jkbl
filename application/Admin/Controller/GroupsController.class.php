@@ -3,7 +3,7 @@ namespace Admin\Controller;
 
 use Common\Controller\AdminbaseController;
 
-class GroupController extends AdminbaseController{
+class GroupsController extends AdminbaseController{
     
 	protected $group_model;
 	
@@ -13,7 +13,7 @@ class GroupController extends AdminbaseController{
 	}
 	public function index(){
 		$where = array();
-		$count=$this->group_model->count();
+		$count=$this->group_model->count() ;
 		$page = $this->page($count, 20);
         $group = $this->group_model
             ->where($where)
@@ -46,12 +46,10 @@ class GroupController extends AdminbaseController{
         	$value['group'] = $value['group']['name'];
         }
 		$this->assign("page",$page->show('Admin'));
-		$this->assign("id",1);
 		$this->assign("group",$group);
 		$this->assign("users",$users);
 		$this->display();
 	}
-	// 物品添加或编辑
 	public function add() {
 		$data =array();
 		if(!empty($_POST)){
@@ -61,13 +59,13 @@ class GroupController extends AdminbaseController{
 			if ($this->group_model->create($data)!==false) {
 				if (isset($data['id'])) {
 					if ($this->group_model->save()!==false) {
-						$this->success("保存成功！", U("group/index"));
+						$this->success("保存成功！", U("Group/index"));
 					} else {
 						$this->error("保存失败！");
 					}
 				}else{
 					if ($this->group_model->add()!==false) {
-						$this->success("添加成功！", U("group/index"));
+						$this->success("添加成功！", U("Group/index"));
 					} else {
 						$this->error("添加失败！");
 					}
@@ -84,7 +82,7 @@ class GroupController extends AdminbaseController{
 			if (!empty($data)) {
 				$this->assign('data',$data);
 				$this->assign('members',$data['members']);
-		    	$this->display(":group/edit");
+		    	$this->display(":Group/edit");
 			}
 			else{
 				$this->display();
@@ -93,7 +91,6 @@ class GroupController extends AdminbaseController{
 		
 	}
 
-	// 后台评论审核
 	public function joinGroup(){
 		if(isset($_POST['ids']) && $_GET["joinGroup"]){
 			$data["group"]=$_POST['groupid'];
@@ -106,22 +103,20 @@ class GroupController extends AdminbaseController{
 		}
 	}
 
-	// 后台评论审核
 	public function cancel(){
 		if(isset($_GET['groupid']) && $_GET["groupid"] && isset($_GET['id']) && $_GET["id"]){
 			$data["group"] = '';
 			$groupid=intval($_GET['groupid']);
 			$id=intval($_GET['id']);
 			if ( M('Users')->where(array('id'=>$id))->save($data)!==false) {
-				$this->redirect(U("group/add",array('id'=>$groupid)));
+				$this->redirect(U("Group/add",array('id'=>$groupid)));
 				// $this->success("移除成功！",U("group/add",array('id'=>$groupid)));
 			} else {
-				$this->error("移除失败！",U("group/add",array('id'=>$groupid)));
+				$this->error("移除失败！",U("Group/add",array('id'=>$groupid)));
 			}
 		}
 	}
 
-	// 删除导航分类
 	public function delete(){
 		$id = I("get.id",0,'intval');
 		if ($this->group_model->where(array('id'=>$id))->delete()!==false) {

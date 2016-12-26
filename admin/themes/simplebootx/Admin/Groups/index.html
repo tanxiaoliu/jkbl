@@ -3,9 +3,9 @@
 <body>
 	<div class="wrap js-check-wrap">
 		<ul class="nav nav-tabs">
-			<li class="active"><a href="{:U('group/index')}">分组管理</a></li>
-			<li><a href="{:U('group/add')}">添加分组</a></li>
-			<li><a href="{:U('group/members')}">成员管理</a></li>
+			<li class="active"><a href="{:U('Groups/index')}">分组管理</a></li>
+			<li><a href="{:U('Groups/add')}">添加分组</a></li>
+			<li><a href="{:U('Groups/members')}">成员管理</a></li>
 		</ul>
 		<form class="form-horizontal js-ajax-form" method="post">
 			<table class="table table-hover table-bordered">
@@ -28,8 +28,8 @@
 					<!-- <td><if condition="$vo.type eq 1" >健身福利<else />公益福利</if></td> -->
 					<td>{:date('Y-m-d H:i:s', $vo['add_time'])}</td>
 					<td>
-						<a href="{:U('group/add',array('id'=>$vo['id']))}">{:L('EDIT')}</a>|
-						<a href="{:U('group/delete',array('id'=>$vo['id']))}" class="js-ajax-delete">{:L('DELETE')}</a>
+						<a href="{:U('Groups/add',array('id'=>$vo['id']))}">{:L('EDIT')}</a>|
+						<a href="{:U('Groups/delete',array('id'=>$vo['id']))}" class="js-ajax-delete">{:L('DELETE')}</a>
 					</td>
 				</tr>
 				</foreach>

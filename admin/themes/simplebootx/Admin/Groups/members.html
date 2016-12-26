@@ -3,14 +3,15 @@
 <body>
 	<div class="wrap js-check-wrap">
 		<ul class="nav nav-tabs">
-			<li><a href="{:U('group/index')}">分组管理</a></li>
-			<li><a href="{:U('group/add')}">添加分组</a></li>
-			<li class="active"><a href="{:U('group/members')}">成员管理</a></li>
+			<li><a href="{:U('Groups/index')}">分组管理</a></li>
+			<li><a href="{:U('Groups/add')}">添加分组</a></li>
+			<li class="active"><a href="{:U('Groups/members')}">成员管理</a></li>
 		</ul>
 		<form class="form-horizontal js-ajax-form" method="post">
 			<div class="table-actions">
-				<button class="btn btn-primary btn-small js-ajax-submit" type="submit" data-action="{:U('group/joinGroup',array('joinGroup'=>1))}" data-subcheck="true">加入分组</button>
+				<button class="btn btn-primary btn-small js-ajax-submit" type="submit" data-action="{:U('Groups/joinGroup',array('joinGroup'=>1))}" data-subcheck="true">加入分组</button>
 				<select name="groupid">
+						<option value="0" selected>请选择分组</option>
 					<foreach name="group" item="vo">
 						<option value="{$vo.id}" <if condition="$vo.id eq $id" >selected</if> >{$vo.name}</option>
 					</foreach>
@@ -37,8 +38,8 @@
 					<td><img width="25" height="25" src="{:U('user/public/avatar',array('id'=>$vo['id']))}" /></td>
 					<td>{$vo.create_time}</td>
 					<!-- <td>
-						<a href="{:U('group/add',array('id'=>$vo['id']))}">{:L('EDIT')}</a>|
-						<a href="{:U('group/delete',array('id'=>$vo['id']))}" class="js-ajax-delete">{:L('DELETE')}</a>
+						<a href="{:U('Groups/add',array('id'=>$vo['id']))}">{:L('EDIT')}</a>|
+						<a href="{:U('Groups/delete',array('id'=>$vo['id']))}" class="js-ajax-delete">{:L('DELETE')}</a>
 					</td> -->
 				</tr>
 				</foreach>
