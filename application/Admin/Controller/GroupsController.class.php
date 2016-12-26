@@ -21,10 +21,14 @@ class GroupsController extends AdminbaseController{
             ->limit($page->firstRow, $page->listRows)
             ->select();
         foreach ($group as $key => &$value) {
-        	$value['members'] = M('Users')->where(array('group'=>$value['id']))->order("create_time DESC")->getField('user_nicename');
+        	$members = M('Users')->where(array('group'=>$value['id']))->order("create_time DESC")->select();
         	$value['coin'] = M('Users')->where(array('group'=>$value['id']))->sum('score');
-        	if (!empty($value['members'])&&is_array(($value['members']))) {
-        		$value['members'] = implode(',', $value['members']);
+        	$value['members'] = '';
+        	if (!empty($members)&&is_array(($members))) {
+        		foreach ($members as  $val) {
+	        		$value['members'] .= $val['user_nicename'].',';
+	        	}
+	        	$value['members'] = rtrim($value['members'],',');
         	}
         }
 		$this->assign("page",$page->show('Admin'));

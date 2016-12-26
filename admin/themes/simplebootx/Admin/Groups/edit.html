@@ -22,8 +22,8 @@
 					<div class="controls">
 						<if condition="!empty($members)">
 							<foreach name="members" item="vo">
-								<span class="form-required">{$vo.user_nicename}</span>
-								<a href="{:U('Groups/cancel',array('groupid'=>$data['id'],'id'=>$vo['id']))}">{:L('DELETE')}</a>
+								<span class="form-required">{$vo.user_nicename}  </span>
+								<a href="{:U('Groups/cancel',array('groupid'=>$data['id'],'id'=>$vo['id']))}">移除   </a>
 							</foreach>
 						<else />
 						暂无成员
