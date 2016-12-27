@@ -55,6 +55,7 @@ class AdminPostController extends AdminbaseController {
 			$_POST['post']['post_modified']=date("Y-m-d H:i:s",time());
 			$_POST['post']['post_author']=get_current_admin_id();
 			$article=I("post.post");
+			$article['post_type']=1;
 			$article['post_status']=1;
 			$article['istop']=1;
 			$article['recommended']=1;
