@@ -253,7 +253,10 @@
         </div>
         <div class="refresh-loading" id="refreshLoading">
         </div>
-		 <!--<div id="publish-panel" class="pub-float pub" style="height: 1331px;">
+
+		<div id="publish-panel" class="pub-float pub" style="height: 1331px;display: none;">
+         <form id="loginform" name="loginform" method="post" action="{:U('post')}"  class="form-horizontal " onsubmit="return check(this)">
+          <div id="close" class="publish-btn" style="bottom: 5rem;"></div>
 		  <div data-reactroot="" class="pub-con">
 			<div class="pub-wrap section-1px show">
 			  <div class="pub-theme section-1px">
@@ -276,8 +279,22 @@
 				  <input type="file" class="upfile up-entry-two" accept="image/*" multiple=""></li>
 			  </ul>
 			</div>
-		  </div>-->
+		  </div>
+         </form>
 		</div>
-    </body>
 
+<script>
+    $(function(){
+        $(".publish-btn").click(function(){
+            $("#publish-panel").css('display','block'); 
+          })
+        $("#close").click(function(){
+            $("#publish-panel").css('display','none'); 
+          })
+    });
+</script>
+<script src="__TMPL__Public/assets/js/jquery-1.9.1.min.js"></script>
+<script src="__TMPL__Public/assets/js/jquery.leanModal.min.js"></script>
+
+    </body>
 </html>
