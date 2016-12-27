@@ -237,8 +237,13 @@ class IndexController extends HomebaseController
     public function community()
     {
         // $this->assign("userInfo", $this->checkLogin());
-        $posts = M('Posts')->field('id,post_title,post_date')->order('istop desc,recommended desc,post_date desc')->limit(5)->select();
-        $this->assign("posts", "posts");
+        $posts = M('Posts')->field('id,post_title,post_date')->where('post_type = 1')->order('istop desc,recommended desc,post_date desc')->limit(5)->select();
+        $map['istop']=0;
+        $map['recommended']=0;
+        $map['post_type']=1;
+        $pengyouquan = M('Posts')->field('id,post_content,post_date')->where($map)->order()->limit(20)->select();
+        $this->assign("posts", $posts);
+        $this->assign("pengyouquan", $pengyouquan);
         $this->assign("footer", "shequ");
         $this->display(":community");
     }

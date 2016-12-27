@@ -135,11 +135,10 @@
                     <div id="uiTestNav" class="ui-test-nav nohighlight">
                         <div class="new-tab-list">
                             <div>
-                                <label><a style="border-bottom: 1px solid #e5e5e5;padding-left:1rem;text-align:left;font-size: 0.9rem;color: #39bbd8;"><span class="ding">顶</span>健康运动，乐享生活，有你有我。。</a></label>
-                                <label><a style="border-bottom: 1px solid #e5e5e5;padding-left:1rem;text-align:left;font-size: 0.9rem;color: #39bbd8;"><span class="ding">顶</span>健康运动，乐享生活，有你有我。。</a></label>
-                                <label><a style="border-bottom: 1px solid #e5e5e5;padding-left:1rem;text-align:left;font-size: 0.9rem;color: #39bbd8;"><span class="ding">顶</span>健康运动，乐享生活，有你有我。。</a></label>
-                                <label><a style="border-bottom: 1px solid #e5e5e5;padding-left:1rem;text-align:left;font-size: 0.9rem;color: #39bbd8;"><span class="ding">顶</span>健康运动，乐享生活，有你有我。。</a></label>
-                                <label><a style="border-bottom: 1px solid #e5e5e5;padding-left:1rem;text-align:left;font-size: 0.9rem;color: #39bbd8;"><span class="ding">顶</span>健康运动，乐享生活，有你有我。。</a></label>
+                                
+                                <foreach name="posts" item="vo">
+                            <label><a href="{:U('Article/index',array('id'=>$vo['id'],'cid'=>1))}" style="border-bottom: 1px solid #e5e5e5;padding-left:1rem;text-align:left;font-size: 0.9rem;color: #39bbd8;">{$vo.post_title}</a></label>
+                            </foreach>
                         </div>
                     </div>
                 </div>

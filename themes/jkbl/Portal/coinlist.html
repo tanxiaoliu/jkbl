@@ -69,7 +69,7 @@ weixin://* blob: *.51ping.com *.meituan.net 192.168.141.54:8080 172.30.19.239:80
 
 	<header id="header" class="header page-header  ">
     <div class="header-right"></div>
-      <!-- <h1 class="j-page-name page-name" style="float:left;margin-left:2%;"><a style="color:white;" href="{:U('shop')}">返回</a></h1> -->
+      <h1 class="j-page-name page-name" style="float:left;margin-left:2%;"><a style="color:white;" href="{:U('shop')}">返回</a></h1>
       <h1 class="j-page-name page-name" style="color: #ffffff;">我的腾币记录</h1>
 	</header>
 <foreach name="Records" item="vo">
@@ -98,7 +98,7 @@ weixin://* blob: *.51ping.com *.meituan.net 192.168.141.54:8080 172.30.19.239:80
                     <p class="price"><if condition="$vo.goodtype eq 1" >健身福利<else />公益福利</if>：{$vo.name}</p>
                     <p class="order-time">{:date('Y-m-d', $vo['add_time'])}</p>
                 </div>
-                <i class="field-arrow icon-arrow-right"><span style="color:red;">￥{$vo.coin}    <if condition="$vo['status'] eq 1" >已发货<else />未发货</if></span></i>
+                <i class="field-arrow icon-arrow-right"><span style="color:red;">￥{$vo.coin}腾币兑换    <if condition="$vo['status'] eq 1" >已发货<else />未发货</if></span></i>
             </a>
         </div>
     </if>
