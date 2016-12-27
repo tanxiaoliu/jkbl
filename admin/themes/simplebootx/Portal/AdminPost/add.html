@@ -24,21 +24,21 @@
 			<div class="row-fluid">
 				<div class="span9">
 					<table class="table table-bordered">
-						<tr>
+						<!-- <tr>
 							<th width="80">分类</th>
 							<td>
 								<select multiple="multiple" style="max-height: 100px;" name="term[]">{$taxonomys}</select>
 								<div>windows：按住 Ctrl 按钮来选择多个选项,Mac：按住 command 按钮来选择多个选项</div>
 							</td>
-						</tr>
+						</tr> -->
 						<tr>
-							<th>标题</th>
+							<th width="80">标题</th>
 							<td>
 								<input type="text" style="width:400px;" name="post[post_title]" id="title" required value="" placeholder="请输入标题"/>
 								<span class="form-required">*</span>
 							</td>
 						</tr>
-						<tr>
+						<!-- <tr>
 							<th>关键词</th>
 							<td><input type="text" name="post[post_keywords]" id="keywords" value="" style="width: 400px" placeholder="请输入关键字"> 多关键词之间用空格或者英文逗号隔开</td>
 						</tr>
@@ -51,7 +51,7 @@
 							<td>
 								<textarea name="post[post_excerpt]" id="description" style="width: 98%; height: 50px;" placeholder="请填写摘要"></textarea>
 							</td>
-						</tr>
+						</tr> -->
 						<tr>
 							<th>内容</th>
 							<td>
@@ -69,6 +69,8 @@
 				</div>
 				<div class="span3">
 					<table class="table table-bordered">
+						 
+						<!-- <div style="display:none;" >
 						<tr>
 							<th><b>缩略图</b></th>
 						</tr>
@@ -82,13 +84,7 @@
 									<input type="button" class="btn btn-small" onclick="$('#thumb-preview').attr('src','__TMPL__Public/assets/images/default-thumbnail.png');$('#thumb').val('');return false;" value="取消图片">
 								</div>
 							</td>
-						</tr>
-						<tr>
-							<th><b>发布时间</b></th>
-						</tr>
-						<tr>
-							<td><input type="text" name="post[post_date]" value="{:date('Y-m-d H:i:s',time())}" class="js-datetime" style="width: 160px;"></td>
-						</tr>
+						</tr> 
 						<tr>
 							<th><b>状态</b></th>
 						</tr>
@@ -100,14 +96,14 @@
 						</tr>
 						<tr>
 							<td>
-								<label class="radio"><input type="radio" name="post[istop]" value="1">置顶</label>
-								<label class="radio"><input type="radio" name="post[istop]" value="0" checked>未置顶</label>
+								<label class="radio"><input type="radio" name="post[istop]" value="1" checked>置顶</label>
+								<label class="radio"><input type="radio" name="post[istop]" value="0">未置顶</label>
 							</td>
 						</tr>
 						<tr>
 							<td>
-								<label class="radio"><input type="radio" name="post[recommended]" value="1">推荐</label>
-								<label class="radio"><input type="radio" name="post[recommended]" value="0" checked>未推荐</label>
+								<label class="radio"><input type="radio" name="post[recommended]" value="1" checked>推荐</label>
+								<label class="radio"><input type="radio" name="post[recommended]" value="0" >未推荐</label>
 							</td>
 						</tr>
 						<tr>
@@ -127,6 +123,15 @@
 								</select>
 							</td>
 						</tr>
+						</div> -->
+						
+						<tr>
+							<th><b>发布时间</b></th>
+						</tr>
+						<tr>
+							<td><input type="text" name="post[post_date]" value="{:date('Y-m-d H:i:s',time())}" class="js-datetime" style="width: 160px;"></td>
+						</tr>
+						
 					</table>
 				</div>
 			</div>

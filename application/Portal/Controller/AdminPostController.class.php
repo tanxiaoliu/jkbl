@@ -44,9 +44,7 @@ class AdminPostController extends AdminbaseController {
 	// 文章添加提交
 	public function add_post(){
 		if (IS_POST) {
-			if(empty($_POST['term'])){
-				$this->error("请至少选择一个分类！");
-			}
+			$_POST['term'][] = 1;
 			if(!empty($_POST['photos_alt']) && !empty($_POST['photos_url'])){
 				foreach ($_POST['photos_url'] as $key=>$url){
 					$photourl=sp_asset_relative_url($url);
@@ -54,10 +52,12 @@ class AdminPostController extends AdminbaseController {
 				}
 			}
 			$_POST['smeta']['thumb'] = sp_asset_relative_url($_POST['smeta']['thumb']);
-			 
 			$_POST['post']['post_modified']=date("Y-m-d H:i:s",time());
 			$_POST['post']['post_author']=get_current_admin_id();
 			$article=I("post.post");
+			$article['post_status']=1;
+			$article['istop']=1;
+			$article['recommended']=1;
 			$article['smeta']=json_encode($_POST['smeta']);
 			$article['post_content']=htmlspecialchars_decode($article['post_content']);
 			$result=$this->posts_model->add($article);

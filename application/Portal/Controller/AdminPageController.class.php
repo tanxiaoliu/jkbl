@@ -21,6 +21,7 @@ class AdminPageController extends AdminbaseController {
 	
 	// 后台页面管理列表
 	public function index(){
+		$this->error("暂无页面管理");
 	    $this->_lists(array("post_status"=>array('neq',3)));
 	    $this->display();
 	}

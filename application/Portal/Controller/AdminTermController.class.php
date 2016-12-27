@@ -23,6 +23,7 @@ class AdminTermController extends AdminbaseController {
 	
 	// 后台文章分类列表
     public function index(){
+		$this->error("暂无分类");
 		$result = $this->terms_model->order(array("listorder"=>"asc"))->select();
 		
 		$tree = new \Tree();

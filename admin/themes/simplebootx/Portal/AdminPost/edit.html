@@ -25,13 +25,13 @@
 			<div class="row-fluid">
 				<div class="span9">
 					<table class="table table-bordered">
-						<tr>
+						<!-- <tr>
 							<th width="80">分类</th>
 							<td>
 								<select multiple="multiple" style="max-height: 100px;"name="term[]">{$taxonomys}</select>
 								<div>windows：按住 Ctrl 按钮来选择多个选项,Mac：按住 command 按钮来选择多个选项</div>
 							</td>
-						</tr>
+						</tr> -->
 						<tr>
 							<th>标题</th>
 							<td>
@@ -40,7 +40,7 @@
 								<span class="form-required">*</span>
 							</td>
 						</tr>
-						<tr>
+						<!-- <tr>
 							<th>关键词</th>
 							<td>
 								<input type="text" name="post[post_keywords]" style="width: 400px" value="{$post['post_keywords']}" placeholder="请输入关键字">
@@ -59,7 +59,7 @@
 							<td>
 								<textarea name="post[post_excerpt]" style="width: 98%; height: 50px;" placeholder="请填写摘要">{$post.post_excerpt}</textarea>
 							</td>
-						</tr>
+						</tr> -->
 						<tr>
 							<th>内容</th>
 							<td>
@@ -90,7 +90,7 @@
 				</div>
 				<div class="span3">
 					<table class="table table-bordered">
-						<tr>
+						<!-- <tr>
 							<td><b>缩略图</b></td>
 						</tr>
 						<tr>
@@ -107,7 +107,7 @@
 									<input type="button" class="btn btn-small" onclick="$('#thumb-preview').attr('src','__TMPL__Public/assets/images/default-thumbnail.png');$('#thumb').val('');return false;" value="取消图片">
 								</div>
 							</td>
-						</tr>
+						</tr> -->
 						<tr>
 							<th>发布时间</th>
 						</tr>
@@ -121,7 +121,7 @@
 							<td><label style="width: 88px"><a href="javascript:open_iframe_dialog('{:U('comment/commentadmin/index',array('post_id'=>$post['id']))}','评论列表')">查看评论</a></label>
 							</td>
 						</tr>
-						<tr>
+						<!-- <tr>
 							<th>状态</th>
 						</tr>
 						<tr>
@@ -167,7 +167,7 @@
 									</foreach>
 								</select>
 							</td>
-						</tr>
+						</tr> -->
 					</table>
 				</div>
 			</div>
