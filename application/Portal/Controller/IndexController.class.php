@@ -255,7 +255,7 @@ class IndexController extends HomebaseController
         $map['istop'] = 0;
         $map['recommended'] = 0;
         $map['post_type'] = 1;
-        $pengyouquan = M('Posts')->field('id,post_content,post_date,post_image,post_author')->where($map)->order('id DESC')->limit(20)->select();
+        $pengyouquan = M('Posts')->field('id,post_content,post_date,post_image,post_author,post_like')->where($map)->order('id DESC')->limit(20)->select();
         foreach ($pengyouquan as $key => $vl) {
             $map['id'] = $vl['post_author'];
             $users = D('users')->where($map)->find();
@@ -686,7 +686,23 @@ class IndexController extends HomebaseController
         $this->assign("Records", $Records);
         $this->display(":coinlist");
     }
-
+    // 文章点赞
+    public function do_like(){
+        $this->check_login();
+        
+        $id = I('get.id',0,'intval');//posts表中id
+        
+        $posts_model=M("Posts");
+        
+        $can_like=sp_check_user_action("posts$id",1);
+        
+        if($can_like){
+            $posts_model->save(array("id"=>$id,"post_like"=>array("exp","post_like+1")));
+            $this->success("赞好啦！");
+        }else{
+            $this->error("您已赞过啦！");
+        }
+    }
     public function error()
     {
         $this->display(":error");

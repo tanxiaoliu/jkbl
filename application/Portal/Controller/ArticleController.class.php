@@ -11,7 +11,6 @@ use Common\Controller\HomebaseController;
 
 class ArticleController extends HomebaseController {
     protected $theme = 'simplebootx';
-    
     //文章内页
     public function index() {
     	$article_id=I('get.id',0,'intval');
