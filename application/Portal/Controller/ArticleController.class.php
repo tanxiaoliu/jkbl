@@ -10,6 +10,7 @@ namespace Portal\Controller;
 use Common\Controller\HomebaseController;
 
 class ArticleController extends HomebaseController {
+    protected $theme = 'simplebootx';
     
     //文章内页
     public function index() {
@@ -78,8 +79,11 @@ class ArticleController extends HomebaseController {
     	$tplname=$term["one_tpl"];
     	$tplname=empty($smeta['template'])?$tplname:$smeta['template'];
         $tplname=sp_get_apphome_tpl($tplname, "article");
-    	$tplname='pengyouquan';
-    	
+        if ($article['post_type']==1&&$article['istop']==0&&$article['recommended']==0) {
+            $tplname='pengyouquan';
+        }else{
+            $tplname='top';
+        }
     	$this->display(":$tplname");
     }
     
