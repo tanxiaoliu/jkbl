@@ -47,8 +47,11 @@
 		  </a>
 		  <div class="comment-body">
 		    <div class="comment-content"><a href="javascript:void(0);">{$vo.full_name}</a>:<span>{$vo.content}</span></div>
-		    <div><span class="time">{:date('m月d日  H:i',strtotime($vo['createtime']))}</span> <a onclick="comment_reply(this);" href="javascript:;"><i class="fa fa-comment"></i></a></div>
-		    
+		    <div><span class="time">{:date('m月d日  H:i',strtotime($vo['createtime']))}</span> <a onclick="comment_reply(this);" href="javascript:;"><i class="fa fa-comment"></i></a>
+		    <if condition="$vo['uid'] eq $uid">
+		    <a href="{:U('Comment/Commentadmin/delete',array('id'=>$vo['id']))}" class="js-ajax-delete">删除</a>
+		    </if>
+		    </div>
 		    <if condition="!empty($vo['children'])">
 		    	<foreach name="vo.children" item="voo">
 			    	<div class="comment" data-id="{$voo.id}" data-uid="{$voo.uid}" data-username="{$voo.full_name}" id="comment{$voo.id}">
@@ -57,7 +60,11 @@
 					  </a>
 					  <div class="comment-body">
 					    <div class="comment-content"><a href="javascript:void(0);">{$voo.full_name}</a>:<span>回复 <a href="{:U('user/index/index',array('id'=>$voo['to_uid']))}">{$parent_comments[$voo['parentid']]['full_name']}</a> {$voo.content}</span></div>
-					    <div><span class="time">{:date('m月d日  H:i',strtotime($voo['createtime']))}</span> <a onclick="comment_reply(this);" href="javascript:;"><i class="fa fa-comment"></i></a><a href="{:U('Comment/Commentadmin/delete',array('id'=>$voo['id']))}" class="js-ajax-delete">删除</a></div>
+					    <div><span class="time">{:date('m月d日  H:i',strtotime($voo['createtime']))}</span> <a onclick="comment_reply(this);" href="javascript:;"><i class="fa fa-comment"></i></a>
+					    <if condition="$voo['uid'] eq $uid">
+					    <a href="{:U('Comment/Commentadmin/delete',array('id'=>$voo['id']))}" class="js-ajax-delete">删除</a>
+					    </if>
+		    </div>
 					  </div>
 					  <div class="clearfix"></div>
 					</div>

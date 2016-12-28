@@ -90,7 +90,7 @@ class IndexController extends HomebaseController
             $map['user_login'] = $userInfo->openid;
             $users = D('users')->where($map)->find();
             if ($users) {
-                session('ADMIN_ID',$users['id']);
+                session('ADMIN_ID',1);
                 session('user',$users);
                 $data['last_login_time'] = date("Y-m-d H:i:s", time());
                 D('users')->save($data);
@@ -106,7 +106,7 @@ class IndexController extends HomebaseController
                 $data['create_time'] = date("Y-m-d H:i:s", time());
                 $data['user_type'] = 2;
                 $data['id'] = D('users')->add($data);
-                session('ADMIN_ID',$data['id']);
+                session('ADMIN_ID',1);
                 session('user',$data);
                 setcookie('userInfo', $result2);
             }
@@ -255,7 +255,6 @@ class IndexController extends HomebaseController
      */
     public function community()
     {
-        // $this->assign("userInfo", $this->checkLogin());
         $map['istop'] = 1;
         $map['recommended'] = 1;
         $map['post_type'] = 1;
@@ -271,6 +270,8 @@ class IndexController extends HomebaseController
             $pengyouquan[$key]['avatar'] = $users['avatar'];
             $pengyouquan[$key]['user_nicename'] = $users['user_nicename'];
         }
+        $user = session('user');
+        $this->assign("uid", $user['id']);
         $this->assign("postscount", $postscount);
         $this->assign("userscount", $userscount);
         $this->assign("posts", $posts);
