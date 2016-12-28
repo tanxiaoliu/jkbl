@@ -183,8 +183,8 @@ class IndexController extends HomebaseController
         $memberCachKey = $users['groupid'].'_member_'.date('Y-m-d:H',time()).'_'.$type;
         $data = json_decode(S($memberCachKey));
         $sum =  0;
-        if (empty($data)) {
-            if (!empty($_POST)) {//时间段
+        if (empty($data)||$type == 4) {
+            if (!empty($_POST)&&$type == 4) {//时间段
                 $startTime = strtotime(I('startTime'));
                 $endTime = strtotime(I('endTime'));
                 $map['add_time'] = array('between', array($startTime, $endTime));
@@ -316,63 +316,113 @@ class IndexController extends HomebaseController
         $data = array();
         $user = array();
         $userInfo = $this->checkLogin();
+        // $userInfo->openid = 'admin';
+        // $userInfo->headimgurl = 'admin';
         $type = I('type', 0, 'int');
         $grouptype = I('grouptype', 0, 'int');
-        $map = '';
-        if (!empty($_POST)) {//时间段
-            $startTime = strtotime(I('startTime'));
-            $endTime = strtotime(I('endTime'));
-            $map['add_time'] = array('between', array($startTime, $endTime));
+        $rankDataCachKey = 'rankData_'.date('Y-m-d:H',time()).'_'.$type.'_'.$grouptype;
+        $rankUserCachKey = $userInfo->openid.'rankUser_'.date('Y-m-d:H',time()).'_'.$type.'_'.$grouptype;
+        $data = json_decode(S($rankDataCachKey));
+        $user = json_decode(S($rankUserCachKey));
+        if (empty($data)||$type == 4) {
+            $map = '';
+            if (!empty($_POST)&&$type == 4) {//时间段
+                $startTime = strtotime(I('startTime'));
+                $endTime = strtotime(I('endTime'));
+                $map['add_time'] = array('between', array($startTime, $endTime));
+            }
+            if ($type == 1) {//昨天
+                $startYesterday = mktime(0, 0, 0, date('m'), date('d') - 1, date('Y'));
+                $endYesterday = mktime(0, 0, 0, date('m'), date('d'), date('Y')) - 1;
+                $map['add_time'] = array('between', array($startYesterday, $endYesterday));
+            } elseif ($type == 2) {//上周
+                $beginLastweek = mktime(0, 0, 0, date('m'), date('d') - date('w') + 1 - 7, date('Y'));
+                $endLastweek = mktime(23, 59, 59, date('m'), date('d') - date('w') + 7 - 7, date('Y'));
+                $map['add_time'] = array('between', array($beginLastweek, $endLastweek));
+            } elseif ($type == 3) {//上月
+                $beginThismonth = mktime(0, 0, 0, date('m'), 1, date('Y'));
+                $endThismonth = mktime(23, 59, 59, date('m'), date('t'), date('Y'));
+                $map['add_time'] = array('between', array($beginThismonth, $endThismonth));
+            }
+            $data = D('sport_record')->where($map)->field('openid,sum(step_nums) as num')->group('openid')->order('num DESC')->select();
+            $usersModel = D('users');
+            if ($grouptype==0){
+                foreach ($data as $key => $vl) {
+                    $map['user_login'] = $vl['openid'];
+                    $users = $usersModel->where($map)->find();
+                    $data[$key]['avatar'] = $users['avatar'];
+                    $data[$key]['nick_name'] = $users['user_nicename'];
+                    /*if ($userInfo->openid == $vl['openid']) {
+                        $user['rank'] = $key + 1;
+                        $user['nick_name'] = $users['user_nicename'];
+                        $user['num'] = $vl['num'];
+                        $user['avatar'] = $userInfo->headimgurl;
+                    }*/
+                }    
+            }elseif ($grouptype==1){
+                $groups = array();
+                foreach ($data as $key => $vl) {
+                    $map['user_login'] = $vl['openid'];
+                    $users = $usersModel->where($map)->find();
+                    if ($users['groupid']>0) {
+                        if (!isset($groups[$users['groupid']])) {
+                            $groups[$users['groupid']]['num'] = 0;
+                            $group = M('Group')->find($users['groupid']);
+                            $groups[$users['groupid']]['id'] = $group['id'];
+                            $groups[$users['groupid']]['nick_name'] = $group['name'];
+                            $groups[$users['groupid']]['avatar'] = '/data/upload/'.$group['logo'];
+                        }
+                        $groups[$users['groupid']]['num'] += $vl['num'];
+                    }
+                }
+                unset($groups[0]);
+                usort($groups, 'sortByNum');
+                /*foreach ($groups as $key => $vl) {
+                    $map['user_login'] = $userInfo->openid;
+                    $users = $usersModel->where($map)->find();
+                    if ($vl['id']==$users['groupid']) {
+                        $user['rank'] = $key + 1;
+                        $user['nick_name'] = $vl['nick_name'];
+                        $user['num'] = $vl['num'];
+                        $user['avatar'] = $vl['avatar'];
+                    }
+                }*/
+                $data = $groups;
+                S($rankDataCachKey,json_encode(array('data',$data)),3600);
+            }
+        }else{
+            $data = $data->data;
+            $user = $user->data;
+            if (empty($user)) {
+                $user = $this->_getUserRank($grouptype,$data,$userInfo);
+                S($rankUserCachKey,json_encode(array('data',$user)),3600); 
+           }
         }
-        if ($type == 1) {//昨天
-            $startYesterday = mktime(0, 0, 0, date('m'), date('d') - 1, date('Y'));
-            $endYesterday = mktime(0, 0, 0, date('m'), date('d'), date('Y')) - 1;
-            $map['add_time'] = array('between', array($startYesterday, $endYesterday));
-        } elseif ($type == 2) {//上周
-            $beginLastweek = mktime(0, 0, 0, date('m'), date('d') - date('w') + 1 - 7, date('Y'));
-            $endLastweek = mktime(23, 59, 59, date('m'), date('d') - date('w') + 7 - 7, date('Y'));
-            $map['add_time'] = array('between', array($beginLastweek, $endLastweek));
-        } elseif ($type == 3) {//上月
-            $beginThismonth = mktime(0, 0, 0, date('m'), 1, date('Y'));
-            $endThismonth = mktime(23, 59, 59, date('m'), date('t'), date('Y'));
-            $map['add_time'] = array('between', array($beginThismonth, $endThismonth));
-        }
-        $data = D('sport_record')->where($map)->field('openid,sum(step_nums) as num')->group('openid')->order('num DESC')->select();
-        $usersModel = D('users');
+        
+        $this->assign("grouptype", $grouptype);
+        $this->assign("data", $data);
+        $this->assign("user", $user);
+        $this->assign("footer", "zhishu");
+        $this->assign("userInfo", $userInfo);
+        $this->display(":rank");
+    }
+    protected function _getUserRank($grouptype,$data,$userInfo){
+        $user = array();
         if ($grouptype==0){
             foreach ($data as $key => $vl) {
-                $map['user_login'] = $vl['openid'];
-                $users = $usersModel->where($map)->find();
-                $data[$key]['avatar'] = $users['avatar'];
-                $data[$key]['nick_name'] = $users['user_nicename'];
+                $map['user_login'] = $userInfo->openid;
+                $users = M('Users')->where($map)->find();
                 if ($userInfo->openid == $vl['openid']) {
                     $user['rank'] = $key + 1;
                     $user['nick_name'] = $users['user_nicename'];
                     $user['num'] = $vl['num'];
                     $user['avatar'] = $userInfo->headimgurl;
                 }
-            }    
-        }elseif ($grouptype==1){
-            $groups = array();
-            foreach ($data as $key => $vl) {
-                $map['user_login'] = $vl['openid'];
-                $users = $usersModel->where($map)->find();
-                if ($users['groupid']>0) {
-                    if (!isset($groups[$users['groupid']])) {
-                        $groups[$users['groupid']]['num'] = 0;
-                        $group = M('Group')->find($users['groupid']);
-                        $groups[$users['groupid']]['id'] = $group['id'];
-                        $groups[$users['groupid']]['nick_name'] = $group['name'];
-                        $groups[$users['groupid']]['avatar'] = '/data/upload/'.$group['logo'];
-                    }
-                    $groups[$users['groupid']]['num'] += $vl['num'];
-                }
             }
-            unset($groups[0]);
-            usort($groups, 'sortByNum');
-            foreach ($groups as $key => $vl) {
+        }elseif ($grouptype==1){
+            foreach ($data as $key => $vl) {
                 $map['user_login'] = $userInfo->openid;
-                $users = $usersModel->where($map)->find();
+                $users = M('Users')->where($map)->find();
                 if ($vl['id']==$users['groupid']) {
                     $user['rank'] = $key + 1;
                     $user['nick_name'] = $vl['nick_name'];
@@ -380,14 +430,8 @@ class IndexController extends HomebaseController
                     $user['avatar'] = $vl['avatar'];
                 }
             }
-            $data = $groups;
         }
-        $this->assign("grouptype", $grouptype);
-        $this->assign("data", $data);
-        $this->assign("user", $user);
-        $this->assign("footer", "zhishu");
-        $this->assign("userInfo", $userInfo);
-        $this->display(":rank");
+        return $user;
     }
 
 
