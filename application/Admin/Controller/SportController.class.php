@@ -43,12 +43,14 @@ class SportController extends AdminbaseController
                 if (isset($data['id'])) {
                     if ($this->sport_model->save() !== false) {
                         $this->success("保存成功！", U("sport/index"));
+                        $this->_cleanFileCache();
                     } else {
                         $this->error("保存失败！");
                     }
                 } else {
                     if ($this->sport_model->add() !== false) {
                         $this->success("添加成功！", U("sport/index"));
+                        $this->_cleanFileCache();
                     } else {
                         $this->error("添加失败！");
                     }
@@ -77,6 +79,7 @@ class SportController extends AdminbaseController
         $id = I("get.id", 0, 'intval');
         if ($this->sport_model->where(array('id' => $id))->delete() !== false) {
             $this->success("删除成功！");
+            $this->_cleanFileCache();
         } else {
             $this->error("删除失败！");
         }
@@ -143,6 +146,7 @@ class SportController extends AdminbaseController
                     }
                 }
             }
+            $this->_cleanFileCache();
             $this->success('导入数据成功', U("sport/index"));
             exit();
         } else {
@@ -213,5 +217,23 @@ class SportController extends AdminbaseController
         $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
         $objWriter->save('php://output');
         exit;
+    }
+
+    protected function _setCacheNull($key){
+        S($key,null);
+    }
+    protected function _cleanFileCache(){
+        for ($i=0; $i < 4; $i++) {
+            $this->_setCacheNull('rankData_'.date('Y-m-d:H',time()).'_'.$i.'_0');
+            $this->_setCacheNull('rankData_'.date('Y-m-d:H',time()).'_'.$i.'_1');
+        }
+        $Group = M('Group')->select();
+        foreach ($Group as $key => $value) {
+            $this->_setCacheNull($value['id'].'_member_'.date('Y-m-d:H',time()).'_0');
+            $this->_setCacheNull($value['id'].'_member_'.date('Y-m-d:H',time()).'_1');
+            $this->_setCacheNull($value['id'].'_member_'.date('Y-m-d:H',time()).'_2');
+            $this->_setCacheNull($value['id'].'_member_'.date('Y-m-d:H',time()).'_3');
+            $this->_setCacheNull($value['id'].'_member_'.date('Y-m-d:H',time()).'_4');
+        }
     }
 }

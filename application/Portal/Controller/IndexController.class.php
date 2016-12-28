@@ -118,7 +118,9 @@ class IndexController extends HomebaseController
     public function index()
     {
         $userInfo = $this->checkLogin();
-        $type = I('type', 0, 'int');
+        // $userInfo->openid = 'admin';
+        // $userInfo->headimgurl = 'admin';
+        $type = intval(I('type'));
         $usersModel = D('users');
         $user = array();
         if ($type == 1) {//腾币
@@ -323,7 +325,9 @@ class IndexController extends HomebaseController
         $rankDataCachKey = 'rankData_'.date('Y-m-d:H',time()).'_'.$type.'_'.$grouptype;
         $rankUserCachKey = $userInfo->openid.'rankUser_'.date('Y-m-d:H',time()).'_'.$type.'_'.$grouptype;
         $data = unserialize(S($rankDataCachKey));
-        $user = unserialize(S($rankUserCachKey));
+        if (!empty($data)) {
+            $user = unserialize(S($rankUserCachKey));
+        }
         if (empty($data)||$type == 4) {
             $map = '';
             if (!empty($_POST)&&$type == 4) {//时间段
