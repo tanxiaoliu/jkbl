@@ -7,9 +7,9 @@
 		</ul>
 		<form class="js-ajax-form" method="post">
 			<div class="table-actions">
-				<button class="btn btn-primary btn-small js-ajax-submit" type="submit" data-action="{:U('Commentadmin/check',array('check'=>1))}" data-subcheck="true">{:L('AUDIT')}</button>
+				<!-- <button class="btn btn-primary btn-small js-ajax-submit" type="submit" data-action="{:U('Commentadmin/check',array('check'=>1))}" data-subcheck="true">{:L('AUDIT')}</button>
 				<button class="btn btn-primary btn-small js-ajax-submit" type="submit" data-action="{:U('Commentadmin/check',array('uncheck'=>1))}" data-subcheck="true">{:L('CANCEL_AUDIT')}</button>
-				<button class="btn btn-danger btn-small js-ajax-submit" type="submit" data-action="{:U('Commentadmin/delete')}" data-subcheck="true" data-msg="{:L('DELETE_CONFIRM_MESSAGE')}">{:L('DELETE')}</button>
+				 --><button class="btn btn-danger btn-small js-ajax-submit" type="submit" data-action="{:U('Commentadmin/delete')}" data-subcheck="true" data-msg="{:L('DELETE_CONFIRM_MESSAGE')}">{:L('DELETE')}</button>
 			</div>
 			<table class="table table-hover table-bordered table-list">
 				<thead>
@@ -20,7 +20,7 @@
 						<th width="150">{:L('EMAIL')}</th>
 						<th>{:L('CONTENT')}</th>
 						<th width="120">{:L('TIME')}</th>
-						<th width="50">{:L('STATUS')}</th>
+						<!-- <th width="50">{:L('STATUS')}</th> -->
 						<th width="80">{:L('ACTIONS')}</th>
 					</tr>
 				</thead>
@@ -33,7 +33,7 @@
 					<td>{$vo.email}</td>
 					<td>{$vo.content}</td>
 					<td>{$vo.createtime}</td>
-					<td>{$status[$vo['status']]}</td>
+					<!-- <td>{$status[$vo['status']]}</td> -->
 					<td>
 						<a target="_blank" href="__ROOT__/{$vo.url}">查看原文</a> 
 						<a href="{:U('Commentadmin/delete',array('id'=>$vo['id']))}" class="js-ajax-delete">{:L('DELETE')}</a>
@@ -48,15 +48,15 @@
 						<th width="150">{:L('EMAIL')}</th>
 						<th>{:L('CONTENT')}</th>
 						<th width="120">{:L('TIME')}</th>
-						<th width="50">{:L('STATUS')}</th>
+						<!-- <th width="50">{:L('STATUS')}</th> -->
 						<th width="80">{:L('ACTIONS')}</th>
 					</tr>
 				</tfoot>
 			</table>
 			<div class="table-actions">
-				<button class="btn btn-primary btn-small js-ajax-submit" type="submit" data-action="{:U('Commentadmin/check',array('check'=>1))}" data-subcheck="true">{:L('AUDIT')}</button>
+				<!-- <button class="btn btn-primary btn-small js-ajax-submit" type="submit" data-action="{:U('Commentadmin/check',array('check'=>1))}" data-subcheck="true">{:L('AUDIT')}</button>
 				<button class="btn btn-primary btn-small js-ajax-submit" type="submit" data-action="{:U('Commentadmin/check',array('uncheck'=>1))}" data-subcheck="true">{:L('CANCEL_AUDIT')}</button>
-				<button class="btn btn-danger btn-small js-ajax-submit" type="submit" data-action="{:U('Commentadmin/delete')}" data-subcheck="true" data-msg="{:L('DELETE_CONFIRM_MESSAGE')}">{:L('DELETE')}</button>
+				 --><button class="btn btn-danger btn-small js-ajax-submit" type="submit" data-action="{:U('Commentadmin/delete')}" data-subcheck="true" data-msg="{:L('DELETE_CONFIRM_MESSAGE')}">{:L('DELETE')}</button>
 			</div>
 			<div class="pagination">{$page}</div>
 		</form>
