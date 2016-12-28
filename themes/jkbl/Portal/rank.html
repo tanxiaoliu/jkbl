@@ -63,7 +63,7 @@
             <div class="center" style="margin: 0.5rem 0;"><a href="{:U('Index/rank', array('type'=>3,'grouptype'=>$grouptype))}"><input type="button" class="flatbtn-blu hidemodal" value="上月记录"></a></div>
         <form id="loginform" name="loginform" method="post" action="{:U('Index/rank')}" onsubmit="return check(this)">
             <input type="hidden" name="type" id="type" value="4">
-            <input type="hidden" name="grouptype" id="grouptype" value="1">
+            <input type="hidden" name="grouptype" id="grouptype" value="{$grouptype}">
             <div class="center" style="margin: 0.5rem 0;padding-right: 2rem;"><span style="color: #18abe1;">结束时间：</span><span><input type="date" name="startTime" id="startTime" style="height: 1rem;"></span></div>
             <div class="center" style="margin: 0.5rem 0;padding-right: 2rem;"><span style="color: #18abe1;">开始时间：</span><span><input type="date" name="endTime" id="endTime" style="height: 1rem;"></span></div>
             <div class="center" style="margin: 0.5rem 0;"><input type="submit" class="flatbtn-blu hidemodal" value="搜索"></a></div>

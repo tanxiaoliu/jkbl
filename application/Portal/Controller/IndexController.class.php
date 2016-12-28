@@ -179,7 +179,7 @@ class IndexController extends HomebaseController
         $users = M('Users')->where($map)->find();
         $map = array();
         $record = array();
-        $type = I('type', 0, 'int');
+        $type = intval(I('type'));
         $memberCachKey = $users['groupid'].'_member_'.date('Y-m-d:H',time()).'_'.$type;
         $data = unserialize(S($memberCachKey));
         $sum =  0;
@@ -318,8 +318,8 @@ class IndexController extends HomebaseController
         $userInfo = $this->checkLogin();
         // $userInfo->openid = 'admin';
         // $userInfo->headimgurl = 'admin';
-        $type = I('type', 0, 'int');
-        $grouptype = I('grouptype', 0, 'int');
+        $type = intval(I('type'));
+        $grouptype = intval(I('grouptype'));
         $rankDataCachKey = 'rankData_'.date('Y-m-d:H',time()).'_'.$type.'_'.$grouptype;
         $rankUserCachKey = $userInfo->openid.'rankUser_'.date('Y-m-d:H',time()).'_'.$type.'_'.$grouptype;
         $data = unserialize(S($rankDataCachKey));
