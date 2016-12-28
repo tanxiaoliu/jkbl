@@ -263,7 +263,7 @@ class IndexController extends HomebaseController
         $userscount = M('Users')->count();
         $map['istop'] = 0;
         $map['recommended'] = 0;
-        $pengyouquan = M('Posts')->field('id,post_content,post_date,post_image,post_author,post_like')->where($map)->order('id DESC')->limit(20)->select();
+        $pengyouquan = M('Posts')->field('id,post_content,post_date,post_image,post_author,post_like')->where($map)->order('id DESC')->limit(30)->select();
         foreach ($pengyouquan as $key => $vl) {
             $map['id'] = $vl['post_author'];
             $users = D('users')->where($map)->find();
