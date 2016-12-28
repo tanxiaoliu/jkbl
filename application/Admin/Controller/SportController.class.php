@@ -31,6 +31,22 @@ class SportController extends AdminbaseController
         $this->display();
     }
 
+    public function check()
+    {
+        $sportModel = M('sport');
+        $count = $sportModel->count();
+        $page = $this->page($count, 20);
+        $map['status'] = 0;
+        $sport = $sportModel
+            ->order("status DESC")
+            ->where($map)
+            ->limit($page->firstRow, $page->listRows)
+            ->select();
+        $this->assign("page", $page->show('Admin'));
+        $this->assign("sport", $sport);
+        $this->display();
+    }
+
     // 物品添加或编辑
     public function add()
     {
@@ -73,15 +89,16 @@ class SportController extends AdminbaseController
 
     }
 
-    // 删除导航分类
+    // 审核记录
     public function delete()
     {
         $id = I("get.id", 0, 'intval');
-        if ($this->sport_model->where(array('id' => $id))->delete() !== false) {
-            $this->success("删除成功！");
+        $data['status'] = 1;
+        if (M('sport')->where(array('id' => $id))->save($data) !== false) {
+            $this->success("审核成功！");
             $this->_cleanFileCache();
         } else {
-            $this->error("删除失败！");
+            $this->error("审核失败！");
         }
     }
 
