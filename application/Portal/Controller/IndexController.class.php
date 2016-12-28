@@ -689,23 +689,7 @@ class IndexController extends HomebaseController
         $this->assign("Records", $Records);
         $this->display(":coinlist");
     }
-    // 文章点赞
-    public function do_like(){
-        $this->check_login();
-        
-        $id = I('get.id',0,'intval');//posts表中id
-        
-        $posts_model=M("Posts");
-        
-        $can_like=sp_check_user_action("posts$id",1);
-        
-        if($can_like){
-            $posts_model->save(array("id"=>$id,"post_like"=>array("exp","post_like+1")));
-            $this->success("赞好啦！");
-        }else{
-            $this->error("您已赞过啦！");
-        }
-    }
+    
     public function error()
     {
         $this->display(":error");
