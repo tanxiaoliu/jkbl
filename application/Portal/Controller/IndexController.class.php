@@ -181,7 +181,7 @@ class IndexController extends HomebaseController
         $record = array();
         $type = I('type', 0, 'int');
         $memberCachKey = $users['groupid'].'_member_'.date('Y-m-d:H',time()).'_'.$type;
-        $data = json_decode(S($memberCachKey));
+        $data = unserialize(S($memberCachKey));
         $sum =  0;
         if (empty($data)||$type == 4) {
             if (!empty($_POST)&&$type == 4) {//时间段
@@ -230,7 +230,7 @@ class IndexController extends HomebaseController
                 'data'=>$data,
                 'sum'=>$sum
                 );
-             S($memberCachKey,json_encode($list),3600);
+             S($memberCachKey,serialize($list),3600);
         }else{
             $sum =  $data->sum;
             $data =  $data->data;
@@ -322,8 +322,8 @@ class IndexController extends HomebaseController
         $grouptype = I('grouptype', 0, 'int');
         $rankDataCachKey = 'rankData_'.date('Y-m-d:H',time()).'_'.$type.'_'.$grouptype;
         $rankUserCachKey = $userInfo->openid.'rankUser_'.date('Y-m-d:H',time()).'_'.$type.'_'.$grouptype;
-        $data = json_decode(S($rankDataCachKey));
-        $user = json_decode(S($rankUserCachKey));
+        $data = unserialize(S($rankDataCachKey));
+        $user = unserialize(S($rankUserCachKey));
         if (empty($data)||$type == 4) {
             $map = '';
             if (!empty($_POST)&&$type == 4) {//时间段
@@ -388,14 +388,12 @@ class IndexController extends HomebaseController
                     }
                 }*/
                 $data = $groups;
-                S($rankDataCachKey,json_encode(array('data',$data)),3600);
             }
+            S($rankDataCachKey,serialize($data),3600);
         }else{
-            $data = $data->data;
-            $user = $user->data;
             if (empty($user)) {
                 $user = $this->_getUserRank($grouptype,$data,$userInfo);
-                S($rankUserCachKey,json_encode(array('data',$user)),60); 
+                S($rankUserCachKey,serialize($user),60); 
            }
         }
         
