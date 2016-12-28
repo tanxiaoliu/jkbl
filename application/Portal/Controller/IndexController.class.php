@@ -779,7 +779,7 @@ class IndexController extends HomebaseController
                 }
 
                 $data['num'] = $num;
-                $data['url'] = $url;
+                $data['image'] = $url;
                 $data['time'] = time();
                 $data['openid'] = $userInfo->openid;
                 $result = M('sport')->add($data);
