@@ -49,7 +49,7 @@
             <ul class="my-rank" style="background-color: #2372ad;">
                 <li class="rank-num">NO.{$user['rank']|default='无'}</li>
                 <li>
-                    <span class="rank_head" style="background-image: url('{$userInfo->headimgurl|default='__TMPL__Public/assets/images/0.png'}');"></span>
+                    <span class="rank_head" style="background-image: url('{$user['avatar']|default='__TMPL__Public/assets/images/0.png'}');"></span>
                     <span class="r_orange"><if condition="$type lt 4">当前自己排名<else/>当前自组排名</if></span>
                 </li>
                 <li class="count">{$user['num']|default='0'}KG</li>

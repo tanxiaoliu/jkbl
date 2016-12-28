@@ -122,7 +122,7 @@ class IndexController extends HomebaseController
         $usersModel = D('users');
         $user = array();
         if ($type == 1) {//腾币
-            $data = $usersModel->field('user_login as openid,user_nicename as nick_name,score as num, avatar')->order('score DESC')->select();
+            $data = M('Users')->field('user_login as openid,user_nicename as nick_name,score as num,avatar')->order('score desc,last_login_time desc')->select();
             foreach ($data as $key => $vl) {
                 if ($userInfo->openid == $vl['openid']) {
                     $user['rank'] = $key + 1;
@@ -133,7 +133,7 @@ class IndexController extends HomebaseController
             }
         } elseif ($type == 2) {//爱心
             $data = D('good_order')->join('cmf_users ON cmf_good_order.openid = cmf_users.user_login')
-                ->field('cmf_users.user_login as openid,cmf_users.user_nicename as nick_name,cmf_users.avatar,count(cmf_good_order.id) as num')
+                ->field('cmf_users.user_login as openid,cmf_users.user_nicename as nick_name,cmf_users.avatar,sum(cmf_good_order.price) as num')
                 ->where('cmf_good_order.type = 2')->order('num DESC')->select();
             foreach ($data as $key => $vl) {
                 if ($userInfo->openid == $vl['openid']) {
@@ -401,7 +401,7 @@ class IndexController extends HomebaseController
         $this->assign("data", $data);
         $this->assign("user", $user);
         $this->assign("footer", "zhishu");
-        $this->assign("userInfo", $userInfo);
+        // $this->assign("userInfo", $userInfo);
         $this->display(":rank");
     }
     protected function _getUserRank($grouptype,$data,$userInfo){
