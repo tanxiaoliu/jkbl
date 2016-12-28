@@ -395,7 +395,7 @@ class IndexController extends HomebaseController
             $user = $user->data;
             if (empty($user)) {
                 $user = $this->_getUserRank($grouptype,$data,$userInfo);
-                S($rankUserCachKey,json_encode(array('data',$user)),3600); 
+                S($rankUserCachKey,json_encode(array('data',$user)),60); 
            }
         }
         
