@@ -53,7 +53,7 @@
                     <span class="rank_head" style="background-image: url('{$userInfo->headimgurl|default='__TMPL__Public/assets/images/0.png'}');"></span>
                     <span class="r_orange">当前自己排名</span>
                 </li>
-                <li class="count">{$user['num']|default='0'}{$type == 1 ? '币':'次'}</li>
+                <li class="count">{$user['num']|default='0'}{$type == 0 ? '次':'币'}</li>
             </ul>
         </div>
     </div>

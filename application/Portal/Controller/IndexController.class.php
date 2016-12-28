@@ -90,6 +90,7 @@ class IndexController extends HomebaseController
             $map['user_login'] = $userInfo->openid;
             $users = D('users')->where($map)->find();
             if ($users) {
+                session('ADMIN_ID',$users['id']);
                 session('user',$users);
                 $data['last_login_time'] = date("Y-m-d H:i:s", time());
                 D('users')->save($data);
@@ -105,6 +106,7 @@ class IndexController extends HomebaseController
                 $data['create_time'] = date("Y-m-d H:i:s", time());
                 $data['user_type'] = 2;
                 $data['id'] = D('users')->add($data);
+                session('ADMIN_ID',$data['id']);
                 session('user',$data);
                 setcookie('userInfo', $result2);
             }

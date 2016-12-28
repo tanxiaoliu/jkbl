@@ -149,7 +149,7 @@
             </div>
             <!-- react-empty: 4 -->
             <!-- react-empty: 5 -->
-            <div class="PostList" style="width:100%; height:20rem; overflow:scroll;">
+            <div class="PostList" style="width:100%; height:26rem; overflow:scroll;">
                 <ul class="scroll-view post-list">
                     <foreach name="pengyouquan" item="vo">
                     <li class="feeds-li feeds-li-normal">
@@ -194,8 +194,8 @@
                                 <a  href="{:U('article/do_like',array('id'=>$vo['id']))}" class="js-count-btn">
                                 <span class="count">{$vo.post_like}</span></a>
                                 </div>
-                                <div class="more-btn-v3 post-btn-v3">
-                                </div>
+                                <!-- <div class="more-btn-v3 post-btn-v3">
+                                </div> -->
                             </div>
                             {:Comments("posts",$vo['id'],array('tpl'=>'reply'))}
                         </div>
