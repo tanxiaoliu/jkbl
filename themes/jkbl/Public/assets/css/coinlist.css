@@ -22,7 +22,7 @@
 .field-item:active{background-color:#ddd;;}
 .avatar{float:left;}
 .avatar-img{display:block;width:72px;height:54px;}
-.field .content{margin-left:2$;}
+.field .content{margin-left:2px;}
 .field .content .price{font-size:12px;color:#999;}
 .field .content .order-time,.field .content .delivery_tip{margin-top:4px;font-size:12px;color:#666;}
 .field .content .delivery_tip{overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
@@ -44,7 +44,7 @@
 .emptylist-icon{width:64px;height:79px;background-image:url(//xs01.meituan.net/waimai_i/img/spoon.375eb84e.png);background-size:64px 79px;margin:0 auto;}
 .emptylist-title{margin-top:27px;font-size:17px;color:#898989;line-height:18px;}
 .address-coloregg{height:100%;width:45px;background:none;border:0;float:left;}
-#cfm_dialog{max-height:90%;overflow:hidden;display:-webkit-box;display:-ms-flexbox;display:-moz-box;display:box;-webkit-box-orient:vertical;-ms-box-orient:vertical;-moz-box-orient:vertical;box-orient:vertical;}
+#cfm_dialog{max-height:90%;overflow:hidden;display:-webkit-box;display:-ms-flexbox;display:-moz-box;-webkit-box-orient:vertical;-ms-box-orient:vertical;-moz-box-orient:vertical;box-orient:vertical;}
 .cfm_time_title{line-height:40px;margin-bottom:5px;border-bottom:1px solid #ddd;font-size:16px;text-align:center;}
 #cfm_time_wrap{overflow:hidden;-webkit-box-flex:1;-ms-flex:1 0 auto;-moz-box-flex:1;box-flex:1;}
 .cfm_time_list{margin:0 10px;line-height:32px;font-size:15px;}

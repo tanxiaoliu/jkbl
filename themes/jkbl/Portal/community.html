@@ -34,7 +34,7 @@
             font-weight: bold;
         }
         .bottom ul li{
-            width: 6.9rem;
+            width: 29.5%;
             float: left;
             margin: 0.45rem;
             -moz-border-radius: 0.4rem;
@@ -255,7 +255,7 @@
     <div id="close" class="publish-btn" style="bottom: 5rem;"></div>
     <div data-reactroot="" class="pub-con">
         <div class="pub-wrap section-1px show">
-            <form id="loginform" name="loginform" method="post" action="{:U('publishedpAbout')}"  class="form-horizontal ">
+            <form id="loginform" name="loginform" method="post" action="{:U('publishedpAbout')}"  class="form-horizontal" onsubmit="return check(this)">
             <input type="text" name="post_image" id="post_image" value="" style="display: none">
             <!--<div class="pub-theme section-1px">-->
                 <!--<input type="text" class="ipt-theme" name="post_content" id="post_content" value="" placeholder="标题，4-25个字">-->
@@ -326,6 +326,13 @@
         });
         $(".up-pic").hide();
     });
+    function check(form) {
+        if(form.post_content.value=='') {
+            alert("说说内容不能为空!");
+            form.post_content.focus();
+            return false;
+        }
+    }
     $("#uploadbtn").on("change",function(){
         $("#filesform").ajaxSubmit({
             type: "POST",//提交类型

@@ -73,11 +73,6 @@
 <script>
     $(function(){
         $('.modaltrigger').leanModal({ top: 110, overlay: 0.45});
-        $(".flatbtn").each(function(i){
-            $(this).click(function(){
-                $("#goodid").val($(this).parent().prev().val())
-            })
-        });
         $(".rank-top ul li").click(function(){
             $(this).addClass("blue").siblings().removeClass("blue");
         });
