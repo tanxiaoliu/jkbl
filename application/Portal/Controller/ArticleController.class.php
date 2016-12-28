@@ -68,7 +68,8 @@ class ArticleController extends HomebaseController {
     	$smeta=json_decode($article['smeta'],true);
     	$content_data=sp_content_page($article['post_content']);
     	$article['post_content']=$content_data['content'];
-    	
+    	$user = session('user');
+        $this->assign("uid", $user['id']);
     	$this->assign("page",$content_data['page']);
     	$this->assign($article);
     	$this->assign("smeta",$smeta);
