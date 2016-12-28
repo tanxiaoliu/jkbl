@@ -54,7 +54,8 @@ class IndexController extends HomebaseController
     {
         if (sp_is_weixin()) {
             $userInfo = json_decode($_COOKIE['userInfo']);
-            if (empty($userInfo) || !isset($userInfo->openid)) {
+            $user = session('user');
+            if (empty($userInfo) ||empty($user) || !isset($userInfo->openid)) {
                 //微信登录
                 $options = array(
                     'token' => 'test', //填写你设定的key
@@ -89,6 +90,7 @@ class IndexController extends HomebaseController
             $map['user_login'] = $userInfo->openid;
             $users = D('users')->where($map)->find();
             if ($users) {
+                session('user',$users);
                 $data['last_login_time'] = date("Y-m-d H:i:s", time());
                 D('users')->save($data);
                 $userInfo->nickname = $users['user_nicename'];
@@ -102,7 +104,8 @@ class IndexController extends HomebaseController
                 $data['last_login_time'] = date("Y-m-d H:i:s", time());
                 $data['create_time'] = date("Y-m-d H:i:s", time());
                 $data['user_type'] = 2;
-                D('users')->add($data);
+                $data['id'] = D('users')->add($data);
+                session('user',$data);
                 setcookie('userInfo', $result2);
             }
             redirect(U('index'));
