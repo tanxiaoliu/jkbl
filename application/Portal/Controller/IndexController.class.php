@@ -172,58 +172,70 @@ class IndexController extends HomebaseController
      */
     public function member()
     {
-        $userInfo = $this->checkLogin();
+        
+        // $userInfo = $this->checkLogin();
+        $userInfo->openid = 'admin';
         $map['user_login'] = $userInfo->openid;
         $users = M('Users')->where($map)->find();
         $map = array();
         $record = array();
         $type = I('type', 0, 'int');
-        if (!empty($_POST)) {//时间段
-            $startTime = strtotime(I('startTime'));
-            $endTime = strtotime(I('endTime'));
-            $map['add_time'] = array('between', array($startTime, $endTime));
-        }
-        if ($type == 1) {//昨天
-            $startYesterday = mktime(0, 0, 0, date('m'), date('d') - 1, date('Y'));
-            $endYesterday = mktime(0, 0, 0, date('m'), date('d'), date('Y')) - 1;
-            $map['add_time'] = array('between', array($startYesterday, $endYesterday));
-        } elseif ($type == 2) {//上周
-            $beginLastweek = mktime(0, 0, 0, date('m'), date('d') - date('w') + 1 - 7, date('Y'));
-            $endLastweek = mktime(23, 59, 59, date('m'), date('d') - date('w') + 7 - 7, date('Y'));
-            $map['add_time'] = array('between', array($beginLastweek, $endLastweek));
-        } elseif ($type == 3) {//上月
-            $beginThismonth = mktime(0, 0, 0, date('m'), 1, date('Y'));
-            $endThismonth = mktime(23, 59, 59, date('m'), date('t'), date('Y'));
-            $map['add_time'] = array('between', array($beginThismonth, $endThismonth));
-        }
+        $memberCachKey = $userInfo->openid.'member'.date('Y-m-d:H',time()).$type;
+        $data = json_decode(S($memberCachKey));
         $sum =  0;
-        $data =  '[';
-        if (!empty($map)) {
-            $users = M('Users')->field('user_login,groupid,score')->where(array('groupid'=>$users['groupid']) )->select();
-            $ids = '';
-            foreach ($users as $value) {
-                $ids.=$value["user_login"].',';
-            }  
-            $ids = rtrim($ids,',');
-            $map['openid'] = array('in',$ids);
-            $record = D('sport_record')->where($map)->field('openid,sum(step_nums) as num')->group('openid')->order('num DESC')->select();
-            foreach ($record as $value) {
-                $map['user_login'] = $value['openid'];
-                $users = M('Users')->where($map)->find();
-                $sum+=$value['num'];
-                $data.="{value:{$value['num']}, name:'{$users['user_nicename']}'},";
+        if (empty($data)) {
+            if (!empty($_POST)) {//时间段
+                $startTime = strtotime(I('startTime'));
+                $endTime = strtotime(I('endTime'));
+                $map['add_time'] = array('between', array($startTime, $endTime));
             }
+            if ($type == 1) {//昨天
+                $startYesterday = mktime(0, 0, 0, date('m'), date('d') - 1, date('Y'));
+                $endYesterday = mktime(0, 0, 0, date('m'), date('d'), date('Y')) - 1;
+                $map['add_time'] = array('between', array($startYesterday, $endYesterday));
+            } elseif ($type == 2) {//上周
+                $beginLastweek = mktime(0, 0, 0, date('m'), date('d') - date('w') + 1 - 7, date('Y'));
+                $endLastweek = mktime(23, 59, 59, date('m'), date('d') - date('w') + 7 - 7, date('Y'));
+                $map['add_time'] = array('between', array($beginLastweek, $endLastweek));
+            } elseif ($type == 3) {//上月
+                $beginThismonth = mktime(0, 0, 0, date('m'), 1, date('Y'));
+                $endThismonth = mktime(23, 59, 59, date('m'), date('t'), date('Y'));
+                $map['add_time'] = array('between', array($beginThismonth, $endThismonth));
+            }
+            $data =  '[';
+            if (!empty($map)) {
+                $users = M('Users')->field('user_login,groupid,score')->where(array('groupid'=>$users['groupid']) )->select();
+                $ids = '';
+                foreach ($users as $value) {
+                    $ids.=$value["user_login"].',';
+                }  
+                $ids = rtrim($ids,',');
+                $map['openid'] = array('in',$ids);
+                $record = D('sport_record')->where($map)->field('openid,sum(step_nums) as num')->group('openid')->order('num DESC')->select();
+                foreach ($record as $value) {
+                    $map['user_login'] = $value['openid'];
+                    $users = M('Users')->where($map)->find();
+                    $sum+=$value['num'];
+                    $data.="{value:{$value['num']}, name:'{$users['user_nicename']}'},";
+                }
+            }else{
+                $users = M('Users')->field('user_nicename,groupid,score')->where(array('groupid'=>$users['groupid']) )->select();
+                foreach ($users as $value) {
+                    $sum+=$value['score'];
+                    $data.="{value:{$value['score']}, name:'{$value['user_nicename']}'},";
+                }  
+            }
+            $data = rtrim($data,',').']';
+            $list = array(
+                'data'=>$data,
+                'sum'=>$sum
+                );
+             S($memberCachKey,json_encode($list),3600);
         }else{
-            $users = M('Users')->field('user_nicename,groupid,score')->where(array('groupid'=>$users['groupid']) )->select();
-            foreach ($users as $value) {
-                $sum+=$value['score'];
-                $data.="{value:{$value['score']}, name:'{$value['user_nicename']}'},";
-            }  
+            $sum =  $data->sum;
+            $data =  $data->data;
         }
-        
-       
-        $data = rtrim($data,',').']';
-        $this->assign("userInfo", $this->checkLogin());
+        $this->assign("userInfo", $userInfo);
         $this->assign("sum", $sum);
         $this->assign("data", $data);
         $this->assign("footer", "zhishu");
