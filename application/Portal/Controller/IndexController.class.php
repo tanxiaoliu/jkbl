@@ -241,20 +241,120 @@ class IndexController extends HomebaseController
         $map['istop']=0;
         $map['recommended']=0;
         $map['post_type']=1;
-        $pengyouquan = M('Posts')->field('id,post_content,post_date')->where($map)->order()->limit(20)->select();
+        $pengyouquan = M('Posts')->field('id,post_content,post_date,post_image,post_author')->where($map)->order('id DESC')->limit(20)->select();
+        foreach ($pengyouquan as $key => $vl) {
+            $map['id'] = $vl['post_author'];
+            $users = D('users')->where($map)->find();
+            $pengyouquan[$key]['avatar'] = $users['avatar'];
+            $pengyouquan[$key]['user_nicename'] = $users['user_nicename'];
+        }
         $this->assign("posts", $posts);
         $this->assign("pengyouquan", $pengyouquan);
         $this->assign("footer", "shequ");
         $this->display(":community");
     }
+
     /**
-     * 社区
+     * 发表说说
      * @author tanhuaxin
      */
-    public function post()
+    public function publishedpAbout()
     {
-       print_r($_POST);
-       exit();
+        $userInfo = $this->checkLogin();
+        $data['post_image'] = I('post_image');
+        $data['post_content']  = I('post_content');
+        $map['user_login'] = $userInfo->openid;
+        $data['post_author']  = M('Users')->where($map)->getField('id');
+        $data['post_date']  = date("Y-m-d H:i:s", time());
+        M('Posts')->add($data);
+        redirect(U('community'));
+    }
+    
+    /**
+     * 上传图片
+     * @author tanhuaxin
+     */
+    public function uploadImage()
+    {
+         $upload_setting=sp_get_upload_setting();
+
+        $filetypes=array(
+            'image'=>array('title'=>'Image files','extensions'=>$upload_setting['image']['extensions']),
+            'video'=>array('title'=>'Video files','extensions'=>$upload_setting['video']['extensions']),
+            'audio'=>array('title'=>'Audio files','extensions'=>$upload_setting['audio']['extensions']),
+            'file'=>array('title'=>'Custom files','extensions'=>$upload_setting['file']['extensions'])
+        );
+
+        $image_extensions=explode(',', $upload_setting['image']['extensions']);
+
+        if (IS_POST) {
+            $all_allowed_exts = array();
+            foreach ($filetypes as $mfiletype) {
+                array_push($all_allowed_exts, $mfiletype['extensions']);
+            }
+            $all_allowed_exts = implode(',', $all_allowed_exts);
+            $all_allowed_exts = explode(',', $all_allowed_exts);
+            $all_allowed_exts = array_unique($all_allowed_exts);
+
+            $file_extension = sp_get_file_extension($_FILES['file']['name']);
+            $upload_max_filesize = $upload_setting['upload_max_filesize'][$file_extension];
+            $upload_max_filesize = empty($upload_max_filesize) ? 2097152 : $upload_max_filesize;//默认2M
+
+            $app = I('post.app/s', '');
+            if (!in_array($app, C('MODULE_ALLOW_LIST'))) {
+                $app = 'default';
+            } else {
+                $app = strtolower($app);
+            }
+
+            $savepath = $app . '/' . date('Ymd') . '/';
+            //上传处理类
+            $config = array(
+                'rootPath' => './' . C("UPLOADPATH"),
+                'savePath' => $savepath,
+                'maxSize' => $upload_max_filesize,
+                'saveName' => array('uniqid', ''),
+                'exts' => $all_allowed_exts,
+                'autoSub' => false,
+            );
+            $upload = new \Think\Upload($config);//
+            $info = $upload->upload();
+            //开始上传
+            if ($info) {
+                //上传成功
+                $oriName = $_FILES['file']['name'];
+                //写入附件数据库信息
+                $first = array_shift($info);
+                if (!empty($first['url'])) {
+                    $url = $first['url'];
+                    $storage_setting = sp_get_cmf_settings('storage');
+                    $qiniu_setting = $storage_setting['Qiniu']['setting'];
+                    $url = preg_replace('/^https/', $qiniu_setting['protocol'], $url);
+                    $url = preg_replace('/^http/', $qiniu_setting['protocol'], $url);
+
+                    $preview_url = $url;
+
+                    if (in_array($file_extension, $image_extensions)) {
+                        if (C('FILE_UPLOAD_TYPE') == 'Qiniu' && $qiniu_setting['enable_picture_protect']) {
+                            $preview_url = $url . $qiniu_setting['style_separator'] . $qiniu_setting['styles']['thumbnail300x300'];
+                            $url = $url . $qiniu_setting['style_separator'] . $qiniu_setting['styles']['watermark'];
+                        }
+                    } else {
+                        $preview_url = '';
+                        $url = sp_get_file_download_url($first['savepath'] . $first['savename'], 3600 * 24 * 365 * 50);//过期时间设置为50年
+                    }
+
+                } else {
+                    $url = C("TMPL_PARSE_STRING.__UPLOAD__") . $savepath . $first['savename'];
+                    $preview_url = $url;
+                }
+                $filepath = $savepath . $first['savename'];
+
+                $this->ajaxReturn(array('preview_url' => $preview_url, 'filepath' => $filepath, 'url' => $url, 'name' => $oriName, 'status' => 1, 'message' => 'success'));
+            } else {
+                $this->ajaxReturn(array('name' => '', 'status' => 0, 'message' => $upload->getError()));
+            }
+        }
     }
 
     /**
@@ -290,6 +390,8 @@ class IndexController extends HomebaseController
                 $data['user_nicename'] = $user_nicename;
                 $data['status'] = 1;
                 $usersModel->where($map)->save($data);
+                $userInfo->nickname = $user_nicename;
+                setcookie('userInfo', json_encode($userInfo));
             }
         }
         redirect(U('personal'));
