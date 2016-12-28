@@ -173,14 +173,14 @@ class IndexController extends HomebaseController
     public function member()
     {
         
-        // $userInfo = $this->checkLogin();
-        $userInfo->openid = 'admin';
+        $userInfo = $this->checkLogin();
+        // $userInfo->openid = 'admin';
         $map['user_login'] = $userInfo->openid;
         $users = M('Users')->where($map)->find();
         $map = array();
         $record = array();
         $type = I('type', 0, 'int');
-        $memberCachKey = $userInfo->openid.'member'.date('Y-m-d:H',time()).$type;
+        $memberCachKey = $users['groupid'].'_member_'.date('Y-m-d:H',time()).'_'.$type;
         $data = json_decode(S($memberCachKey));
         $sum =  0;
         if (empty($data)) {
