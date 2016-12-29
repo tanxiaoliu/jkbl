@@ -307,6 +307,7 @@ class IndexController extends HomebaseController
         $map['post_type'] = 1;
         $map['istop'] = 0;
         $map['recommended'] = 0;
+        $map['post_status'] = array('neq',3);
         $pengyouquan = M('Posts')->field('id,post_content,post_date,post_image,post_author,post_like')->where($map)->order('id DESC')->limit(30)->select();
         foreach ($pengyouquan as $key => $vl) {
             $map['id'] = $vl['post_author'];
