@@ -283,6 +283,7 @@ class IndexController extends HomebaseController
             $users = D('users')->where($map)->find();
             $pengyouquan[$key]['avatar'] = $users['avatar'];
             $pengyouquan[$key]['user_nicename'] = $users['user_nicename'];
+            $pengyouquan[$key]['uid'] = $vl['post_author'];
         }
         $user = session('user');
         $this->assign("uid", $user['id']);
