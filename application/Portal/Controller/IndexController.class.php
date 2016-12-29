@@ -194,17 +194,21 @@ class IndexController extends HomebaseController
             if (!empty($_POST) && $type == 4) {//时间段
                 $startTime = strtotime(I('startTime'));
                 $endTime = strtotime(I('endTime'));
+                $typeName = date('Y-m-d', $startTime).' - '.date('Y-m-d', $endTime);
                 $map['add_time'] = array('between', array($startTime, $endTime));
             }
             if ($type == 1) {//昨天
+                $typeName = '昨天统计';
                 $startYesterday = mktime(0, 0, 0, date('m'), date('d') - 1, date('Y'));
                 $endYesterday = mktime(0, 0, 0, date('m'), date('d'), date('Y')) - 1;
                 $map['add_time'] = array('between', array($startYesterday, $endYesterday));
             } elseif ($type == 2) {//上周
+                $typeName = '上周统计';
                 $beginLastweek = mktime(0, 0, 0, date('m'), date('d') - date('w') + 1 - 7, date('Y'));
                 $endLastweek = mktime(23, 59, 59, date('m'), date('d') - date('w') + 7 - 7, date('Y'));
                 $map['add_time'] = array('between', array($beginLastweek, $endLastweek));
             } elseif ($type == 3) {//上月
+                $typeName = '上月统计';
                 $beginThismonth = mktime(0, 0, 0, date('m'), 1, date('Y'));
                 $endThismonth = mktime(23, 59, 59, date('m'), date('t'), date('Y'));
                 $map['add_time'] = array('between', array($beginThismonth, $endThismonth));
@@ -245,6 +249,7 @@ class IndexController extends HomebaseController
         $this->assign("userInfo", $userInfo);
         $this->assign("sum", $sum);
         $this->assign("data", $data);
+        $this->assign("type", $typeName);
         $this->assign("footer", "zhishu");
         $this->display(":member");
     }
@@ -447,17 +452,21 @@ class IndexController extends HomebaseController
             if (!empty($_POST) && $type == 4) {//时间段
                 $startTime = strtotime(I('startTime'));
                 $endTime = strtotime(I('endTime'));
+                $typeName = date('Y-m-d', $startTime).' - '.date('Y-m-d', $endTime);
                 $map['add_time'] = array('between', array($startTime, $endTime));
             }
             if ($type == 1) {//昨天
+                $typeName = '昨天排行';
                 $startYesterday = mktime(0, 0, 0, date('m'), date('d') - 1, date('Y'));
                 $endYesterday = mktime(0, 0, 0, date('m'), date('d'), date('Y')) - 1;
                 $map['add_time'] = array('between', array($startYesterday, $endYesterday));
             } elseif ($type == 2) {//上周
+                $typeName = '上周排行';
                 $beginLastweek = mktime(0, 0, 0, date('m'), date('d') - date('w') + 1 - 7, date('Y'));
                 $endLastweek = mktime(23, 59, 59, date('m'), date('d') - date('w') + 7 - 7, date('Y'));
                 $map['add_time'] = array('between', array($beginLastweek, $endLastweek));
             } elseif ($type == 3) {//上月
+                $typeName = '上月排行';
                 $beginThismonth = mktime(0, 0, 0, date('m'), 1, date('Y'));
                 $endThismonth = mktime(23, 59, 59, date('m'), date('t'), date('Y'));
                 $map['add_time'] = array('between', array($beginThismonth, $endThismonth));
@@ -518,6 +527,7 @@ class IndexController extends HomebaseController
         $this->assign("grouptype", $grouptype);
         $this->assign("data", $data);
         $this->assign("user", $user);
+        $this->assign("type", $typeName);
         $this->assign("footer", "zhishu");
         // $this->assign("userInfo", $userInfo);
         $this->display(":rank");

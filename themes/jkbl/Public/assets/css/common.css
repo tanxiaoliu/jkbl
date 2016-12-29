@@ -128,7 +128,14 @@ html,body{
     line-height: 1.8rem;
     font-size: 0.7rem;
 }
-
+.type-title{
+    position: relative;
+    z-index: 2;
+    top: 3.3rem;
+    color: #39bbd8;
+    font-weight: bold;
+    right: 1.4rem;
+}
 
 /*联盟页面*/
 .m-content-nav {
@@ -141,11 +148,16 @@ html,body{
     height: 3.5rem;
 }
 .m-count {
-    font-size: 0.8rem;
+    font-size: 0.7rem;
     color: #00658d;
+    font-weight: bold;
 }
 .m-content {
     margin-top: 3.55rem;
+}
+.m-type {
+    color: #00658d;
+    font-weight: bold;
 }
 .hg {
     position: relative;
