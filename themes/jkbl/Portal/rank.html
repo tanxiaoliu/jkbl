@@ -21,17 +21,17 @@
             <img src="__TMPL__Public/assets/images/hg.png" class="hg">
             <span class="head" style="background-image: url('{$data[0]['avatar']|default='__TMPL__Public/assets/images/0.png'}');"></span>
             <div class="r_orange" style="bottom: 0.8rem;">{$data[0]['nick_name']|default='待定'}</div>
-            <div class="r_blue">{$data[0]['num']|default='0'}KG</div>
+            <div class="r_blue">{$data[0]['num']|default='0'}步</div>
         </div>
         <div class="two">
             <span class="head" style="background-image: url('{$data[1]['avatar']|default='__TMPL__Public/assets/images/0.png'}');"></span>
             <div class="r_orange" style="bottom: 0.8rem;">{$data[1]['nick_name']|default='待定'}</div>
-            <div class="r_blue">{$data[1]['num']|default='0'}KG</div>
+            <div class="r_blue">{$data[1]['num']|default='0'}步</div>
         </div>
         <div class="three">
             <span class="head" style="background-image: url('{$data[2]['avatar']|default='__TMPL__Public/assets/images/0.png'}');"></span>
             <div class="r_orange" style="bottom: 0.8rem;">{$data[2]['nick_name']|default='待定'}</div>
-            <div class="r_blue">{$data[3]['num']|default='0'}KG</div>
+            <div class="r_blue">{$data[3]['num']|default='0'}步</div>
         </div>
         <div class="award"></div>
         <div class="rank">
@@ -43,7 +43,7 @@
                             <span class="rank_head" style="background-image: url('{$vo.avatar|default='__TMPL__Public/assets/images/0.png'}');"></span>
                             <div class="r_orange" style="margin-left: 1.1rem;">{$vo.nick_name}</div>
                         </li>
-                        <li class="count">{$vo.num}KG</li>
+                        <li class="count">{$vo.num}步</li>
                     </ul>
                 </volist>
             </div>
@@ -53,7 +53,7 @@
                     <span class="rank_head" style="background-image: url('{$user['avatar']|default='__TMPL__Public/assets/images/0.png'}');"></span>
                     <span class="r_orange"><if condition="$type lt 4">当前自己排名<else/>当前自组排名</if></span>
                 </li>
-                <li class="count">{$user['num']|default='0'}KG</li>
+                <li class="count">{$user['num']|default='0'}步</li>
             </ul>
         </div>
     </div>

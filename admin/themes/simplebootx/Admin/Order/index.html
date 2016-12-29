@@ -25,8 +25,8 @@
 					<td>{$vo.id}</td>
 					<td>{$vo.name}</td>
 					<td>{$vo.username}</td>
-					<td>{$vo.addres}</td>
 					<td>{$vo.phone}</td>
+					<td>{$vo.address}</td>
 					<td><if condition="$vo.status eq 1" >已发货<else />未发货</if></td>
 					<td><if condition="$vo.type eq 1" >健身福利<else />公益福利</if></td>
 					<td>{:date('Y-m-d H:i:s', $vo['add_time'])}</td>
