@@ -198,7 +198,10 @@ class AdminPostController extends AdminbaseController {
 		    $this->posts_model->field('a.*,c.user_login,c.user_nicename,b.listorder,b.tid');
 		    $this->posts_model->join("__TERM_RELATIONSHIPS__ b ON a.id = b.object_id");
 		}
-		$posts=$this->posts_model->select();
+		$map['istop'] = 1;
+        $map['recommended'] = 1;
+        $map['post_type'] = 1;
+		$posts=$this->posts_model->where($map)->select();
 		
 		$this->assign("page", $page->show('Admin'));
 		$this->assign("formget",array_merge($_GET,$_POST));
