@@ -13,6 +13,7 @@
             <div class="m-count">成员总计：{$sum} KG<a class="detail-btn flatbtn modaltrigger" href="#loginmodal"  style="position: relative;left: 2rem;bottom: 0.2rem;">详情</a></div>
         </div>
         <input id="data" type="hidden" value="{$data}">
+        <input id="status" type="hidden" value="{$status}">
         <div id="main" style="height:16rem; position: relative; top: -1rem;"></div>
     </div>
     <tc_include file="Public:footer" />
@@ -67,7 +68,12 @@
     // var data1 = $("#data1").val();
     // data1 = eval(data1);
     var data = $("#data").val();
-    data = eval(data);
+    var status = parseInt($("#status").val());
+    if (status==0) {
+        data = eval('[value:1,name:"暂无分组"]');
+    }else{
+        data = eval(data);
+    }
 
     var theme = {
         // 默认色板
