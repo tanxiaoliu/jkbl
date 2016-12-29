@@ -190,6 +190,7 @@ class IndexController extends HomebaseController
         $memberCachKey = $users['groupid'] . '_member_' . date('Y-m-d:H', time()) . '_' . $type;
         $data = unserialize(S($memberCachKey));
         $sum = 0;
+        $status = 0;
         if (empty($data) || $type == 4) {
             if (!empty($_POST) && $type == 4) {//时间段
                 $startTime = strtotime(I('startTime'));
@@ -223,6 +224,7 @@ class IndexController extends HomebaseController
                 $ids = rtrim($ids, ',');
                 $map['openid'] = array('in', $ids);
                 $record = D('sport_record')->where($map)->field('openid,sum(step_nums) as num')->group('openid')->order('num DESC')->select();
+                $status = count($record);
                 foreach ($record as $value) {
                     $map['user_login'] = $value['openid'];
                     $users = M('Users')->where($map)->find();
@@ -231,6 +233,7 @@ class IndexController extends HomebaseController
                 }
             } else {
                 $users = M('Users')->field('user_nicename,groupid,score')->where(array('groupid' => $users['groupid']))->select();
+                $status = count($users);
                 foreach ($users as $value) {
                     $sum += $value['score'];
                     $data .= "{value:{$value['score']}, name:'{$value['user_nicename']}'},";
@@ -239,14 +242,17 @@ class IndexController extends HomebaseController
             $data = rtrim($data, ',') . ']';
             $list = array(
                 'data' => $data,
-                'sum' => $sum
+                'sum' => $sum,
+                'status' => $status
             );
             S($memberCachKey, serialize($list), 3600);
         } else {
             $sum = $data->sum;
             $data = $data->data;
+            $status = $data->status;
         }
         $this->assign("userInfo", $userInfo);
+        $this->assign("status", $status);
         $this->assign("sum", $sum);
         $this->assign("data", $data);
         $this->assign("type", $typeName);
