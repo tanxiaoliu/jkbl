@@ -525,6 +525,7 @@ class IndexController extends HomebaseController
                 }*/
                 $data = $groups;
             }
+            $user = $this->_getUserRank($grouptype, $data, $userInfo);
             S($rankDataCachKey, serialize($data), 3600);
         } else {
             if (empty($user)) {

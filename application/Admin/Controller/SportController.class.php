@@ -246,11 +246,9 @@ class SportController extends AdminbaseController
         }
         $Group = M('Group')->select();
         foreach ($Group as $key => $value) {
-            $this->_setCacheNull($value['id'].'_member_'.date('Y-m-d:H',time()).'_0');
-            $this->_setCacheNull($value['id'].'_member_'.date('Y-m-d:H',time()).'_1');
-            $this->_setCacheNull($value['id'].'_member_'.date('Y-m-d:H',time()).'_2');
-            $this->_setCacheNull($value['id'].'_member_'.date('Y-m-d:H',time()).'_3');
-            $this->_setCacheNull($value['id'].'_member_'.date('Y-m-d:H',time()).'_4');
+            for ($i=0; $i < 5; $i++) {
+                $this->_setCacheNull($value['id'] . '_member_' . date('Y-m-d:H', time()) . '_' . $i);
+            }
         }
     }
 }

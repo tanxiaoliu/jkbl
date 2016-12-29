@@ -139,9 +139,9 @@ class GroupsController extends AdminbaseController{
 	protected function _setCacheNull($key){
         S($key,null);
     }
-    protected function _cleanFileCache($data["groupid"]){
+    protected function _cleanFileCache($groupid){
         for ($i=0; $i < 5; $i++) {
-            $this->_setCacheNull($data["groupid"] . '_member_' . date('Y-m-d:H', time()) . '_' . $type);
+            $this->_setCacheNull($groupid . '_member_' . date('Y-m-d:H', time()) . '_' . $i);
         }
     }
 }
