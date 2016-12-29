@@ -180,18 +180,19 @@ class IndexController extends HomebaseController
     public function member()
     {
 
-        $userInfo = $this->checkLogin();
-        // $userInfo->openid = 'admin';
+        // $userInfo = $this->checkLogin();
+        $userInfo->openid = 'admin';
         $map['user_login'] = $userInfo->openid;
         $users = M('Users')->where($map)->find();
         $map = array();
         $record = array();
         $type = intval(I('type'));
         $memberCachKey = $users['groupid'] . '_member_' . date('Y-m-d:H', time()) . '_' . $type;
+        S($memberCachKey,null);
         $data = unserialize(S($memberCachKey));
         $sum = 0;
-        $status = 0;
-        if (empty($data) || $type == 4) {
+        $status = empty($users['groupid'])?0:1;
+        if ($status==1 && (empty($data) || $type == 4 || $data['data']=='[]')) {
             if (!empty($_POST) && $type == 4) {//时间段
                 $startTime = strtotime(I('startTime'));
                 $endTime = strtotime(I('endTime'));
@@ -220,7 +221,6 @@ class IndexController extends HomebaseController
                 $ids = rtrim($ids, ',');
                 $map['openid'] = array('in', $ids);
                 $record = D('sport_record')->where($map)->field('openid,sum(step_nums) as num')->group('openid')->order('num DESC')->select();
-                $status = count($record);
                 foreach ($record as $value) {
                     $map['user_login'] = $value['openid'];
                     $users = M('Users')->where($map)->find();
@@ -229,7 +229,6 @@ class IndexController extends HomebaseController
                 }
             } else {
                 $users = M('Users')->field('user_nicename,groupid,score')->where(array('groupid' => $users['groupid']))->select();
-                $status = count($users);
                 foreach ($users as $value) {
                     $sum += $value['score'];
                     $data .= "{value:{$value['score']}, name:'{$value['user_nicename']}'},";
@@ -243,9 +242,13 @@ class IndexController extends HomebaseController
             );
             S($memberCachKey, serialize($list), 3600);
         } else {
-            $sum = $data->sum;
-            $data = $data->data;
-            $status = $data->status;
+            if ($status==0) {
+                $data = '[]';
+            }else{
+               $sum = $data['sum'];
+                $data = $data['data'];
+                $status = $data['status']; 
+            }
         }
         $this->assign("userInfo", $userInfo);
         $this->assign("status", $status);

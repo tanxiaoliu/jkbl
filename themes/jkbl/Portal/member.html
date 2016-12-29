@@ -68,13 +68,17 @@
     // var data1 = $("#data1").val();
     // data1 = eval(data1);
     var data = $("#data").val();
-    var status = parseInt($("#status").val());
-    if (status==0) {
-        data = eval('[value:1,name:"暂无分组"]');
-    }else{
+    var status = $("#status").val();
+    console.log(status)
+    if (status=="0") {
+        data = eval("[{value:1, name:'暂无分组'}]");
+    }
+    if (status=="1"&&data=="[]") {
+        data = eval("[{value:1, name:'暂无记录'}]");
+    }
+    if (status=="1"&&data.length>2) {
         data = eval(data);
     }
-
     var theme = {
         // 默认色板
         color: [
