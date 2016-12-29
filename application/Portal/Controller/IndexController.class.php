@@ -272,6 +272,7 @@ class IndexController extends HomebaseController
         $map['istop'] = 1;
         $map['recommended'] = 1;
         $map['post_type'] = 1;
+        $map['post_status'] = array('neq',3);
         $posts = M('Posts')->field('id,post_title,post_date')->where($map)->order('istop desc,recommended desc,post_date desc')->limit(5)->select();
         $postscount = M('Posts')->count();
         $userscount = M('Users')->count();
