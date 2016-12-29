@@ -28,10 +28,12 @@
 		    	<div id="article_content">
 		    	{$post_content}
 		    	</div>
-		    	{:Comments("posts",$article_id,array('tpl'=>'reply'))}
+		    	{:Comments("posts",$article_id)}
 		    </div>
 		</div>
 	</div>
 </div>
+<tc_include file="Public:scripts"/>
+
 </body>
 </html>

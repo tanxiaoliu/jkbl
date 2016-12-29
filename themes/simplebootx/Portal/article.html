@@ -60,13 +60,13 @@
 					<div class="clearfix"></div>
 				</div>
 		    	
-		    	
-		    	{:hook('comment',array(
+		    	{:Comments("posts",$article_id)}
+		    	<!-- {:hook('comment',array(
 		    		'post_id'=>$article_id,
 		    		'post_table'=>'posts',
 		    		'post_title'=>$post_title
 		    	))}
-		    </div>
+		    </div> -->
 		    
 		    <php>$ad=sp_getad("portal_article_bottom");</php>
 			<if condition="!empty($ad)">

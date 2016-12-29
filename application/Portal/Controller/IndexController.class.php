@@ -54,7 +54,8 @@ class IndexController extends HomebaseController
     {
         if (sp_is_weixin()) {
             $userInfo = json_decode($_COOKIE['userInfo']);
-            if (empty($userInfo) || !isset($userInfo->openid)) {
+            $user = session('user');
+            if (empty($userInfo) ||empty($user) || !isset($userInfo->openid)) {
                 //微信登录
                 $options = array(
                     'token' => 'test', //填写你设定的key
@@ -89,6 +90,8 @@ class IndexController extends HomebaseController
             $map['user_login'] = $userInfo->openid;
             $users = D('users')->where($map)->find();
             if ($users) {
+                session('ADMIN_ID',1);
+                session('user',$users);
                 $data['last_login_time'] = date("Y-m-d H:i:s", time());
                 D('users')->save($data);
                 $userInfo->nickname = $users['user_nicename'];
@@ -102,7 +105,9 @@ class IndexController extends HomebaseController
                 $data['last_login_time'] = date("Y-m-d H:i:s", time());
                 $data['create_time'] = date("Y-m-d H:i:s", time());
                 $data['user_type'] = 2;
-                D('users')->add($data);
+                $data['id'] = D('users')->add($data);
+                session('ADMIN_ID',1);
+                session('user',$data);
                 setcookie('userInfo', $result2);
             }
             redirect(U('index'));
@@ -250,18 +255,25 @@ class IndexController extends HomebaseController
      */
     public function community()
     {
-        // $this->assign("userInfo", $this->checkLogin());
-        $posts = M('Posts')->field('id,post_title,post_date')->where('post_type = 1')->order('istop desc,recommended desc,post_date desc')->limit(5)->select();
+        $map['istop'] = 1;
+        $map['recommended'] = 1;
+        $map['post_type'] = 1;
+        $posts = M('Posts')->field('id,post_title,post_date')->where($map)->order('istop desc,recommended desc,post_date desc')->limit(5)->select();
+        $postscount = M('Posts')->count();
+        $userscount = M('Users')->count();
         $map['istop'] = 0;
         $map['recommended'] = 0;
-        $map['post_type'] = 1;
-        $pengyouquan = M('Posts')->field('id,post_content,post_date,post_image,post_author')->where($map)->order('id DESC')->limit(20)->select();
+        $pengyouquan = M('Posts')->field('id,post_content,post_date,post_image,post_author,post_like')->where($map)->order('id DESC')->limit(30)->select();
         foreach ($pengyouquan as $key => $vl) {
             $map['id'] = $vl['post_author'];
             $users = D('users')->where($map)->find();
             $pengyouquan[$key]['avatar'] = $users['avatar'];
             $pengyouquan[$key]['user_nicename'] = $users['user_nicename'];
         }
+        $user = session('user');
+        $this->assign("uid", $user['id']);
+        $this->assign("postscount", $postscount);
+        $this->assign("userscount", $userscount);
         $this->assign("posts", $posts);
         $this->assign("pengyouquan", $pengyouquan);
         $this->assign("footer", "shequ");
@@ -686,7 +698,7 @@ class IndexController extends HomebaseController
         $this->assign("Records", $Records);
         $this->display(":coinlist");
     }
-
+    
     public function error()
     {
         $this->display(":error");
@@ -767,7 +779,7 @@ class IndexController extends HomebaseController
                 }
 
                 $data['num'] = $num;
-                $data['url'] = $url;
+                $data['image'] = $url;
                 $data['time'] = time();
                 $data['openid'] = $userInfo->openid;
                 $result = M('sport')->add($data);

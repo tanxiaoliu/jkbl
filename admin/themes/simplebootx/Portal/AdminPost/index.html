@@ -7,15 +7,15 @@
 			<li><a href="{:U('AdminPost/add',array('term'=>empty($term['term_id'])?'':$term['term_id']))}" target="_self">{:L('PORTAL_ADMINPOST_ADD')}</a></li>
 		</ul>
 		<form class="well form-search" method="post" action="{:U('AdminPost/index')}">
-			分类： 
+			<!-- 分类： 
 			<select name="term" style="width: 120px;">
 				<option value='0'>全部</option>{$taxonomys}
-			</select> &nbsp;&nbsp;
+			</select> &nbsp;&nbsp; -->
 			时间：
 			<input type="text" name="start_time" class="js-datetime" value="{$formget.start_time|default=''}" style="width: 120px;" autocomplete="off">-
 			<input type="text" class="js-datetime" name="end_time" value="{$formget.end_time|default=''}" style="width: 120px;" autocomplete="off"> &nbsp; &nbsp;
-			关键字： 
-			<input type="text" name="keyword" style="width: 200px;" value="{$formget.keyword|default=''}" placeholder="请输入关键字...">
+			<!-- 关键字： 
+			<input type="text" name="keyword" style="width: 200px;" value="{$formget.keyword|default=''}" placeholder="请输入关键字..."> -->
 			<input type="submit" class="btn btn-primary" value="搜索" />
 			<a class="btn btn-danger" href="{:U('AdminPost/index')}">清空</a>
 		</form>
@@ -24,7 +24,7 @@
 				<notempty name="term">
 				<button class="btn btn-primary btn-small js-ajax-submit" type="submit" data-action="{:U('AdminPost/listorders')}">{:L('SORT')}</button>
 				</notempty>
-				<button class="btn btn-primary btn-small js-ajax-submit" type="submit" data-action="{:U('AdminPost/check',array('check'=>1))}" data-subcheck="true">审核</button>
+				<!-- <button class="btn btn-primary btn-small js-ajax-submit" type="submit" data-action="{:U('AdminPost/check',array('check'=>1))}" data-subcheck="true">审核</button>
 				<button class="btn btn-primary btn-small js-ajax-submit" type="submit" data-action="{:U('AdminPost/check',array('uncheck'=>1))}" data-subcheck="true">取消审核</button>
 				<button class="btn btn-primary btn-small js-ajax-submit" type="submit" data-action="{:U('AdminPost/top',array('top'=>1))}" data-subcheck="true">置顶</button>
 				<button class="btn btn-primary btn-small js-ajax-submit" type="submit" data-action="{:U('AdminPost/top',array('untop'=>1))}" data-subcheck="true">取消置顶</button>
@@ -33,7 +33,7 @@
 				<notempty name="term">
 					<button class="btn btn-primary btn-small js-articles-move" type="button">批量移动</button>
 				</notempty>
-				<button class="btn btn-primary btn-small js-articles-copy" type="button">批量复制</button>
+				<button class="btn btn-primary btn-small js-articles-copy" type="button">批量复制</button> -->
 				<button class="btn btn-danger btn-small js-ajax-submit" type="submit" data-action="{:U('AdminPost/delete')}" data-subcheck="true" data-msg="您确定删除吗？">{:L('DELETE')}</button>
 			</div>
 			<table class="table table-hover table-bordered table-list">
@@ -48,9 +48,9 @@
 						<th width="50">{:L('AUTHOR')}</th>
 						<th width="50">{:L('HITS')}</th>
 						<th width="50">{:L('COMMENT_COUNT')}</th>
-						<th width="160">{:L('KEYWORDS')}/{:L('SOURCE')}/{:L('ABSTRACT')}/{:L('THUMBNAIL')}</th>
-						<th width="100">{:L('PUBLISH_DATE')}</th>
-						<th width="50">{:L('STATUS')}</th>
+						<!-- <th width="160">{:L('KEYWORDS')}/{:L('SOURCE')}/{:L('ABSTRACT')}/{:L('THUMBNAIL')}</th>
+						 --><th width="100">{:L('PUBLISH_DATE')}</th>
+						<!-- <th width="50">{:L('STATUS')}</th> -->
 						<th width="70">{:L('ACTIONS')}</th>
 					</tr>
 				</thead>
@@ -77,7 +77,7 @@
 							{$vo.comment_count}
 						</notempty>
 					</td>
-					<td>
+					<!-- <td>
 						<notempty name="vo.post_keywords">
 							<i class="fa fa-check fa-fw"></i>
 						<else/>
@@ -100,9 +100,9 @@
 								<i class="fa fa-photo fa-fw"></i>
 							</a>
 						</notempty>
-					</td>
+					</td> -->
 					<td>{:date('Y-m-d H:i',strtotime($vo['post_date']))}</td>
-					<td>
+					<!-- <td>
 						<notempty name="vo.post_status">
 							<a data-toggle="tooltip" title="已审核"><i class="fa fa-check"></i></a>
 							<else/>
@@ -118,7 +118,7 @@
 							<else />
 							<a data-toggle="tooltip" title="未推荐"><i class="fa fa-thumbs-down"></i></a>
 						</notempty>
-					</td>
+					</td> -->
 					<td>
 						<a href="{:U('AdminPost/edit',array('id'=>$vo['id']))}">{:L('EDIT')}</a> | 
 						<a href="{:U('AdminPost/delete',array('id'=>$vo['id']))}" class="js-ajax-delete">{:L('DELETE')}</a>
@@ -136,9 +136,9 @@
 						<th width="50">{:L('AUTHOR')}</th>
 						<th width="50">{:L('HITS')}</th>
 						<th width="50">{:L('COMMENT_COUNT')}</th>
-						<th >{:L('KEYWORDS')}/{:L('SOURCE')}/{:L('ABSTRACT')}/{:L('THUMBNAIL')}</th>
-						<th width="100">{:L('PUBLISH_DATE')}</th>
-						<th width="50">{:L('STATUS')}</th>
+						<!-- <th >{:L('KEYWORDS')}/{:L('SOURCE')}/{:L('ABSTRACT')}/{:L('THUMBNAIL')}</th>
+						 --><th width="100">{:L('PUBLISH_DATE')}</th>
+						<!-- <th width="50">{:L('STATUS')}</th> -->
 						<th width="70">{:L('ACTIONS')}</th>
 					</tr>
 				</tfoot>
@@ -147,7 +147,7 @@
 				<notempty name="term">
 				<button class="btn btn-primary btn-small js-ajax-submit" type="submit" data-action="{:U('AdminPost/listorders')}">{:L('SORT')}</button>
 				</notempty>
-				<button class="btn btn-primary btn-small js-ajax-submit" type="submit" data-action="{:U('AdminPost/check',array('check'=>1))}" data-subcheck="true">审核</button>
+				<!-- <button class="btn btn-primary btn-small js-ajax-submit" type="submit" data-action="{:U('AdminPost/check',array('check'=>1))}" data-subcheck="true">审核</button>
 				<button class="btn btn-primary btn-small js-ajax-submit" type="submit" data-action="{:U('AdminPost/check',array('uncheck'=>1))}" data-subcheck="true">取消审核</button>
 				<button class="btn btn-primary btn-small js-ajax-submit" type="submit" data-action="{:U('AdminPost/top',array('top'=>1))}" data-subcheck="true">置顶</button>
 				<button class="btn btn-primary btn-small js-ajax-submit" type="submit" data-action="{:U('AdminPost/top',array('untop'=>1))}" data-subcheck="true">取消置顶</button>
@@ -157,7 +157,7 @@
 					<button class="btn btn-primary btn-small js-articles-move" type="button">批量移动</button>
 				</notempty>
 				<button class="btn btn-primary btn-small js-articles-copy" type="button">批量复制</button>
-				<button class="btn btn-danger btn-small js-ajax-submit" type="submit" data-action="{:U('AdminPost/delete')}" data-subcheck="true" data-msg="你确定删除吗？">{:L('DELETE')}</button>
+				 --><button class="btn btn-danger btn-small js-ajax-submit" type="submit" data-action="{:U('AdminPost/delete')}" data-subcheck="true" data-msg="你确定删除吗？">{:L('DELETE')}</button>
 			</div>
 			<div class="pagination">{$page}</div>
 		</form>

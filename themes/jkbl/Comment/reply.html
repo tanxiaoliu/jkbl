@@ -1,8 +1,6 @@
-<br>
-<h3>评论</h3>
-<div class="comment-area" id="comments">
 
-	<hr>
+<div style="display: none;"  class="comment-area" id="comments">
+	<hr style="height:1px;border:none;border-top:1px dashed #e5e5e5;" />
 	<form class="form-horizontal comment-form" action="{:U('comment/comment/post')}" method="post">
 	  <div class="control-group">
 		  <div class="comment-postbox-wraper">
@@ -20,7 +18,6 @@
 	  <input type="hidden" name="to_uid" value="0"/>
 	  <input type="hidden" name="parentid" value="0"/>
 	</form>
-	
 	<script class="comment-tpl" type="text/html">
 		<div class="comment" data-username="{$user.user_nicename}" data-uid="{$user.id}">
 		  <a class="pull-left" href="javascript:void(0);">
@@ -33,7 +30,7 @@
 		  <div class="clearfix"></div>
 		</div>
 	</script>
-	
+	<hr style="height:1px;border:none;border-top:1px dashed #e5e5e5;" />
 	<script class="comment-reply-box-tpl" type="text/html">
 		<div class="comment-reply-submit">
                     <div class="comment-reply-box">
@@ -42,7 +39,6 @@
                     <button class="btn pull-right" onclick="comment_submit(this);">回复</button>
                 </div>
 	</script>
-	<hr style="height:1px;border:none;border-top:1px dashed #e5e5e5;" />
 	<div class="comments">
 	<foreach name="comments" item="vo">
 	 	<div class="comment" data-id="{$vo.id}" data-uid="{$vo.uid}" data-username="{$vo.full_name}"  id="comment{$vo.id}">
@@ -56,7 +52,6 @@
 		    <a href="{:U('Comment/Commentadmin/delete',array('id'=>$vo['id']))}" class="js-ajax-delete">删除</a>
 		    </if>
 		    </div>
-		    
 		    <if condition="!empty($vo['children'])">
 		    	<foreach name="vo.children" item="voo">
 			    	<div class="comment" data-id="{$voo.id}" data-uid="{$voo.uid}" data-username="{$voo.full_name}" id="comment{$voo.id}">
@@ -83,4 +78,3 @@
 	</div>
 	
 </div>
-

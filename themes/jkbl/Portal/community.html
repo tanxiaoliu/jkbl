@@ -34,7 +34,7 @@
             font-weight: bold;
         }
         .bottom ul li{
-            width: 29.5%;
+            width: 6.9rem;
             float: left;
             margin: 0.45rem;
             -moz-border-radius: 0.4rem;
@@ -47,20 +47,26 @@
             background:#17acdf;
             color: #FFFFFF;
         }
+        a{color:#428bca;}
+
+        .btn{display:inline-block;*display:inline;padding:4px 12px;margin-bottom:0;*margin-left:.3em;font-size:14px;line-height:20px;color:#999;text-align:center;text-shadow:0 1px 1px rgba(255,255,255,0.75);vertical-align:middle;cursor:pointer;background-color:#e1e1e1;*background-color:#cacaca;background-image:-moz-linear-gradient(top,#f0f0f0,#cacaca);background-image:-webkit-gradient(linear,0 0,0 100%,from(#f0f0f0),to(#cacaca));background-image:-webkit-linear-gradient(top,#f0f0f0,#cacaca);background-image:-o-linear-gradient(top,#f0f0f0,#cacaca);background-image:linear-gradient(to bottom,#f0f0f0,#cacaca);background-repeat:repeat-x;border:1px solid #bbb;*border:0;border-color:#cacaca #cacaca #a3a3a3;border-color:rgba(0,0,0,0.1) rgba(0,0,0,0.1) rgba(0,0,0,0.25);border-bottom-color:#a2a2a2;-webkit-border-radius:0;-moz-border-radius:0;border-radius:0;filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#fff0f0f0',endColorstr='#ffcacaca',GradientType=0);filter:progid:DXImageTransform.Microsoft.gradient(enabled=false);*zoom:1;-webkit-box-shadow:inset 0 1px 0 rgba(255,255,255,0.2),0 1px 2px rgba(0,0,0,0.05);-moz-box-shadow:inset 0 1px 0 rgba(255,255,255,0.2),0 1px 2px rgba(0,0,0,0.05);}
+
     </style>
     <link rel="stylesheet" href="__TMPL__Public/assets/css/common.min.1a81830c.css">
     <link rel="stylesheet" href="__TMPL__Public/assets/css/barindex.min.84d043b5.css">
+    <tc_include file="Public:heads" />
     <title>THIFF</title>
     <style>
     </style>
 </head>
 
-<body class="ios ios9">
+<body class="ios ios9" style="padding: 0;">
 <div id="root">
     <div data-reactroot="">
         <div class="Header">
             <div class="NormalHeader">
-                <div class="header-cover-img" style="background-color: #39bbd8;">
+                <div class="header-cover-img" style="background-color: #39bbd8;
+                ">
                 </div>
                 <div class="header-wrap">
                     <div class="cover mask-gray">
@@ -89,7 +95,7 @@
                                                 话题
                                             </label>
                                             <span class="number">
-                                                7
+                                                {$postscount}
                                             </span>
                                         </span>
                                         <span>
@@ -97,7 +103,7 @@
                                                 关注
                                             </label>
                                             <span class="number">
-                                                5
+                                                {$userscount}
                                             </span>
                                         </span>
                             </div>
@@ -143,7 +149,7 @@
             </div>
             <!-- react-empty: 4 -->
             <!-- react-empty: 5 -->
-            <div class="PostList" style="width:100%; height:20rem; overflow:scroll;">
+            <div class="PostList" style="width:100%; height:26rem; overflow:scroll;">
                 <ul class="scroll-view post-list">
                     <foreach name="pengyouquan" item="vo">
                     <li class="feeds-li feeds-li-normal">
@@ -168,7 +174,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="detail-bottom">
+                        <div  class="detail-bottom">
                             <div class="report-content">
                                 <p class="groupbrief feed-two-line">
                                     {$vo.post_content}
@@ -185,15 +191,17 @@
                                 <div class="reply-btn-v3 post-btn-v3">
                                 </div>
                                 <div class="like-btn-v3 post-btn-v3">
-                                    3
+                                <a  href="{:U('article/do_like',array('id'=>$vo['id']))}" class="js-count-btn">
+                                <span class="count">{$vo.post_like}</span></a>
                                 </div>
-                                <div class="more-btn-v3 post-btn-v3">
-                                </div>
+                                <!-- <div class="more-btn-v3 post-btn-v3">
+                                </div> -->
                             </div>
+                            {:Comments("posts",$vo['id'],array('tpl'=>'reply'))}
                         </div>
                     </li>
                     </foreach>
-                    <li class="feeds-li feeds-li-normal">
+                    <!-- <li class="feeds-li feeds-li-normal">
                         <div class="detail-top">
                             <div class="item-user">
                                 <div class="item-user-wrap">
@@ -204,7 +212,7 @@
                                             <span class="item-user-name">
                                                 小六
                                             </span>
-                                            <!-- react-empty: 76 -->
+                                      
                                             <span>
                                             </span>
                                         </span>
@@ -237,7 +245,7 @@
                                 </div>
                             </div>
                         </div>
-                    </li>
+                    </li> -->
                     <!-- react-text: 9 -->
                     <!-- /react-text -->
                 </ul>
@@ -252,7 +260,7 @@
 
 <div id="publish-panel" class="pub-float pub" style="height: 1331px;display: none;">
     <!--<form id="loginform" name="loginform" method="post" action="{:U('post')}"  class="form-horizontal " onsubmit="return check(this)">-->
-    <div id="close" class="publish-btn" style="bottom: 5rem;"></div>
+    <div id="close" class="publish-close-btn" style="bottom: 5rem;"></div>
     <div data-reactroot="" class="pub-con">
         <div class="pub-wrap section-1px show">
             <form id="loginform" name="loginform" method="post" action="{:U('publishedpAbout')}"  class="form-horizontal" onsubmit="return check(this)">
@@ -319,6 +327,14 @@
         $("#close").click(function(){
             $("#publish-panel").css('display','none');
         });
+        $(".reply-btn-v3").each(function(){
+            var $this=$(this);
+            $this.click(function(){
+            $this.parent().next(".comment-area").toggle()  
+                // $this.parent().next(".comment-area").css('display','block'); 
+            });
+            // $this.parent().next(".comment-area").toggle()  
+        });
         $(".btn-del").click(function(){
             $(".up-pic").hide();
             $("#up-entry").show();
@@ -326,13 +342,14 @@
         });
         $(".up-pic").hide();
     });
-    function check(form) {
-        if(form.post_content.value=='') {
-            alert("说说内容不能为空!");
-            form.post_content.focus();
-            return false;
+    
+        function check(form) {
+            if(form.post_content.value=='') {
+                alert("说说内容不能为空!");
+                form.post_content.focus();
+                return false;
+            }
         }
-    }
     $("#uploadbtn").on("change",function(){
         $("#filesform").ajaxSubmit({
             type: "POST",//提交类型
@@ -353,5 +370,6 @@
 <script src="__TMPL__Public/assets/js/jquery-1.9.1.min.js"></script>
 <script src="__TMPL__Public/assets/js/jquery.form.js"></script>
 <script src="__TMPL__Public/assets/js/jquery.leanModal.min.js"></script>
+<tc_include file="Public:scripts"/>
 </body>
 </html>
