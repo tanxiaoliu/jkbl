@@ -142,7 +142,7 @@
                 <div class="new-tab-list">
                     <div>
                         <foreach name="posts" item="vo">
-                            <label><a href="{:U('Article/index',array('id'=>$vo['id'],'cid'=>1))}" style="border-bottom: 1px solid #e5e5e5;padding-left:1rem;text-align:left;font-size: 0.9rem;color: #39bbd8;">{$vo.post_title}</a></label>
+                            <label><a href="{:U('Article/index',array('id'=>$vo['id'],'cid'=>1))}" style="border-bottom: 1px solid #e5e5e5;padding-left:1rem;text-align:left;font-size: 0.9rem;color: #39bbd8;">【{$vo.post_title}】</a></label>
                         </foreach>
                     </div>
                 </div>
@@ -194,8 +194,11 @@
                                 <a  href="{:U('article/do_like',array('id'=>$vo['id']))}" class="js-count-btn">
                                 <span class="count">{$vo.post_like}</span></a>
                                 </div>
-                                <!-- <div class="more-btn-v3 post-btn-v3">
-                                </div> -->
+                                <if condition="$vo['uid'] eq $uid">
+                                 <div class="delete-btn-v3 post-btn-v3">
+                                    <a href="{:U('Comment/Commentadmin/delete',array('id'=>$vo['id']))}" class="js-ajax-delete">删除</a>
+                                 </div>   
+                                </if>
                             </div>
                             {:Comments("posts",$vo['id'],array('tpl'=>'reply'))}
                         </div>

@@ -584,6 +584,7 @@ class IndexController extends HomebaseController
     public function shop()
     {
         $userInfo = $this->checkLogin();
+        // $userInfo->openid = 'admin';
         $data['openid'] = $userInfo->openid;
         $map['user_login'] = $data['openid'];
         $score = current(M('Users')->where($map)->getField('user_login,score,coin', 1));
@@ -617,9 +618,9 @@ class IndexController extends HomebaseController
             }
             $score = $score['score'] - $score['coin'];//余额
             $data['goodid'] = I('goodid', 0, 'intval');
-            $data['username'] = I('username', '', 'htmlspecialchars');
-            $data['address'] = I('address', 0, 'htmlspecialchars');
-            $data['phone'] = I('phone', 0, 'string');
+            $data['username'] = I('username', '公益', 'htmlspecialchars');
+            $data['address'] = I('address', '公益', 'htmlspecialchars');
+            $data['phone'] = I('phone', '公益', 'string');
             $data['nums'] = 1;
             $data['add_time'] = time();
             $good = M('Good')->find($data['goodid']);
@@ -642,15 +643,16 @@ class IndexController extends HomebaseController
                     if ($users) {
                         $users['coin'] += $good['price'];
                         if (M('users')->save($users)) {
-                            $data = array(
+                            $data1 = array(
                                 'openid' => $map['user_login'],
                                 'type' => 2,
                                 'coin' => $good['price'],
                                 'add_time' => time(),
                                 'type_id' => $id,
                             );
-                            if (M('CoinRecord')->create($data) && M('CoinRecord')->add()) $this->success("下单成功", U('Index/shop'), true);
-                            else {
+                            if (M('CoinRecord')->add($data1)){
+                                 $this->success("下单成功", U('Index/shop'), true);
+                            }else {
                                 $users['coin'] -= $good['price'];
                                 M('users')->save($users);
                                 M('GoodOrder')->where(array('id' => $id))->delete();
@@ -671,6 +673,7 @@ class IndexController extends HomebaseController
                 $this->error("下单失败", true);
                 // $this->error(M('GoodOrder')->getError());
             }
+
         } else {
             //提示请使用微信登录
             die ('这是微信请求的接口地址，直接在浏览器里无效');
