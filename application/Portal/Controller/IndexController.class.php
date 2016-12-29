@@ -180,8 +180,8 @@ class IndexController extends HomebaseController
     public function member()
     {
 
-        // $userInfo = $this->checkLogin();
-        $userInfo->openid = 'admin';
+        $userInfo = $this->checkLogin();
+        // $userInfo->openid = 'admin';
         $map['user_login'] = $userInfo->openid;
         $users = M('Users')->where($map)->find();
         $map = array();
