@@ -13,10 +13,11 @@
 					<tr>
 						<th>ID</th>
 						<th>openid</th>
+						<th>用户名</th>
 						<th>图片</th>
 						<th>添加时间</th>
 						<th>步数</th>
-						<!--<th>状态</th>-->
+						<th>状态</th>
 						<th>{:L('ACTIONS')}</th>
 					</tr>
 				</thead>
@@ -24,13 +25,15 @@
 				<tr>
 					<td>{$vo.id}</td>
 					<td>{$vo.openid}</td>
+					<td>{$vo.username}</td>
 					<td><a href=".{$vo.image}" target="_blank" ><img src=".{$vo.image}" width="40px" height="40px"/></a></td>
 					<td>{:date('Y-m-d H:i:s', $vo['time'])}</td>
 					<td>{$vo.num}</td>
+					<td><if condition="$vo.status eq 1" >已审核<else />未审核</if></td>
 					<!--<td>{$vo.status == 0 ? '未审核' : '已审核'}</td>-->
 					<td>
 						<!--<a href="{:U('sport/add',array('id'=>$vo['id']))}">{:L('EDIT')}</a>|-->
-						<a href="{:U('sport/delete',array('id'=>$vo['id']))}" class="js-ajax-dialog-btn">审核</a>
+						<a class="js-ajax-dialog-btn" href="{:U('sport/delete',array('id'=>$vo['id'],'status'=>$vo['status']))}"><if condition="$vo.status eq 1" >取消审核<else />审核</if></a>
 					</td>
 				</tr>
 				</foreach>

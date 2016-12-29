@@ -652,7 +652,11 @@ class IndexController extends HomebaseController
                                 'type_id' => $id,
                             );
                             if (M('CoinRecord')->add($data1)){
-                                 $this->success("下单成功", U('Index/shop'), true);
+                                if ($good['type']==2) {
+                                    $this->success("THIFF将代您送出爱心~", U('Index/shop'), true);
+                                }else{
+                                    $this->success("下单成功", U('Index/shop'), true);
+                                }
                             }else {
                                 $users['coin'] -= $good['price'];
                                 M('users')->save($users);
