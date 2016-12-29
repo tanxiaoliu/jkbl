@@ -8,14 +8,14 @@
 <div>
     <tc_include file="Public:nav1" />
     <div class="m-content">
-        <div class="m-content-nav">
+        <div class="m-content-nav" style="z-index:10;">
             <div class="m-title"><img src="__TMPL__Public/assets/images/caidai.png"></div>
             <div class="m-count">成员总计：{$sum} KG<a class="detail-btn flatbtn modaltrigger" href="#loginmodal"  style="position: relative;left: 2rem;bottom: 0.2rem;">详情</a></div>
             <div class="m-type">{$type}</div>
         </div>
         <input id="data" type="hidden" value="{$data}">
         <input id="status" type="hidden" value="{$status}">
-        <div id="main" style="height:16rem; position: relative; top: -4rem;"></div>
+        <div id="main" style="height:16rem; position: relative;top: -4rem; "></div>
     </div>
     <tc_include file="Public:footer" />
     <div id="loginmodal" style="display:none;">
