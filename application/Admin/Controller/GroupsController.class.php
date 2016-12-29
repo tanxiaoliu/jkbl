@@ -63,12 +63,15 @@ class GroupsController extends AdminbaseController{
 			if ($this->group_model->create($data)!==false) {
 				if (isset($data['id'])) {
 					if ($this->group_model->save()!==false) {
+						$this->_cleanFileCache($data['id']);
 						$this->success("保存成功！", U("Groups/index"));
 					} else {
 						$this->error("保存失败！");
 					}
 				}else{
-					if ($this->group_model->add()!==false) {
+					$id = $this->group_model->add();
+					if ($id!==false) {
+						$this->_cleanFileCache($id);
 						$this->success("添加成功！", U("Groups/index"));
 					} else {
 						$this->error("添加失败！");
@@ -96,10 +99,12 @@ class GroupsController extends AdminbaseController{
 	}
 
 	public function joinGroup(){
+
 		if(isset($_POST['ids']) && $_GET["joinGroup"]){
 			$data["groupid"]=$_POST['groupid'];
 			$ids=join(",",$_POST['ids']);
 			if ( M('Users')->where("id in ($ids)")->save($data)!==false) {
+				$this->_cleanFileCache($data["groupid"]);
 				$this->success("加入成功！");
 			} else {
 				$this->error("加入失败！");
@@ -113,6 +118,7 @@ class GroupsController extends AdminbaseController{
 			$groupid=intval($_GET['groupid']);
 			$id=intval($_GET['id']);
 			if ( M('Users')->where(array('id'=>$id))->save($data)!==false) {
+				$this->_cleanFileCache($groupid);
 				$this->redirect(U("Groups/add",array('id'=>$groupid)));
 				// $this->success("移除成功！",U("Groups/add",array('id'=>$groupid)));
 			} else {
@@ -124,10 +130,18 @@ class GroupsController extends AdminbaseController{
 	public function delete(){
 		$id = I("get.id",0,'intval');
 		if ($this->group_model->where(array('id'=>$id))->delete()!==false) {
+				$this->_cleanFileCache($id);
 			$this->success("删除成功！");
 		} else {
 			$this->error("删除失败！");
 		}
 	}
-	
+	protected function _setCacheNull($key){
+        S($key,null);
+    }
+    protected function _cleanFileCache($data["groupid"]){
+        for ($i=0; $i < 5; $i++) {
+            $this->_setCacheNull($data["groupid"] . '_member_' . date('Y-m-d:H', time()) . '_' . $type);
+        }
+    }
 }
