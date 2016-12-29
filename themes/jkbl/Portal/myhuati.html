@@ -63,85 +63,11 @@
 <body class="ios ios9" style="padding: 0;">
 <div id="root">
     <div data-reactroot="">
-        <div class="Header">
-            <div class="NormalHeader">
-                <div class="header-cover-img" style="background-color: #39bbd8;
-                ">
-                </div>
-                <div class="header-wrap">
-                    <div class="cover mask-gray">
-                    </div>
-                    <div class="info" id="js_bar_info">
-                        <div class="logo-container">
-                            <img class="logo" src="__TMPL__Public/assets/images/comunity.jpg">
-                        </div>
-                        <!-- <div class="ordinary-logo-rank">
-                        <span class="name">
-                        运动健身类
-                        </span>
-                        &lt;!&ndash;<span class="rank">&ndash;&gt;
-                        &lt;!&ndash;No.2311&ndash;&gt;
-                        &lt;!&ndash;</span>&ndash;&gt;
-                        </div> -->
-                        <div class="name-info">
-                            <div class="labels">
-                                        <span class="name">
-                                            健康部落
-                                        </span>
-                            </div>
-                            <div class="info-num" style="font-size: 0.8rem;line-height: 1.5rem;">
-                                        <span>
-                                            <label>
-                                                话题
-                                            </label>
-                                            <span class="number">
-                                                {$postscount}
-                                            </span>
-                                        </span>
-                                        <span>
-                                            <label>
-                                                关注
-                                            </label>
-                                            <span class="number">
-                                                {$userscount}
-                                            </span>
-                                        </span>
-                            </div>
-                        </div>
-                        <div class="GradeInfo">
-                                    <span class="info-num">
-                                        <!--<div class="info-level" id="info_level">-->
-                                        <!--<span data-lcontent="LV.2 " class="l-level lv2">-->
-                                        <!--LV.2-->
-                                        <!--</span>-->
-                                        <!--<span class="info-name">-->
-                                        <!--</span>-->
-                                        <!--</div>-->
-                                        <span style="font-size: 11px;line-height: 1;color: #fff;">
-                                            <!--<span class="l-inner-bar" style="width: 83.3333%;">-->
-                                                乐享健康生活，有你有我
-                                            <!--</span>-->
-                                        </span>
-                                    </span>
-                        </div>
-                        <a style="position: absolute;right: 2rem;top: 0.3rem;color:white;" href="{:U('Index/myhuati')}">我的话题</a>
-                    </div>
-                </div>
-            </div>
-        </div>
         <div class="NavBar">
-            <div id="uiTestNav" class="ui-test-nav nohighlight">
-                <div class="new-tab-list">
-                    <div>
-                        <foreach name="posts" item="vo">
-                            <label><a href="{:U('Article/index',array('id'=>$vo['id'],'cid'=>1))}" style="border-bottom: 1px solid #e5e5e5;padding-left:1rem;text-align:left;font-size: 0.9rem;color: #39bbd8;">【{$vo.post_title}】</a></label>
-                        </foreach>
-                    </div>
-                </div>
-            </div>
+        <a style=" margin-left:2%;" style="color:black;"  href="{:U('Index/community')}">返回</a>
             <!-- react-empty: 4 -->
             <!-- react-empty: 5 -->
-            <div class="PostList" style="width:100%; height:26rem; overflow:scroll;">
+            <div class="PostList" style="width:100%; height:35rem; overflow:scroll;">
                 <ul class="scroll-view post-list">
                     <foreach name="pengyouquan" item="vo">
                     <li class="feeds-li feeds-li-normal">
@@ -245,122 +171,24 @@
                     <!-- /react-text -->
                 </ul>
             </div>
-            <!-- react-empty: 10 -->
-            <div class="publish-btn" style="bottom: 5rem;"></div>
-            <!-- react-empty: 12 -->
-            <tc_include file="Public:footer" />
         </div>
     </div>
 </div>
-
-<div id="publish-panel" class="pub-float pub" style="height: 1331px;display: none;">
-    <!--<form id="loginform" name="loginform" method="post" action="{:U('post')}"  class="form-horizontal " onsubmit="return check(this)">-->
-    <div id="close" class="publish-close-btn" style="bottom: 5rem;"></div>
-    <div data-reactroot="" class="pub-con">
-        <div class="pub-wrap section-1px show">
-            <form id="loginform" name="loginform" method="post" action="{:U('publishedpAbout')}"  class="form-horizontal" onsubmit="return check(this)">
-            <input type="text" name="post_image" id="post_image" value="" style="display: none">
-            <!--<div class="pub-theme section-1px">-->
-                <!--<input type="text" class="ipt-theme" name="post_content" id="post_content" value="" placeholder="标题，4-25个字">-->
-            <!--</div>-->
-            <div class="editor-outer">
-        <textarea class="editor" name="post_content" id="post_content" style="border: 0.1rem solid #efeff4;" placeholder="内容，4-25个字"></textarea>
-        <textarea id="cp-editor">
-        </textarea>
-            </div>
-            <div class="pub-line border-1px">
-            </div>
-            <ul class="pub-type">
-                <li id="selectPic" class="pic-type active" title="添加图片">
-                </li>
-                <!--<li id="selectFace" class="pub-face" title="添加表情">-->
-                <!--</li>-->
-                <li class="pub-flex">
-                </li>
-                <li class="pub-btn">
-                    <button class="pub-publish" type="submit">
-                        发表
-                    </button>
-                </li>
-                <li class="loading ">
-                </li>
-            </ul>
-            </form>
-            <ul id="pub-pics">
-                <li class="up-pic up-over">
-                    <div class="clip">
-                        <img class="touxiang" src=""
-                             style="width: 86px; height: 65px; display: block; margin-left: -10.5px;">
-                    </div>
-                    <div class="up-mask">
-                    </div>
-                    <div class="up-progress">
-                        <div class="pos" style="transition: all 1s ease-out; width: 38px;">
-                        </div>
-                    </div>
-                    <a class="btn-del" href="javascript:void(0)" title="关闭">
-                        &nbsp;
-                    </a>
-                </li>
-                <li id="up-entry">
-                    <form action="" id="filesform" enctype="multipart/form-data" method="post">
-                        <input type="file" class="upfile up-entry-two" name="image" id="uploadbtn" accept="image/*" multiple=""
-                               style="pointer-events: auto;">
-                    </form>
-                </li>
-            </ul>
-        </div>
-    </div>
-    <!--</form>-->
-</div>
+<script src="__PUBLIC__/js/jquery.js"></script>
 
 <script>
     $(function(){
-        $(".publish-btn").click(function(){
-            $("#publish-panel").css('display','block');
-        });
-        $("#close").click(function(){
-            $("#publish-panel").css('display','none');
-        });
         $(".reply-btn-v3").each(function(){
             var $this=$(this);
             $this.click(function(){
-            $this.parent().next(".comment-area").toggle()  
+                $this.parent().next(".comment-area").toggle()  
                 // $this.parent().next(".comment-area").css('display','block'); 
             });
             // $this.parent().next(".comment-area").toggle()  
         });
-        $(".btn-del").click(function(){
-            $(".up-pic").hide();
-            $("#up-entry").show();
-            $("#post_image").val();
-        });
-        $(".up-pic").hide();
     });
     
-        function check(form) {
-            if(form.post_content.value=='') {
-                alert("说说内容不能为空!");
-                form.post_content.focus();
-                return false;
-            }
-        }
-    $("#uploadbtn").on("change",function(){
-        $("#filesform").ajaxSubmit({
-            type: "POST",//提交类型
-            dataType: "json",//返回结果格式
-            url: "{:U('uploadImage')}",//请求地址
-            success: function (res) {
-                $(".up-pic").show();
-                $(".touxiang").attr('src', res.url);
-                $("#post_image").val(res.url);
-                $("#up-entry").hide();
-            },
-            error: function (res) {
-                alert(res.message);
-            }
-        });
-    });
+       
 </script>
 <script src="__TMPL__Public/assets/js/jquery-1.9.1.min.js"></script>
 <script src="__TMPL__Public/assets/js/jquery.form.js"></script>

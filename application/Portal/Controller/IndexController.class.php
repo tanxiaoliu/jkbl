@@ -294,6 +294,31 @@ class IndexController extends HomebaseController
         $this->assign("footer", "shequ");
         $this->display(":community");
     }
+    /**
+     * 我的话题
+     * @author tanhuaxin
+     */
+    public function myhuati()
+    {
+        $this->checkLogin();
+        $user = session('user');
+        $map['post_author'] = $user['id'];
+        $map['post_type'] = 1;
+        $map['istop'] = 0;
+        $map['recommended'] = 0;
+        $pengyouquan = M('Posts')->field('id,post_content,post_date,post_image,post_author,post_like')->where($map)->order('id DESC')->limit(30)->select();
+        foreach ($pengyouquan as $key => $vl) {
+            $map['id'] = $vl['post_author'];
+            $users = D('users')->where($map)->find();
+            $pengyouquan[$key]['avatar'] = $users['avatar'];
+            $pengyouquan[$key]['user_nicename'] = $users['user_nicename'];
+            $pengyouquan[$key]['uid'] = $vl['post_author'];
+        }
+        $this->assign("uid", $user['id']);
+        $this->assign("pengyouquan", $pengyouquan);
+        $this->assign("footer", "shequ");
+        $this->display(":myhuati");
+    }
 
     /**
      * 发表说说
