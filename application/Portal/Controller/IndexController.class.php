@@ -431,6 +431,10 @@ class IndexController extends HomebaseController
                 $data['status'] = 1;
                 $usersModel->where($map)->save($data);
                 $userInfo->nickname = $user_nicename;
+                $data['user_nicename'] = $userInfo->nickname;
+                $user = session('user');
+                $user['user_nicename'] = $userInfo->nickname;
+                session('user',$user);
                 setcookie('userInfo', json_encode($userInfo));
             }
         }
