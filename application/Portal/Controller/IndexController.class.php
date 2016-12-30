@@ -50,6 +50,22 @@ class IndexController extends HomebaseController
      * 检查登录
      * @return mixed
      */
+    public function test()
+    {
+        //微信登录
+        $options = array(
+            'token' => 'test', //填写你设定的key
+            'appid' => 'wx33d9402ea60d3681', //填写高级调用功能的app id
+            'appsecret' => 'eb34a1662269b9027b7ed8635b04c6ed' //填写高级调用功能的密钥
+        );
+        $this->weObj = new Wechat($options);
+        $this->weObj->valid();
+    }
+
+    /**
+     * 检查登录
+     * @return mixed
+     */
     public function checkLogin()
     {
         if (sp_is_weixin()) {
