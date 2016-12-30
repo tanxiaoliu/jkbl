@@ -288,6 +288,7 @@ class IndexController extends HomebaseController
         $map['istop'] = 1;
         $map['recommended'] = 1;
         $map['post_type'] = 1;
+        $map['post_status'] = array('neq',3);
         $posts = M('Posts')->field('id,post_title,post_date')->where($map)->order('istop desc,recommended desc,post_date desc')->limit(5)->select();
         $postscount = M('Posts')->count();
         $userscount = M('Users')->count();
@@ -299,6 +300,7 @@ class IndexController extends HomebaseController
             $users = D('users')->where($map)->find();
             $pengyouquan[$key]['avatar'] = $users['avatar'];
             $pengyouquan[$key]['user_nicename'] = $users['user_nicename'];
+            $pengyouquan[$key]['uid'] = $vl['post_author'];
         }
         $user = session('user');
         $this->assign("uid", $user['id']);
@@ -308,6 +310,32 @@ class IndexController extends HomebaseController
         $this->assign("pengyouquan", $pengyouquan);
         $this->assign("footer", "shequ");
         $this->display(":community");
+    }
+    /**
+     * 我的话题
+     * @author tanhuaxin
+     */
+    public function myhuati()
+    {
+        $this->checkLogin();
+        $user = session('user');
+        $map['post_author'] = $user['id'];
+        $map['post_type'] = 1;
+        $map['istop'] = 0;
+        $map['recommended'] = 0;
+        $map['post_status'] = array('neq',3);
+        $pengyouquan = M('Posts')->field('id,post_content,post_date,post_image,post_author,post_like')->where($map)->order('id DESC')->limit(30)->select();
+        foreach ($pengyouquan as $key => $vl) {
+            $map['id'] = $vl['post_author'];
+            $users = D('users')->where($map)->find();
+            $pengyouquan[$key]['avatar'] = $users['avatar'];
+            $pengyouquan[$key]['user_nicename'] = $users['user_nicename'];
+            $pengyouquan[$key]['uid'] = $vl['post_author'];
+        }
+        $this->assign("uid", $user['id']);
+        $this->assign("pengyouquan", $pengyouquan);
+        $this->assign("footer", "shequ");
+        $this->display(":myhuati");
     }
 
     /**
@@ -600,6 +628,7 @@ class IndexController extends HomebaseController
     public function shop()
     {
         $userInfo = $this->checkLogin();
+        // $userInfo->openid = 'admin';
         $data['openid'] = $userInfo->openid;
         $map['user_login'] = $data['openid'];
         $score = current(M('Users')->where($map)->getField('user_login,score,coin', 1));
@@ -633,9 +662,9 @@ class IndexController extends HomebaseController
             }
             $score = $score['score'] - $score['coin'];//余额
             $data['goodid'] = I('goodid', 0, 'intval');
-            $data['username'] = I('username', '', 'htmlspecialchars');
-            $data['address'] = I('address', 0, 'htmlspecialchars');
-            $data['phone'] = I('phone', 0, 'string');
+            $data['username'] = I('username', '公益', 'htmlspecialchars');
+            $data['address'] = I('address', '公益', 'htmlspecialchars');
+            $data['phone'] = I('phone', '公益', 'string');
             $data['nums'] = 1;
             $data['add_time'] = time();
             $good = M('Good')->find($data['goodid']);
@@ -658,15 +687,20 @@ class IndexController extends HomebaseController
                     if ($users) {
                         $users['coin'] += $good['price'];
                         if (M('users')->save($users)) {
-                            $data = array(
+                            $data1 = array(
                                 'openid' => $map['user_login'],
                                 'type' => 2,
                                 'coin' => $good['price'],
                                 'add_time' => time(),
                                 'type_id' => $id,
                             );
-                            if (M('CoinRecord')->create($data) && M('CoinRecord')->add()) $this->success("下单成功", U('Index/shop'), true);
-                            else {
+                            if (M('CoinRecord')->add($data1)){
+                                if ($good['type']==2) {
+                                    $this->success("THIFF将代您送出爱心~", U('Index/shop'), true);
+                                }else{
+                                    $this->success("下单成功", U('Index/shop'), true);
+                                }
+                            }else {
                                 $users['coin'] -= $good['price'];
                                 M('users')->save($users);
                                 M('GoodOrder')->where(array('id' => $id))->delete();
@@ -687,6 +721,7 @@ class IndexController extends HomebaseController
                 $this->error("下单失败", true);
                 // $this->error(M('GoodOrder')->getError());
             }
+
         } else {
             //提示请使用微信登录
             die ('这是微信请求的接口地址，直接在浏览器里无效');

@@ -45,7 +45,8 @@
                             <span>{$vo.name}</span>
                             <img src="/data/upload/{$vo.url}">
                             <input type="hidden" value="{$vo.id}">
-                            <span>{$vo.price} <a href="#loginmodal" class="flatbtn modaltrigger"> 兑换</a></span>
+                            <span>￥{$vo.price} <a href="#loginmodal" class="flatbtn modaltrigger"> 兑换</a></span>
+                            <!-- <div class="briefing">犒劳自己，兑换健身用品犒劳自己，兑换健身用品犒劳自己</div> -->
                         </li>
                     </foreach> 
                 </ul>
@@ -65,8 +66,7 @@
                             <span>{$vo.name}</span>
                             <img src="/data/upload/{$vo.url}">
                             <input type="hidden" value="{$vo.id}">
-                            <span>{$vo.price} <a href="#loginmodal" class="flatbtn modaltrigger"> 兑换</a></span>
-                            <div class="briefing">犒劳自己，兑换健身用品犒劳自己，兑换健身用品犒劳自己</div>
+                            <span>￥{$vo.price} <a href="javascript:void(0)" class="gongyi"> 兑换</a></span>
                         </li>
                     </foreach> 
                 </ul>
@@ -109,9 +109,32 @@
                 $("#goodid").val($(this).parent().prev().val())
               })
           });
+        $(".gongyi").each(function(i){
+             $(this).click(function(){
+                  if (confirm("确认要捐赠公益吗")) {
+                       $("#goodid").val($(this).parent().prev().val())
+                       var url = $("#url").val();
+                       $.post(url,$("#loginform").serialize(),function(data){
+      /*                    console.log($("#loginform").serialize())
+                          console.log(data)*/
+                          if (data.status==1&&data.state=='success') {
+                              alert(data.info)
+                              window.location.href=data.url; 
+                          }else{
+                              alert(data.info)
+                          }
+                        },
+                        "json");//这里返回的类型有：json,html,xml,text
+                 }else{
+                      return;
+                 }
+              })
+          });
+
          $(".top ul li").click(function(){
             $(this).addClass("white").siblings().removeClass("white");
         });
+
 
     });
      function check(form) {

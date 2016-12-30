@@ -36,12 +36,16 @@ class SportController extends AdminbaseController
         $sportModel = M('sport');
         $count = $sportModel->count();
         $page = $this->page($count, 20);
-        $map['status'] = 0;
+        // $map['status'] = 0;
         $sport = $sportModel
-            ->order("status DESC")
-            ->where($map)
+            ->order("status asc,time DESC")
+            // ->where($map)
             ->limit($page->firstRow, $page->listRows)
             ->select();
+        foreach ($sport as $key => &$value) {
+            $map['user_login'] = $value['openid'];
+            $value['username'] = M('Users')->where($map)->getField('user_nicename');
+        }
         $this->assign("page", $page->show('Admin'));
         $this->assign("sport", $sport);
         $this->display();
@@ -58,15 +62,15 @@ class SportController extends AdminbaseController
             if ($this->sport_model->create($data) !== false) {
                 if (isset($data['id'])) {
                     if ($this->sport_model->save() !== false) {
-                        $this->success("保存成功！", U("sport/index"));
                         $this->_cleanFileCache();
+                        $this->success("保存成功！", U("sport/index"));
                     } else {
                         $this->error("保存失败！");
                     }
                 } else {
                     if ($this->sport_model->add() !== false) {
-                        $this->success("添加成功！", U("sport/index"));
                         $this->_cleanFileCache();
+                        $this->success("添加成功！", U("sport/index"));
                     } else {
                         $this->error("添加失败！");
                     }
@@ -93,10 +97,11 @@ class SportController extends AdminbaseController
     public function delete()
     {
         $id = I("get.id", 0, 'intval');
-        $data['status'] = 1;
+        $status = I("get.status", 0, 'intval');
+        $data['status'] = $status==1?0:1;
         if (M('sport')->where(array('id' => $id))->save($data) !== false) {
-            $this->success("审核成功！");
             $this->_cleanFileCache();
+            $this->success("审核成功！");
         } else {
             $this->error("审核失败！");
         }

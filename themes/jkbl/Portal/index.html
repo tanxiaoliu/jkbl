@@ -16,7 +16,11 @@
         </ul>
     </div>
     <div class="content">
-        <p class="txt1">根据在“健康心指数”中上传运动数据次数进行排序</p>
+        <p class="txt1">
+        <if condition="$type eq 0" >根据在“健康心指数”中上传运动数据次数进行排序</if>
+        <if condition="$type eq 1" >根据累计腾币总数进行排序</if>
+        <if condition="$type eq 2" >根据兑换公益福利腾币总数进行排序</if>
+        </p>
         <div class="one">
             <img src="__TMPL__Public/assets/images/hg.png" class="hg">
             <span class="head" style="background-image: url('{$data[0]['avatar']|default='__TMPL__Public/assets/images/0.png'}');"></span>
