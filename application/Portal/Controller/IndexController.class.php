@@ -35,11 +35,9 @@ class IndexController extends HomebaseController
 
     protected $weObj;
     protected $theme = 'jkbl';
-    const TOKEN = 'test';
-    const APPID = 'wx33d9402ea60d3681';
-    const APPSECRET = 'eb34a1662269b9027b7ed8635b04c6ed';
-    const API_BASE_URL_PREFIX = 'https://api.weixin.qq.com';
-    const URL = 'http://laoit.top';
+    const TOKEN = 'tengke';
+    const APPID = 'wx243493b23d1f6432';
+    const APPSECRET = 'b039a3327c3f6e5ab187385f748e112b';
 
     public function __construct()
     {
@@ -50,86 +48,83 @@ class IndexController extends HomebaseController
      * 检查登录
      * @return mixed
      */
-    public function test()
+    public function checkLogin()
     {
         //微信登录
         $options = array(
-            'token' => 'test', //填写你设定的key
-            'appid' => 'wx33d9402ea60d3681', //填写高级调用功能的app id
-            'appsecret' => 'eb34a1662269b9027b7ed8635b04c6ed' //填写高级调用功能的密钥
+            'token' => self::TOKEN, //填写你设定的key
+            'appid' => self::APPID, //填写高级调用功能的app id
+            'appsecret' => self::APPSECRET //填写高级调用功能的密钥
         );
         $this->weObj = new Wechat($options);
-        $this->weObj->valid();
-    }
-
-    /**
-     * 检查登录
-     * @return mixed
-     */
-    public function checkLogin()
-    {
-        if (sp_is_weixin()) {
-            $userInfo = json_decode($_COOKIE['userInfo']);
-            $user = session('user');
-            if (empty($userInfo) ||empty($user) || !isset($userInfo->openid)) {
-                //微信登录
-                $options = array(
-                    'token' => 'test', //填写你设定的key
-                    'appid' => 'wx33d9402ea60d3681', //填写高级调用功能的app id
-                    'appsecret' => 'eb34a1662269b9027b7ed8635b04c6ed' //填写高级调用功能的密钥
-                );
-                $this->weObj = new Wechat($options);
-                redirect($this->weObj->getOauthRedirect(self::URL . U('callback')));
-            } else {
-                return $userInfo;
-            }
-        } else {
-            //提示请使用微信登录
-            redirect(U('error'));
+        $type = $this->weObj->getRev()->getRevType();
+        $openid = $this->weObj->getRev()->getRevFrom();
+        switch ($type) {
+            case Wechat::MSGTYPE_TEXT:
+                $this->weObj->text($openid . '111')->reply();
+                $this->saveUserInfo($openid);
+                break;
+            case Wechat::MSGTYPE_EVENT:
+                $news = array("0"=>array(
+                    'Title' => '健康部落',
+                    'Description' => '幸福家庭，健康生活!',
+                    'PicUrl' => 'http://thiff.togogosz.net/themes/jkbl/Public/assets/images/img.png',
+                    'Url' => 'http://thiff.togogosz.net?openid=' . $openid
+                ));
+                $this->weObj->news($news)->reply();
+                $this->saveUserInfo($openid);
+                break;
+            default:
+                $this->weObj->text($openid . '333')->reply();
+                $this->saveUserInfo($openid);
         }
     }
 
-    /**
-     * code回调页面
-     * @author tanhuaxin
-     */
-    function callback()
-    {
-        $code = $_GET['code'];
-        $url = self::API_BASE_URL_PREFIX . '/sns/oauth2/access_token?appid=' . self::APPID . '&secret=' . self::APPSECRET . '&code=' . $code . '&grant_type=authorization_code';
-        $result = json_decode(file_get_contents($url));
-        $url2 = self::API_BASE_URL_PREFIX . '/sns/userinfo?access_token=' . $result->access_token . '&openid=' . $result->openid . '&lang=zh_CN';
-        $result2 = file_get_contents($url2);
-        $userInfo = json_decode($result2);
-        if (!empty($userInfo) || isset($userInfo->openid)) {
-            //保存用户信息入库
-            $map['user_login'] = $userInfo->openid;
-            $users = D('users')->where($map)->find();
-            if ($users) {
-                session('ADMIN_ID',1);
-                session('user',$users);
-                $data['last_login_time'] = date("Y-m-d H:i:s", time());
-                D('users')->save($data);
-                $userInfo->nickname = $users['user_nicename'];
-                setcookie('userInfo', json_encode($userInfo));
+    public function saveUserInfo($openid){
+//        $userInfo = json_decode($_COOKIE['userInfo']);
+        $user = session('user');
+//        if (!empty($userInfo) || empty($user) || !isset($userInfo->openid)) {
+            $url1 = Wechat::API_BASE_URL_PREFIX . '/cgi-bin/token?grant_type=client_credential&appid=' . self::APPID . '&secret=' . self::APPSECRET;
+            $result1 = json_decode(file_get_contents($url1));
+            $url2 = Wechat::API_BASE_URL_PREFIX . '/cgi-bin/user/info?access_token=' . $result1->access_token . '&openid=' . $openid . '&lang=zh_CN';
+            $result2 = file_get_contents($url2);
+            $userInfo = json_decode($result2);
+            if ($userInfo->subscribe == 0) {
+                redirect(U('follow'));
+            } elseif ($userInfo->subscribe == 1) {
+                //保存用户信息入库
+                $map['user_login'] = $userInfo->openid;
+                $users = D('users')->where($map)->find();
+                if ($users) {
+                    session('ADMIN_ID', 1);
+                    session('user', $users);
+                    $data['last_login_time'] = date("Y-m-d H:i:s", time());
+                    D('users')->save($data);
+                    $userInfo->nickname = $users['user_nicename'];
+                    session('userInfo', json_encode($userInfo));
+//                    setcookie('userInfo', json_encode($userInfo));
+                } else {
+                    $data['user_login'] = $userInfo->openid;
+                    $data['user_pass'] = sp_password('123456');
+                    $data['user_nicename'] = $userInfo->nickname;
+                    $data['avatar'] = $userInfo->headimgurl;
+                    $data['sex'] = $userInfo->sex;
+                    $data['last_login_time'] = date("Y-m-d H:i:s", time());
+                    $data['create_time'] = date("Y-m-d H:i:s", time());
+                    $data['user_type'] = 2;
+                    $data['id'] = D('users')->add($data);
+                    session('ADMIN_ID', 1);
+                    session('user', $data);
+                    session('userInfo', $result2);
+//                    setcookie('userInfo', $result2);
+                }
+//                  redirect(U('index'), array('openid' => '11'));
             } else {
-                $data['user_login'] = $userInfo->openid;
-                $data['user_pass'] = sp_password('123456');
-                $data['user_nicename'] = $userInfo->nickname;
-                $data['avatar'] = $userInfo->headimgurl;
-                $data['sex'] = $userInfo->sex;
-                $data['last_login_time'] = date("Y-m-d H:i:s", time());
-                $data['create_time'] = date("Y-m-d H:i:s", time());
-                $data['user_type'] = 2;
-                $data['id'] = D('users')->add($data);
-                session('ADMIN_ID',1);
-                session('user',$data);
-                setcookie('userInfo', $result2);
+                redirect(U('error'));
             }
-            redirect(U('index'));
-        } else {
-            die ('获取用户信息失败，请联系管理员');
-        }
+//        } else {
+//            return $userInfo;
+//        }
     }
 
     /**
@@ -138,7 +133,13 @@ class IndexController extends HomebaseController
      */
     public function index()
     {
-        $userInfo = $this->checkLogin();
+        $openid = I('openid');
+        $map['user_login'] = $openid;
+        $userInfo = D('users')->where($map)->find();
+        $data['openid'] = $openid;
+        $data['nickname'] = $userInfo['user_nicename'];
+        $data['headimgurl'] = $userInfo['avatar'];
+        session('userInfo', json_encode($data));
         // $userInfo->openid = 'admin';
         // $userInfo->headimgurl = 'admin';
         $type = intval(I('type'));
@@ -196,7 +197,8 @@ class IndexController extends HomebaseController
     public function member()
     {
 
-        $userInfo = $this->checkLogin();
+//        $userInfo = $this->checkLogin();
+        $userInfo = json_decode(session('userInfo'));
         // $userInfo->openid = 'admin';
         $map['user_login'] = $userInfo->openid;
         $users = M('Users')->where($map)->find();
@@ -317,7 +319,7 @@ class IndexController extends HomebaseController
      */
     public function myhuati()
     {
-        $this->checkLogin();
+//        $this->checkLogin();
         $user = session('user');
         $map['post_author'] = $user['id'];
         $map['post_type'] = 1;
@@ -344,7 +346,8 @@ class IndexController extends HomebaseController
      */
     public function publishedpAbout()
     {
-        $userInfo = $this->checkLogin();
+//        $userInfo = $this->checkLogin();
+        $userInfo = json_decode(session('userInfo'));
         $data['post_image'] = I('post_image');
         $data['post_content'] = I('post_content');
         $map['user_login'] = $userInfo->openid;
@@ -447,7 +450,8 @@ class IndexController extends HomebaseController
      */
     public function personal()
     {
-        $userInfo = $this->checkLogin();
+//        $userInfo = $this->checkLogin();
+        $userInfo = json_decode(session('userInfo'));
         $map['openid'] = $userInfo->openid;
         $num = D('sport_record')->where($map)->sum('step_nums');
         $umap['user_login'] = $userInfo->openid;
@@ -464,7 +468,8 @@ class IndexController extends HomebaseController
      */
     public function editName()
     {
-        $userInfo = $this->checkLogin();
+//        $userInfo = $this->checkLogin();
+        $userInfo = json_decode(session('userInfo'));
         if (IS_POST) {
             $user_nicename = I('user_nicename');
             $map['user_login'] = $userInfo->openid;
@@ -479,7 +484,8 @@ class IndexController extends HomebaseController
                 $user = session('user');
                 $user['user_nicename'] = $userInfo->nickname;
                 session('user',$user);
-                setcookie('userInfo', json_encode($userInfo));
+//                setcookie('userInfo', json_encode($userInfo));
+                 session('userInfo', json_encode($userInfo));
             }
         }
         redirect(U('personal'));
@@ -493,7 +499,8 @@ class IndexController extends HomebaseController
     {
         $data = array();
         $user = array();
-        $userInfo = $this->checkLogin();
+//        $userInfo = $this->checkLogin();
+        $userInfo = json_decode(session('userInfo'));
         // $userInfo->openid = 'admin';
         // $userInfo->headimgurl = 'admin';
         $type = intval(I('type'));
@@ -627,7 +634,8 @@ class IndexController extends HomebaseController
      */
     public function shop()
     {
-        $userInfo = $this->checkLogin();
+//        $userInfo = $this->checkLogin();
+        $userInfo = json_decode(session('userInfo'));
         // $userInfo->openid = 'admin';
         $data['openid'] = $userInfo->openid;
         $map['user_login'] = $data['openid'];
@@ -652,7 +660,8 @@ class IndexController extends HomebaseController
     {
         $data = array();
         if (!empty($_POST)) {
-            $userInfo = $this->checkLogin();
+//            $userInfo = $this->checkLogin();
+            $userInfo = json_decode(session('userInfo'));
             $data['openid'] = $userInfo->openid;
             // $data['openid'] = 'admin';
             $map['user_login'] = $data['openid'];
@@ -734,7 +743,8 @@ class IndexController extends HomebaseController
      */
     public function orderList()
     {
-        $userInfo = $this->checkLogin();
+//        $userInfo = $this->checkLogin();
+        $userInfo = json_decode(session('userInfo'));
         $map['openid'] = $userInfo->openid;
         // $map['openid'] = 'admin';
         $orders = M('GoodOrder')->where($map)->order('add_time desc')->select();
@@ -755,7 +765,8 @@ class IndexController extends HomebaseController
      */
     public function coinList()
     {
-        $userInfo = $this->checkLogin();
+//        $userInfo = $this->checkLogin();
+        $userInfo = json_decode(session('userInfo'));
         $map['openid'] = $userInfo->openid;
         // $map['openid'] = 'admin';
         $Records = M('CoinRecord')->where($map)->order('add_time desc')->select();
@@ -786,7 +797,8 @@ class IndexController extends HomebaseController
     public function uploadSport()
     {
         $num = I('num', 0, 'int');
-        $userInfo = $this->checkLogin();
+//        $userInfo = $this->checkLogin();
+        $userInfo = json_decode(session('userInfo'));
         $upload_setting = sp_get_upload_setting();
 
         $filetypes = array(
@@ -867,6 +879,11 @@ class IndexController extends HomebaseController
                 $this->error('上传文件出错', U('personal'));
             }
         }
+    }
+
+    public function follow()
+    {
+        $this->display(":follow");
     }
 }
 
