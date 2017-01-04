@@ -78,7 +78,6 @@ class AdminPostController extends AdminbaseController {
 	// 文章编辑
 	public function edit(){
 		$id=  I("get.id",0,'intval');
-		
 		$term_relationship = M('TermRelationships')->where(array("object_id"=>$id,"status"=>1))->getField("term_id",true);
 		$this->_getTermTree($term_relationship);
 		$terms=$this->terms_model->select();
@@ -93,6 +92,7 @@ class AdminPostController extends AdminbaseController {
 	// 文章编辑提交
 	public function edit_post(){
 		if (IS_POST) {
+			$_POST['term'][] = 1;
 			if(empty($_POST['term'])){
 				$this->error("请至少选择一个分类！");
 			}
@@ -118,6 +118,10 @@ class AdminPostController extends AdminbaseController {
 			unset($_POST['post']['post_author']);
 			$_POST['post']['post_modified']=date("Y-m-d H:i:s",time());
 			$article=I("post.post");
+			$article['post_type']=1;
+			$article['post_status']=1;
+			$article['istop']=1;
+			$article['recommended']=1;
 			$article['smeta']=json_encode($_POST['smeta']);
 			$article['post_content']=htmlspecialchars_decode($article['post_content']);
 			$result=$this->posts_model->save($article);

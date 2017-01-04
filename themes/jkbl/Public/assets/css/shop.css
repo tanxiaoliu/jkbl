@@ -20,20 +20,19 @@
 }
 .bi {
     height: 4.5rem;
-    width: 5.5rem;
+    width: 7rem;
     float: left;
     font-size: 0.60rem;
     color: #18abe1;
 }
 .bi li{
-    line-height: 0.5rem;
+    line-height: 0.1rem;
     padding: 1.2rem 0 0 0.3rem;
 }
 .btn {
     height: 4.5rem;
-    width: 5.5rem;
+    width: 4rem;
     float: left;
-    padding-left:1.2rem;
 }
 .btn li{
     text-align: center;

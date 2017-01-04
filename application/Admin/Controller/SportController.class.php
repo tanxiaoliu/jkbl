@@ -31,6 +31,29 @@ class SportController extends AdminbaseController
         $this->display();
     }
 
+    public function clean(){
+            $where = array();
+            $start_time=I('request.start_time');
+            if(!empty($start_time)){
+                $start_time = strtotime($start_time);
+                $where['add_time']=array(
+                    array('EGT',$start_time)
+                );
+            }
+            $end_time=I('request.end_time');
+            if(!empty($end_time)){
+                $end_time = strtotime($end_time);
+                if(empty($where['add_time'])){
+                    $where['add_time']=array();
+                }
+                array_push($where['add_time'], array('ELT',$end_time));
+            }
+            if ($this->sport_model->where($where)->delete()) {
+                $this->success("清除成功！", U("sport/index"));
+            }else{
+                $this->error("清除失败！", U("sport/index"));
+            }
+    }
     public function check()
     {
         $sportModel = M('sport');

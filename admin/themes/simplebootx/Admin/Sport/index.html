@@ -7,6 +7,14 @@
 			<li><a href="{:U('sport/check')}">记录审核</a></li>
 			<li><a href="{:U('sport/add')}">添加记录</a></li>
 		</ul>
+		<form class="well form-search" method="post" action="{:U('sport/clean')}">
+			时间：
+			<input type="text" name="start_time" class="js-datetime" value="{$formget.start_time|default=''}" style="width: 120px;" autocomplete="off">-
+			<input type="text" class="js-datetime" name="end_time" value="{$formget.end_time|default=''}" style="width: 120px;" autocomplete="off"> &nbsp; &nbsp;
+			<!-- 关键字： 
+			<input type="text" name="keyword" style="width: 200px;" value="{$formget.keyword|default=''}" placeholder="请输入关键字..."> -->
+			<input type="submit" class="btn btn-primary" value="清空" />
+		</form>
 		<h4><a href="{:U('sport/pushExcel')}"><input type="button" class="btn" value="点击导出Excel表副本" /></a></h4>
 		<form method="post" action="{:U('sport/importData')}" enctype="multipart/form-data">
 			<h3>导入记录(Excel表)：</h3>

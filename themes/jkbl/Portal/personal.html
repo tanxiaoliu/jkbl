@@ -10,7 +10,7 @@
     <div class="p-content">
         <img class="p-img1" src="{$userInfo->headimgurl|default='__TMPL__Public/assets/images/0.png'}" alt="">
         <span class="p-name">{$userInfo->nickname} <eq name="status" value="0"><a class="detail-btn modaltrigger" href="#loginmodal">修改名字</a></eq></span>
-        <div class="p-kilometer">{$num}</div><a class="modaltrigger" href="#sportmodal">
+        <div class="p-kilometer">{$num|default=0}</div><a class="modaltrigger" href="#sportmodal">
         <div style="width: 5rem; height: 1.5rem; position: relative;top: 2.2rem;left: 1rem;z-index:3;"></div></a>
     </div>
     <tc_include file="Public:footer" />
@@ -22,7 +22,7 @@
         </form>
     </div>
     <div id="sportmodal" class="modal" style="display:none;">
-        <form id="sportform" class="form" name="sportmodal" method="post" action="{:U('Index/uploadSport')}" onsubmit="return check(this)" enctype="multipart/form-data">
+        <form id="sportform" class="form" name="sportmodal" method="post" action="{:U('Index/uploadSport')}" onsubmit="return check1(this)" enctype="multipart/form-data">
             <p class="center" style="color: red;">注：请上传图片！</p>
             <div class="center" style="margin: 0.5rem 0;"><span><input type="file" name="image" id="image" style="height: 1rem;"></span></div>
             <div class="center" style="margin: 0.5rem 0;"><span style="color: #18abe1;">步数：</span><span><input type="text" name="num" id="num" style="height: 1rem;"></span></div>
@@ -41,8 +41,20 @@
     });
     function check(form) {
         if(form.user_nicename.value=='') {
-            alert("姓名不能为空!");
+            alert("姓名不能为空~");
             form.user_nicename.focus();
+            return false;
+        }
+    }
+    function check1(form) {
+        if(form.image.value=='') {
+            alert("请上传截图~");
+            form.image.focus();
+            return false;
+        }
+        if(form.num.value=='') {
+            alert("请填写步数~");
+            form.num.focus();
             return false;
         }
     }

@@ -141,10 +141,10 @@
             </div>
             <!-- react-empty: 4 -->
             <!-- react-empty: 5 -->
-            <div class="PostList" style="width:100%; height:26rem; overflow:scroll;">
+            <div class="PostList" style="width:100%;margin-bottom:3.5rem; height:30rem; overflow:scroll;">
                 <ul class="scroll-view post-list">
                     <foreach name="pengyouquan" item="vo">
-                    <li class="feeds-li feeds-li-normal">
+                    <li class="feeds-li feeds-li-normal" style="z-index:0;">
                         <div class="detail-top">
                             <div class="item-user">
                                 <div class="item-user-wrap">
@@ -181,6 +181,7 @@
                             </div>
                             <div class="post-bottom-v3">
                                 <div class="reply-btn-v3 post-btn-v3">
+                                    {$vo.comment_count}
                                 </div>
                                 <div class="like-btn-v3 post-btn-v3">
                                 <a  href="{:U('article/do_like',array('id'=>$vo['id']))}" class="js-count-btn">
@@ -255,7 +256,7 @@
 
 <div id="publish-panel" class="pub-float pub" style="height: 1331px;display: none;">
     <!--<form id="loginform" name="loginform" method="post" action="{:U('post')}"  class="form-horizontal " onsubmit="return check(this)">-->
-    <div id="close" class="publish-close-btn" style="bottom: 5rem;"></div>
+    <div id="close" class="publish-close-btn" ></div>
     <div data-reactroot="" class="pub-con">
         <div class="pub-wrap section-1px show">
             <form id="loginform" name="loginform" method="post" action="{:U('publishedpAbout')}"  class="form-horizontal" onsubmit="return check(this)">
@@ -264,7 +265,7 @@
                 <!--<input type="text" class="ipt-theme" name="post_content" id="post_content" value="" placeholder="标题，4-25个字">-->
             <!--</div>-->
             <div class="editor-outer">
-        <textarea class="editor" name="post_content" id="post_content" style="border: 0.1rem solid #efeff4;" placeholder="内容，4-25个字"></textarea>
+        <textarea class="editor" name="post_content" id="post_content" style="border: 0.1rem solid #efeff4;" placeholder=""></textarea>
         <textarea id="cp-editor">
         </textarea>
             </div>

@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50535
 File Encoding         : 65001
 
-Date: 2016-12-25 15:54:58
+Date: 2016-12-29 22:49:03
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -91,7 +91,7 @@ CREATE TABLE `cmf_auth_rule` (
 -- ----------------------------
 -- Records of cmf_auth_rule
 -- ----------------------------
-INSERT INTO `cmf_auth_rule` VALUES ('1', 'Admin', 'admin_url', 'admin/content/default', null, '内容管理', '1', '');
+INSERT INTO `cmf_auth_rule` VALUES ('1', 'Admin', 'admin_url', 'admin/content/default', null, '帖子管理', '1', '');
 INSERT INTO `cmf_auth_rule` VALUES ('2', 'Api', 'admin_url', 'api/guestbookadmin/index', null, '所有留言', '1', '');
 INSERT INTO `cmf_auth_rule` VALUES ('3', 'Api', 'admin_url', 'api/guestbookadmin/delete', null, '删除网站留言', '1', '');
 INSERT INTO `cmf_auth_rule` VALUES ('4', 'Comment', 'admin_url', 'comment/commentadmin/index', null, '评论管理', '1', '');
@@ -264,7 +264,7 @@ INSERT INTO `cmf_auth_rule` VALUES ('172', 'Admin', 'admin_url', 'admin/menu/res
 INSERT INTO `cmf_auth_rule` VALUES ('173', 'Admin', 'admin_url', 'admin/menu/getactions', null, '导入新菜单', '1', '');
 INSERT INTO `cmf_auth_rule` VALUES ('174', 'Admin', 'admin_url', 'admin/goods/index', null, '商品管理', '1', '');
 INSERT INTO `cmf_auth_rule` VALUES ('175', 'admin', 'admin_url', 'admin/order/index', null, '订单管理', '1', '');
-INSERT INTO `cmf_auth_rule` VALUES ('176', 'User', 'admin_url', 'user/indexadmin/group', null, '分组管理', '1', '');
+INSERT INTO `cmf_auth_rule` VALUES ('176', 'Admin', 'admin_url', 'admin/groups/index', null, '分组管理', '1', '');
 INSERT INTO `cmf_auth_rule` VALUES ('177', 'Admin', 'admin_url', 'admin/sport/index', null, '运动记录', '1', '');
 INSERT INTO `cmf_auth_rule` VALUES ('178', 'Admin', 'admin_url', 'admin/sport/add', null, '新增记录', '1', '');
 
@@ -280,7 +280,7 @@ CREATE TABLE `cmf_coin_record` (
   `add_time` int(11) DEFAULT NULL,
   `type_id` int(11) DEFAULT NULL COMMENT '类型ID，添加时为对应的运动记录ID，减少时为对应的订单ID',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=102 DEFAULT CHARSET=utf8 COMMENT='腾币记录表';
+) ENGINE=InnoDB AUTO_INCREMENT=124 DEFAULT CHARSET=utf8 COMMENT='腾币记录表';
 
 -- ----------------------------
 -- Records of cmf_coin_record
@@ -386,6 +386,28 @@ INSERT INTO `cmf_coin_record` VALUES ('98', '12', '1', '22', '1482510099', '107'
 INSERT INTO `cmf_coin_record` VALUES ('99', '11', '1', '22', '1482510100', '108');
 INSERT INTO `cmf_coin_record` VALUES ('100', 'oO2Bfwota1zns9zFvlvGDgO7UsU0', '1', '222', '1482510100', '109');
 INSERT INTO `cmf_coin_record` VALUES ('101', 'oO2Bfwota1zns9zFvlvGDgO7UsU0', '1', '22', '1482510100', '110');
+INSERT INTO `cmf_coin_record` VALUES ('102', 'admin', '1', '0', '1482657150', '111');
+INSERT INTO `cmf_coin_record` VALUES ('103', 'oO2Bfwp1X3a1sBOgN7ZYNJ6_-w-M', '1', '0', '1482657150', '112');
+INSERT INTO `cmf_coin_record` VALUES ('104', 'oO2Bfwo8VLLZOlawBD3Pi5_TMVh0', '1', '0', '1482657150', '113');
+INSERT INTO `cmf_coin_record` VALUES ('105', 'oO2Bfwota1zns9zFvlvGDgO7UsU0', '1', '0', '1482657151', '114');
+INSERT INTO `cmf_coin_record` VALUES ('106', 'admin', '1', '10', '1482657234', '115');
+INSERT INTO `cmf_coin_record` VALUES ('107', 'oO2Bfwp1X3a1sBOgN7ZYNJ6_-w-M', '1', '10', '1482657234', '116');
+INSERT INTO `cmf_coin_record` VALUES ('108', 'oO2Bfwota1zns9zFvlvGDgO7UsU0', '1', '10', '1482657234', '117');
+INSERT INTO `cmf_coin_record` VALUES ('109', 'admin', '1', '10', '1482657235', '118');
+INSERT INTO `cmf_coin_record` VALUES ('110', 'oO2Bfwp1X3a1sBOgN7ZYNJ6_-w-M', '1', '10', '1482657235', '119');
+INSERT INTO `cmf_coin_record` VALUES ('111', 'oO2Bfwota1zns9zFvlvGDgO7UsU0', '1', '10', '1482657235', '120');
+INSERT INTO `cmf_coin_record` VALUES ('112', 'admin', '1', '100', '1482987571', '121');
+INSERT INTO `cmf_coin_record` VALUES ('113', 'oO2Bfwp1X3a1sBOgN7ZYNJ6_-w-M', '1', '312', '1482987571', '122');
+INSERT INTO `cmf_coin_record` VALUES ('114', 'oO2Bfwo8VLLZOlawBD3Pi5_TMVh0', '1', '43243', '1482987571', '123');
+INSERT INTO `cmf_coin_record` VALUES ('115', 'oO2Bfwota1zns9zFvlvGDgO7UsU0', '1', '2323', '1482987571', '124');
+INSERT INTO `cmf_coin_record` VALUES ('116', 'oO2BfwjGuSw4p6sEDoPADOtTo2sM', '1', '423', '1482987571', '125');
+INSERT INTO `cmf_coin_record` VALUES ('117', 'oO2Bfwoz_QfJu4FrnP_FpMD6o2-Q', '1', '1', '1482987571', '126');
+INSERT INTO `cmf_coin_record` VALUES ('118', 'oO2Bfwota1zns9zFvlvGDgO7UsU0', '2', '45', '1482997514', '4');
+INSERT INTO `cmf_coin_record` VALUES ('119', 'oO2Bfwota1zns9zFvlvGDgO7UsU0', '2', '45', '1483014137', '5');
+INSERT INTO `cmf_coin_record` VALUES ('120', 'oO2Bfwota1zns9zFvlvGDgO7UsU0', '2', '45', '1483014571', '6');
+INSERT INTO `cmf_coin_record` VALUES ('121', 'oO2Bfwota1zns9zFvlvGDgO7UsU0', '2', '45', '1483014578', '7');
+INSERT INTO `cmf_coin_record` VALUES ('122', 'oO2Bfwota1zns9zFvlvGDgO7UsU0', '2', '45', '1483015332', '8');
+INSERT INTO `cmf_coin_record` VALUES ('123', 'oO2Bfwota1zns9zFvlvGDgO7UsU0', '2', '45', '1483015484', '9');
 
 -- ----------------------------
 -- Table structure for cmf_comments
@@ -412,7 +434,7 @@ CREATE TABLE `cmf_comments` (
   KEY `comment_parent` (`parentid`),
   KEY `table_id_status` (`post_table`,`post_id`,`status`),
   KEY `createtime` (`createtime`)
-) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='评论表';
+) ENGINE=MyISAM AUTO_INCREMENT=26 DEFAULT CHARSET=utf8 COMMENT='评论表';
 
 -- ----------------------------
 -- Records of cmf_comments
@@ -422,6 +444,18 @@ INSERT INTO `cmf_comments` VALUES ('2', 'posts', '1', 'index.php?g=&amp;m=articl
 INSERT INTO `cmf_comments` VALUES ('3', 'posts', '1', 'index.php?g=&amp;m=article&amp;a=index&amp;id=1&amp;cid=1', '1', '1', 'admin', '455019211@qq.com', '2016-12-20 14:53:08', '啊', '1', '1', '0-1-3', '1');
 INSERT INTO `cmf_comments` VALUES ('4', 'posts', '1', 'index.php?g=&amp;m=article&amp;a=index&amp;id=1&amp;cid=1', '1', '1', 'admin', '455019211@qq.com', '2016-12-20 14:53:11', '啊', '1', '3', '0-1-3-4', '1');
 INSERT INTO `cmf_comments` VALUES ('5', 'posts', '1', 'index.php?g=&amp;m=article&amp;a=index&amp;id=1&amp;cid=1', '1', '1', 'admin', '455019211@qq.com', '2016-12-20 14:53:14', '啊', '1', '4', '0-1-3-4-5', '1');
+INSERT INTO `cmf_comments` VALUES ('19', 'posts', '12', 'index.php?g=&amp;m=Index&amp;a=community', '5', '0', '哈', '', '2016-12-29 13:45:21', '好', '1', '0', '0-19', '1');
+INSERT INTO `cmf_comments` VALUES ('18', 'posts', '11', 'index.php?g=&amp;m=Index&amp;a=community', '5', '0', '啦啦啦', '', '2016-12-29 02:32:40', '就要把', '1', '0', '0-18', '1');
+INSERT INTO `cmf_comments` VALUES ('24', 'posts', '16', 'index.php?g=&amp;m=index&amp;a=myhuati', '5', '0', '哈', '', '2016-12-29 22:07:24', '啊', '1', '0', '0-24', '1');
+INSERT INTO `cmf_comments` VALUES ('9', 'posts', '12', 'index.php?g=&amp;m=Index&amp;a=community', '5', '0', '啦啦啦', '', '2016-12-29 00:58:30', '哈哈哈', '1', '0', '0-9', '1');
+INSERT INTO `cmf_comments` VALUES ('20', 'posts', '12', 'index.php?g=&amp;m=Index&amp;a=community', '5', '0', '哈', '', '2016-12-29 13:45:30', '来了', '1', '0', '0-20', '1');
+INSERT INTO `cmf_comments` VALUES ('11', 'posts', '12', 'index.php?g=&amp;m=Index&amp;a=community', '5', '5', '啦啦啦', '', '2016-12-29 00:58:51', '可以哦', '1', '10', '0-9-10-11', '1');
+INSERT INTO `cmf_comments` VALUES ('12', 'posts', '3', 'index.php?g=&amp;m=Index&amp;a=community', '5', '0', '啦啦啦', '', '2016-12-29 01:17:25', '哈哈哈', '1', '0', '0-12', '1');
+INSERT INTO `cmf_comments` VALUES ('13', 'posts', '2', 'index.php?g=&amp;m=Index&amp;a=community', '5', '0', '啦啦啦', '', '2016-12-29 01:32:05', '哈哈哈', '1', '0', '0-13', '1');
+INSERT INTO `cmf_comments` VALUES ('16', 'posts', '1', 'index.php?g=&amp;m=Article&amp;a=index&amp;id=1&amp;cid=1', '5', '0', '啦啦啦', '', '2016-12-29 02:18:12', '哈哈', '1', '0', '0-16', '1');
+INSERT INTO `cmf_comments` VALUES ('21', 'posts', '12', 'index.php?g=&amp;m=Index&amp;a=community', '6', '0', '叶宇燕', '', '2016-12-29 14:06:53', '。喝水不忘挖井人', '1', '0', '0-21', '1');
+INSERT INTO `cmf_comments` VALUES ('23', 'posts', '15', 'index.php?g=&amp;m=article&amp;a=index&amp;id=15&amp;cid=1', '6', '0', '叶宇燕呢', '', '2016-12-29 14:25:40', '嗯？', '1', '0', '0-23', '1');
+INSERT INTO `cmf_comments` VALUES ('25', 'posts', '17', 'index.php?g=&amp;m=index&amp;a=myhuati', '5', '0', '哈', '', '2016-12-29 22:34:23', '看来', '1', '0', '0-25', '1');
 
 -- ----------------------------
 -- Table structure for cmf_common_action_log
@@ -438,11 +472,35 @@ CREATE TABLE `cmf_common_action_log` (
   PRIMARY KEY (`id`),
   KEY `user_object_action` (`user`,`object`,`action`),
   KEY `user_object_action_ip` (`user`,`object`,`action`,`ip`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='访问记录表';
+) ENGINE=MyISAM AUTO_INCREMENT=25 DEFAULT CHARSET=utf8 COMMENT='访问记录表';
 
 -- ----------------------------
 -- Records of cmf_common_action_log
 -- ----------------------------
+INSERT INTO `cmf_common_action_log` VALUES ('1', '0', 'posts12', 'Portal-Index-do_like', '2', '1482921946', '14.18.236.190');
+INSERT INTO `cmf_common_action_log` VALUES ('2', '0', 'posts11', 'Portal-Index-do_like', '1', '1482936303', '117.136.41.60');
+INSERT INTO `cmf_common_action_log` VALUES ('3', '5', 'posts12', 'Portal-Index-do_like', '3', '1482940890', '223.73.57.222');
+INSERT INTO `cmf_common_action_log` VALUES ('4', '5', 'posts11', 'Portal-Index-do_like', '2', '1482940904', '223.73.57.222');
+INSERT INTO `cmf_common_action_log` VALUES ('5', '5', 'posts12', 'Portal-Article-do_like', '3', '1482979183', '14.18.236.190');
+INSERT INTO `cmf_common_action_log` VALUES ('6', '5', 'posts11', 'Portal-Article-do_like', '5', '1482979187', '14.18.236.190');
+INSERT INTO `cmf_common_action_log` VALUES ('7', '5', 'posts3', 'Portal-Article-do_like', '1', '1482945449', '223.73.57.202');
+INSERT INTO `cmf_common_action_log` VALUES ('8', '5', 'posts4', 'Portal-Article-do_like', '1', '1482945515', '223.73.57.202');
+INSERT INTO `cmf_common_action_log` VALUES ('9', '5', 'posts5', 'Portal-Article-do_like', '1', '1482946353', '223.73.57.202');
+INSERT INTO `cmf_common_action_log` VALUES ('10', '5', 'posts8', 'Portal-Article-do_like', '1', '1482948379', '223.73.57.222');
+INSERT INTO `cmf_common_action_log` VALUES ('11', '5', 'posts2', 'Portal-Article-do_like', '1', '1482948386', '223.73.57.202');
+INSERT INTO `cmf_common_action_log` VALUES ('12', '5', 'posts10', 'Portal-Article-do_like', '1', '1482979189', '14.18.236.190');
+INSERT INTO `cmf_common_action_log` VALUES ('13', '6', 'posts9', 'Portal-Article-do_like', '2', '1482992312', '183.238.79.247');
+INSERT INTO `cmf_common_action_log` VALUES ('14', '6', 'posts7', 'Portal-Article-do_like', '7', '1482992317', '183.238.79.247');
+INSERT INTO `cmf_common_action_log` VALUES ('15', '6', 'posts8', 'Portal-Article-do_like', '3', '1482992315', '183.238.79.247');
+INSERT INTO `cmf_common_action_log` VALUES ('16', '6', 'posts6', 'Portal-Article-do_like', '3', '1482992320', '183.238.79.247');
+INSERT INTO `cmf_common_action_log` VALUES ('17', '6', 'posts13', 'Portal-Article-do_like', '1', '1482992301', '183.238.79.247');
+INSERT INTO `cmf_common_action_log` VALUES ('18', '6', 'posts12', 'Portal-Article-do_like', '1', '1482992304', '183.238.79.247');
+INSERT INTO `cmf_common_action_log` VALUES ('19', '6', 'posts11', 'Portal-Article-do_like', '1', '1482992308', '183.238.79.247');
+INSERT INTO `cmf_common_action_log` VALUES ('20', '6', 'posts10', 'Portal-Article-do_like', '1', '1482992310', '183.238.79.247');
+INSERT INTO `cmf_common_action_log` VALUES ('21', '5', 'posts14', 'Portal-Article-do_like', '2', '1482993222', '14.18.236.190');
+INSERT INTO `cmf_common_action_log` VALUES ('22', '5', 'posts13', 'Portal-Article-do_like', '1', '1482994435', '14.18.236.190');
+INSERT INTO `cmf_common_action_log` VALUES ('23', '5', 'posts16', 'Portal-Article-do_like', '3', '1483022271', '223.73.57.202');
+INSERT INTO `cmf_common_action_log` VALUES ('24', '5', 'posts17', 'Portal-Article-do_like', '1', '1483022276', '223.73.57.202');
 
 -- ----------------------------
 -- Table structure for cmf_good
@@ -464,7 +522,7 @@ CREATE TABLE `cmf_good` (
 -- Records of cmf_good
 -- ----------------------------
 INSERT INTO `cmf_good` VALUES ('1', '热水壶', '1', '0', 'admin/20161225/585eabe687cb1.png', '1', '1482599401', '');
-INSERT INTO `cmf_good` VALUES ('2', '毛巾', '45', '0', 'admin/20161225/585eabb1b37e9.png', '2', '1482599451', '');
+INSERT INTO `cmf_good` VALUES ('2', '毛巾', '45', '0', 'admin/20161225/585eabb1b37e9.png', '2', '1482992428', '擦汗');
 
 -- ----------------------------
 -- Table structure for cmf_good_order
@@ -484,7 +542,7 @@ CREATE TABLE `cmf_good_order` (
   `username` varchar(50) DEFAULT NULL COMMENT '收件人',
   `status` int(1) DEFAULT '0' COMMENT '状态：0：未发货，1：已发货',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='订单列表';
+) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COMMENT='订单列表';
 
 -- ----------------------------
 -- Records of cmf_good_order
@@ -492,22 +550,30 @@ CREATE TABLE `cmf_good_order` (
 INSERT INTO `cmf_good_order` VALUES ('1', '1', '1', '1', '1', 'oO2Bfwota1zns9zFvlvGDgO7UsU0', '1', '1482484941', '广东省广东省广东省', '13631318054', '1', '0');
 INSERT INTO `cmf_good_order` VALUES ('2', '2', '4856', '45', '1', 'oO2Bfwota1zns9zFvlvGDgO7UsU0', '2', '1482485432', '广东省广东省广东省', '13631318054', '1', '0');
 INSERT INTO `cmf_good_order` VALUES ('3', '1', '1', '1', '1', 'oO2Bfwota1zns9zFvlvGDgO7UsU0', '1', '1482499376', '韶关市广东省湛江', '13631318054', '1', '1');
+INSERT INTO `cmf_good_order` VALUES ('4', '2', '毛巾', '45', '1', 'oO2Bfwota1zns9zFvlvGDgO7UsU0', '2', '1482997514', '', '', '', '0');
+INSERT INTO `cmf_good_order` VALUES ('5', '2', '毛巾', '45', '1', 'oO2Bfwota1zns9zFvlvGDgO7UsU0', '2', '1483014137', '', '', '', '0');
+INSERT INTO `cmf_good_order` VALUES ('6', '2', '毛巾', '45', '1', 'oO2Bfwota1zns9zFvlvGDgO7UsU0', '2', '1483014571', '', '', '', '0');
+INSERT INTO `cmf_good_order` VALUES ('7', '2', '毛巾', '45', '1', 'oO2Bfwota1zns9zFvlvGDgO7UsU0', '2', '1483014578', '', '', '', '0');
+INSERT INTO `cmf_good_order` VALUES ('8', '2', '毛巾', '45', '1', 'oO2Bfwota1zns9zFvlvGDgO7UsU0', '2', '1483015332', '', '', '', '0');
+INSERT INTO `cmf_good_order` VALUES ('9', '2', '毛巾', '45', '1', 'oO2Bfwota1zns9zFvlvGDgO7UsU0', '2', '1483015484', '', '', '', '0');
 
 -- ----------------------------
 -- Table structure for cmf_group
 -- ----------------------------
 DROP TABLE IF EXISTS `cmf_group`;
 CREATE TABLE `cmf_group` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) DEFAULT NULL COMMENT '组名',
   `add_time` int(11) DEFAULT NULL,
-  `nums` int(11) DEFAULT '0' COMMENT '成员数',
+  `logo` varchar(255) DEFAULT NULL COMMENT '队标',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='成员分组信息';
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='成员分组信息';
 
 -- ----------------------------
 -- Records of cmf_group
 -- ----------------------------
+INSERT INTO `cmf_group` VALUES ('3', 'A组', '1482742794', 'admin/20161226/5860dc01a9738.jpg');
+INSERT INTO `cmf_group` VALUES ('5', 'B组', '1482992932', 'admin/20161229/5864acfa7d9b3.jpg');
 
 -- ----------------------------
 -- Table structure for cmf_guestbook
@@ -578,8 +644,8 @@ CREATE TABLE `cmf_menu` (
 -- ----------------------------
 -- Records of cmf_menu
 -- ----------------------------
-INSERT INTO `cmf_menu` VALUES ('1', '0', 'Admin', 'Content', 'default', '', '0', '1', '内容管理', 'th', '', '30');
-INSERT INTO `cmf_menu` VALUES ('2', '1', 'Api', 'Guestbookadmin', 'index', '', '1', '1', '所有留言', '', '', '0');
+INSERT INTO `cmf_menu` VALUES ('1', '0', 'Admin', 'Content', 'default', '', '0', '1', '帖子管理', 'th', '', '30');
+INSERT INTO `cmf_menu` VALUES ('2', '1', 'Api', 'Guestbookadmin', 'index', '', '1', '0', '所有留言', '', '', '0');
 INSERT INTO `cmf_menu` VALUES ('3', '2', 'Api', 'Guestbookadmin', 'delete', '', '1', '0', '删除网站留言', '', '', '0');
 INSERT INTO `cmf_menu` VALUES ('4', '1', 'Comment', 'Commentadmin', 'index', '', '1', '1', '评论管理', '', '', '0');
 INSERT INTO `cmf_menu` VALUES ('5', '4', 'Comment', 'Commentadmin', 'delete', '', '1', '0', '删除评论', '', '', '0');
@@ -595,28 +661,28 @@ INSERT INTO `cmf_menu` VALUES ('14', '7', 'Portal', 'AdminPost', 'edit', '', '1'
 INSERT INTO `cmf_menu` VALUES ('15', '14', 'Portal', 'AdminPost', 'edit_post', '', '1', '0', '提交编辑', '', '', '0');
 INSERT INTO `cmf_menu` VALUES ('16', '7', 'Portal', 'AdminPost', 'add', '', '1', '0', '添加文章', '', '', '1000');
 INSERT INTO `cmf_menu` VALUES ('17', '16', 'Portal', 'AdminPost', 'add_post', '', '1', '0', '提交添加', '', '', '0');
-INSERT INTO `cmf_menu` VALUES ('18', '1', 'Portal', 'AdminTerm', 'index', '', '0', '1', '分类管理', '', '', '2');
+INSERT INTO `cmf_menu` VALUES ('18', '1', 'Portal', 'AdminTerm', 'index', '', '0', '0', '分类管理', '', '', '2');
 INSERT INTO `cmf_menu` VALUES ('19', '18', 'Portal', 'AdminTerm', 'listorders', '', '1', '0', '文章分类排序', '', '', '0');
 INSERT INTO `cmf_menu` VALUES ('20', '18', 'Portal', 'AdminTerm', 'delete', '', '1', '0', '删除分类', '', '', '1000');
 INSERT INTO `cmf_menu` VALUES ('21', '18', 'Portal', 'AdminTerm', 'edit', '', '1', '0', '编辑分类', '', '', '1000');
 INSERT INTO `cmf_menu` VALUES ('22', '21', 'Portal', 'AdminTerm', 'edit_post', '', '1', '0', '提交编辑', '', '', '0');
 INSERT INTO `cmf_menu` VALUES ('23', '18', 'Portal', 'AdminTerm', 'add', '', '1', '0', '添加分类', '', '', '1000');
 INSERT INTO `cmf_menu` VALUES ('24', '23', 'Portal', 'AdminTerm', 'add_post', '', '1', '0', '提交添加', '', '', '0');
-INSERT INTO `cmf_menu` VALUES ('25', '1', 'Portal', 'AdminPage', 'index', '', '1', '1', '页面管理', '', '', '3');
+INSERT INTO `cmf_menu` VALUES ('25', '1', 'Portal', 'AdminPage', 'index', '', '1', '0', '页面管理', '', '', '3');
 INSERT INTO `cmf_menu` VALUES ('26', '25', 'Portal', 'AdminPage', 'listorders', '', '1', '0', '页面排序', '', '', '0');
 INSERT INTO `cmf_menu` VALUES ('27', '25', 'Portal', 'AdminPage', 'delete', '', '1', '0', '删除页面', '', '', '1000');
 INSERT INTO `cmf_menu` VALUES ('28', '25', 'Portal', 'AdminPage', 'edit', '', '1', '0', '编辑页面', '', '', '1000');
 INSERT INTO `cmf_menu` VALUES ('29', '28', 'Portal', 'AdminPage', 'edit_post', '', '1', '0', '提交编辑', '', '', '0');
 INSERT INTO `cmf_menu` VALUES ('30', '25', 'Portal', 'AdminPage', 'add', '', '1', '0', '添加页面', '', '', '1000');
 INSERT INTO `cmf_menu` VALUES ('31', '30', 'Portal', 'AdminPage', 'add_post', '', '1', '0', '提交添加', '', '', '0');
-INSERT INTO `cmf_menu` VALUES ('32', '1', 'Admin', 'Recycle', 'default', '', '1', '1', '回收站', '', '', '4');
+INSERT INTO `cmf_menu` VALUES ('32', '1', 'Admin', 'Recycle', 'default', '', '1', '0', '回收站', '', '', '4');
 INSERT INTO `cmf_menu` VALUES ('33', '32', 'Portal', 'AdminPost', 'recyclebin', '', '1', '1', '文章回收', '', '', '0');
 INSERT INTO `cmf_menu` VALUES ('34', '33', 'Portal', 'AdminPost', 'restore', '', '1', '0', '文章还原', '', '', '1000');
 INSERT INTO `cmf_menu` VALUES ('35', '33', 'Portal', 'AdminPost', 'clean', '', '1', '0', '彻底删除', '', '', '1000');
 INSERT INTO `cmf_menu` VALUES ('36', '32', 'Portal', 'AdminPage', 'recyclebin', '', '1', '1', '页面回收', '', '', '1');
 INSERT INTO `cmf_menu` VALUES ('37', '36', 'Portal', 'AdminPage', 'clean', '', '1', '0', '彻底删除', '', '', '1000');
 INSERT INTO `cmf_menu` VALUES ('38', '36', 'Portal', 'AdminPage', 'restore', '', '1', '0', '页面还原', '', '', '1000');
-INSERT INTO `cmf_menu` VALUES ('39', '0', 'Admin', 'Extension', 'default', '', '0', '1', '扩展工具', 'cloud', '', '40');
+INSERT INTO `cmf_menu` VALUES ('39', '0', 'Admin', 'Extension', 'default', '', '0', '0', '扩展工具', 'cloud', '', '40');
 INSERT INTO `cmf_menu` VALUES ('40', '39', 'Admin', 'Backup', 'default', '', '1', '0', '备份管理', '', '', '0');
 INSERT INTO `cmf_menu` VALUES ('41', '40', 'Admin', 'Backup', 'restore', '', '1', '1', '数据还原', '', '', '0');
 INSERT INTO `cmf_menu` VALUES ('42', '40', 'Admin', 'Backup', 'index', '', '1', '1', '数据备份', '', '', '0');
@@ -663,7 +729,7 @@ INSERT INTO `cmf_menu` VALUES ('82', '81', 'Admin', 'Link', 'add_post', '', '1',
 INSERT INTO `cmf_menu` VALUES ('83', '39', 'Api', 'Oauthadmin', 'setting', '', '1', '1', '第三方登陆', 'leaf', '', '4');
 INSERT INTO `cmf_menu` VALUES ('84', '83', 'Api', 'Oauthadmin', 'setting_post', '', '1', '0', '提交设置', '', '', '0');
 INSERT INTO `cmf_menu` VALUES ('85', '0', 'Admin', 'Menu', 'default', '', '1', '1', '菜单管理', 'list', '', '20');
-INSERT INTO `cmf_menu` VALUES ('86', '85', 'Admin', 'Navcat', 'default1', '', '1', '1', '前台菜单', '', '', '0');
+INSERT INTO `cmf_menu` VALUES ('86', '85', 'Admin', 'Navcat', 'default1', '', '1', '0', '前台菜单', '', '', '0');
 INSERT INTO `cmf_menu` VALUES ('87', '86', 'Admin', 'Nav', 'index', '', '1', '1', '菜单管理', '', '', '0');
 INSERT INTO `cmf_menu` VALUES ('88', '87', 'Admin', 'Nav', 'listorders', '', '1', '0', '前台导航排序', '', '', '0');
 INSERT INTO `cmf_menu` VALUES ('89', '87', 'Admin', 'Nav', 'delete', '', '1', '0', '删除菜单', '', '', '1000');
@@ -686,7 +752,7 @@ INSERT INTO `cmf_menu` VALUES ('105', '100', 'Admin', 'Menu', 'edit', '', '1', '
 INSERT INTO `cmf_menu` VALUES ('106', '105', 'Admin', 'Menu', 'edit_post', '', '1', '0', '提交编辑', '', '', '0');
 INSERT INTO `cmf_menu` VALUES ('107', '100', 'Admin', 'Menu', 'delete', '', '1', '0', '删除菜单', '', '', '1000');
 INSERT INTO `cmf_menu` VALUES ('108', '100', 'Admin', 'Menu', 'lists', '', '1', '0', '所有菜单', '', '', '1000');
-INSERT INTO `cmf_menu` VALUES ('109', '0', 'Admin', 'Setting', 'default', '', '1', '1', '设置', 'bicycle', '', '0');
+INSERT INTO `cmf_menu` VALUES ('109', '0', 'Admin', 'Setting', 'default', '', '1', '0', '设置', 'bicycle', '', '0');
 INSERT INTO `cmf_menu` VALUES ('110', '109', 'Admin', 'Setting', 'userdefault', '', '0', '1', '个人信息', '', '', '0');
 INSERT INTO `cmf_menu` VALUES ('111', '110', 'Admin', 'User', 'userinfo', '', '1', '1', '修改信息', '', '', '0');
 INSERT INTO `cmf_menu` VALUES ('112', '111', 'Admin', 'User', 'userinfo_post', '', '1', '0', '修改信息提交', '', '', '0');
@@ -749,7 +815,7 @@ INSERT INTO `cmf_menu` VALUES ('176', '100', 'Admin', 'Menu', 'restore_menu', ''
 INSERT INTO `cmf_menu` VALUES ('177', '100', 'Admin', 'Menu', 'getactions', '', '1', '0', '导入新菜单', '', '', '0');
 INSERT INTO `cmf_menu` VALUES ('187', '0', 'Admin', 'Goods', 'index', '', '1', '1', '商品管理', 'inbox', '', '0');
 INSERT INTO `cmf_menu` VALUES ('188', '0', 'admin', 'Order', 'index', '', '1', '1', '订单管理', 'shopping-cart', '订单管理', '0');
-INSERT INTO `cmf_menu` VALUES ('189', '132', 'User', 'Indexadmin', 'group', '', '1', '1', '分组管理', 'leaf', '分组管理', '0');
+INSERT INTO `cmf_menu` VALUES ('189', '132', 'Admin', 'Groups', 'index', '', '1', '1', '分组管理', 'leaf', '分组管理', '0');
 INSERT INTO `cmf_menu` VALUES ('190', '0', 'Admin', 'Sport', 'index', '', '1', '1', '运动记录', '', '', '0');
 INSERT INTO `cmf_menu` VALUES ('191', '190', 'Admin', 'Sport', 'add', '', '1', '0', '新增记录', '', '', '0');
 
@@ -892,17 +958,34 @@ CREATE TABLE `cmf_posts` (
   `post_like` int(11) DEFAULT '0' COMMENT 'post赞数',
   `istop` tinyint(1) NOT NULL DEFAULT '0' COMMENT '置顶 1置顶； 0不置顶',
   `recommended` tinyint(1) NOT NULL DEFAULT '0' COMMENT '推荐 1推荐 0不推荐',
+  `post_image` varchar(100) NOT NULL DEFAULT '' COMMENT '社区评论图片',
   PRIMARY KEY (`id`),
   KEY `type_status_date` (`post_type`,`post_status`,`post_date`,`id`),
   KEY `post_parent` (`post_parent`),
   KEY `post_author` (`post_author`),
   KEY `post_date` (`post_date`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='Portal文章表';
+) ENGINE=MyISAM AUTO_INCREMENT=18 DEFAULT CHARSET=utf8 COMMENT='Portal文章表';
 
 -- ----------------------------
 -- Records of cmf_posts
 -- ----------------------------
-INSERT INTO `cmf_posts` VALUES ('1', '1', '测试', '测试', '2016-12-20 14:51:14', '<p>测试测试测试<img id=\"photo-0-preview\" src=\"http://www.tc.com/data/upload/portal/20161220/5858d4f3e8295.jpg\" style=\"height: 1px; width: 1px;\" width=\"1\" height=\"1\"/><img id=\"photo-0-preview\" src=\"http://www.tc.com/data/upload/portal/20161220/5858d4f3e8295.jpg\" style=\"height: 131px; width: 133px;\" width=\"133\" height=\"131\"/></p>', '测试测试测试', '测试', '1', '1', '2016-12-20 14:52:45', null, '0', '1', '', '5', '{\"thumb\":\"\",\"template\":\"\",\"photo\":[{\"url\":\"http:\\/\\/www.tc.com\\/data\\/upload\\/portal\\/20161220\\/5858d4f3e8295.jpg\",\"alt\":\"\\u7231\\u5fc3\\u8fbe\\u4eba\\u5802.jpg\"}]}', '10', '0', '1', '1');
+INSERT INTO `cmf_posts` VALUES ('1', '1', '测试', '测试', '2016-12-20 14:51:14', '<p>测试测试测试<img id=\"photo-0-preview\" src=\"http://www.tc.com/data/upload/portal/20161220/5858d4f3e8295.jpg\" style=\"height: 1px; width: 1px;\" width=\"1\" height=\"1\"/><img id=\"photo-0-preview\" src=\"http://www.tc.com/data/upload/portal/20161220/5858d4f3e8295.jpg\" style=\"height: 131px; width: 133px;\" width=\"133\" height=\"131\"/></p>', '测试测试测试', '测试', '1', '1', '2016-12-20 14:52:45', null, '0', '1', '', '10', '{\"thumb\":\"\",\"template\":\"\",\"photo\":[{\"url\":\"http:\\/\\/www.tc.com\\/data\\/upload\\/portal\\/20161220\\/5858d4f3e8295.jpg\",\"alt\":\"\\u7231\\u5fc3\\u8fbe\\u4eba\\u5802.jpg\"}]}', '73', '0', '1', '1', '');
+INSERT INTO `cmf_posts` VALUES ('2', '3', '', null, '2016-12-28 13:49:24', '', null, null, '3', '1', '2000-01-01 00:00:00', null, '0', '1', '', '1', null, '0', '1', '0', '0', '/data/upload/default/20161228/586352616f543.jpg');
+INSERT INTO `cmf_posts` VALUES ('3', '3', '', null, '2016-12-28 14:06:07', '', null, null, '3', '1', '2000-01-01 00:00:00', null, '0', '1', '', '1', null, '0', '1', '0', '0', '');
+INSERT INTO `cmf_posts` VALUES ('4', '3', '', null, '2016-12-28 14:06:21', '', null, null, '3', '1', '2000-01-01 00:00:00', null, '0', '1', '', '0', null, '0', '1', '0', '0', '/data/upload/default/20161228/58635657b59e5.jpg');
+INSERT INTO `cmf_posts` VALUES ('5', '3', '', null, '2016-12-28 14:13:23', '', null, null, '3', '1', '2000-01-01 00:00:00', null, '0', '1', '', '0', null, '0', '1', '0', '0', '');
+INSERT INTO `cmf_posts` VALUES ('6', '3', '', null, '2016-12-28 14:13:35', '', null, null, '3', '1', '2000-01-01 00:00:00', null, '0', '1', '', '0', null, '0', '1', '0', '0', '');
+INSERT INTO `cmf_posts` VALUES ('7', '3', '', null, '2016-12-28 14:15:44', '', null, null, '3', '1', '2000-01-01 00:00:00', null, '0', '1', '', '0', null, '0', '1', '0', '0', '/data/upload/default/20161228/5863588ca1b8f.jpg');
+INSERT INTO `cmf_posts` VALUES ('8', '3', '', null, '2016-12-28 14:18:44', '', null, null, '3', '1', '2000-01-01 00:00:00', null, '0', '1', '', '0', null, '0', '2', '0', '0', '/data/upload/default/20161228/586359431c3c1.jpg');
+INSERT INTO `cmf_posts` VALUES ('9', '3', '', null, '2016-12-28 14:23:42', '            324234', null, null, '3', '1', '2000-01-01 00:00:00', null, '0', '1', '', '0', null, '0', '1', '0', '0', '/data/upload/default/20161228/58635a6cd0bda.jpg');
+INSERT INTO `cmf_posts` VALUES ('10', '3', '', null, '2016-12-28 14:33:41', '        324234', null, null, '3', '1', '2000-01-01 00:00:00', null, '0', '1', '', '0', null, '0', '2', '0', '0', '/data/upload/default/20161228/58635ca65be66.jpg');
+INSERT INTO `cmf_posts` VALUES ('11', '3', '', null, '2016-12-28 14:48:23', '鱼坚强', null, null, '3', '1', '2000-01-01 00:00:00', null, '0', '1', '', '1', null, '0', '4', '0', '0', '');
+INSERT INTO `cmf_posts` VALUES ('12', '5', '', null, '2016-12-28 15:17:30', '1111', null, null, '3', '1', '2000-01-01 00:00:00', null, '0', '1', '', '9', null, '0', '4', '0', '0', '/data/upload/default/20161228/586367020d5fe.jpg');
+INSERT INTO `cmf_posts` VALUES ('13', '6', '', null, '2016-12-29 14:12:46', '顺顺利利', null, null, '1', '1', '2000-01-01 00:00:00', null, '0', '1', '', '0', null, '0', '2', '0', '0', '/data/upload/default/20161229/5864a95c041f1.jpeg');
+INSERT INTO `cmf_posts` VALUES ('14', '6', '', null, '2016-12-29 14:21:56', 'testing~', null, null, '1', '1', '2000-01-01 00:00:00', null, '0', '1', '', '0', null, '0', '1', '0', '0', '');
+INSERT INTO `cmf_posts` VALUES ('15', '1', '', null, '2016-12-29 14:22:33', '<p><span style=\"color: rgb(51, 51, 51); font-family: arial, sans-serif; font-size: 14px; line-height: 24px; text-indent: 28px; background-color: rgb(255, 255, 255);\">饮茶不但是传统饮食文化，同时，由于茶中含有多种抗氧化物质与</span><a href=\"http://baike.so.com/doc/2005576-2122317.html\" target=\"_blank\" style=\"color: rgb(19, 110, 194); text-decoration: none; font-family: arial, sans-serif; font-size: 14px; line-height: 24px; text-indent: 28px; white-space: normal; background-color: rgb(255, 255, 255);\">抗氧化营养素</a><span style=\"color: rgb(51, 51, 51); font-family: arial, sans-serif; font-size: 14px; line-height: 24px; text-indent: 28px; background-color: rgb(255, 255, 255);\">，对于消除自由基有一定的效果。因此喝茶也有助防老，具养生保健功能，每天喝三两杯茶可起到防老的作用。茶叶中含有多种维生素和氨基酸，喝茶对于清油解腻，增强神经兴奋以及消食利尿也具有一定的作用。 但并不是喝得越多越好，也不是所有的人都适合喝茶。一般来说，每天1-2次，每次3-5克、400毫升的饮量是比较适当的。一般，人们说喝茶还指喝水。</span></p><p><br/></p><h2 style=\"margin: 35px 0px 15px -30px; padding: 0px; font-size: 22px; font-weight: 500; border-left-width: 10px; border-left-style: solid; border-left-color: rgb(55, 171, 47); line-height: 22px; text-indent: 20px; clear: both; font-family: &#39;microsoft yahei&#39;; position: relative; white-space: normal; background-color: rgb(255, 255, 255);\"><span class=\"title\" style=\"float: left; font-family: &#39;microsoft yahei&#39;, Arial, Helvetica, sans-serif; line-height: 24px; zoom: 1;\">不适喝茶者</span></h2><p style=\"margin-top: 0px; margin-bottom: 15px; padding: 0px; line-height: 24px; text-indent: 2em; zoom: 1;\">1)缺铁性贫血者：</p><p style=\"margin-top: 0px; margin-bottom: 15px; padding: 0px; line-height: 24px; text-indent: 2em; zoom: 1;\">茶中的鞣酸会影响人体对铁的吸收，使贫血加重。 茶中的咖啡因能使人兴奋，引起基础代谢增高，加重失眠。</p><p style=\"margin-top: 0px; margin-bottom: 15px; padding: 0px; line-height: 24px; text-indent: 2em; zoom: 1;\">2)神经衰弱者：</p><p style=\"margin-top: 0px; margin-bottom: 15px; padding: 0px; line-height: 24px; text-indent: 2em; zoom: 1;\">3) 动性胃溃疡患者：</p><p style=\"margin-top: 0px; margin-bottom: 15px; padding: 0px; line-height: 24px; text-indent: 2em; zoom: 1;\">咖啡因刺激胃液分泌，加重病情，影响溃疡愈合。</p><p style=\"margin-top: 0px; margin-bottom: 15px; padding: 0px; line-height: 24px; text-indent: 2em; zoom: 1;\">4) 泌尿系结石者：</p><p style=\"margin-top: 0px; margin-bottom: 15px; padding: 0px; line-height: 24px; text-indent: 2em; zoom: 1;\">茶中的草酸会导致结石增多。</p><p style=\"margin-top: 0px; margin-bottom: 15px; padding: 0px; line-height: 24px; text-indent: 2em; zoom: 1;\">5) 肝功能不良者：</p><p style=\"margin-top: 0px; margin-bottom: 15px; padding: 0px; line-height: 24px; text-indent: 2em; zoom: 1;\">咖啡因绝大部分经肝脏代谢，肝功能不良的人饮茶，将增加肝脏负担。</p><p style=\"margin-top: 0px; margin-bottom: 15px; padding: 0px; line-height: 24px; text-indent: 2em; zoom: 1;\">6)便秘者：</p><p style=\"margin-top: 0px; margin-bottom: 15px; padding: 0px; line-height: 24px; text-indent: 2em; zoom: 1;\">鞣发有收敛作用，能减弱肠管蠕动，加重便秘。</p><p style=\"margin-top: 0px; margin-bottom: 15px; padding: 0px; line-height: 24px; text-indent: 2em; zoom: 1;\">7) 哺乳期妇女：</p><p style=\"margin-top: 0px; margin-bottom: 15px; padding: 0px; line-height: 24px; text-indent: 2em; zoom: 1;\">咖啡因可通过乳汁进入婴儿体内，使婴儿发生肠痉挛，贫血，还会影响孩子的睡眠。</p><p style=\"margin-top: 0px; margin-bottom: 15px; padding: 0px; line-height: 24px; text-indent: 2em; zoom: 1;\">8)&nbsp;<a target=\"_blank\" href=\"http://baike.so.com/doc/5355450.html\" style=\"color: rgb(19, 110, 194); text-decoration: none;\">心脏病</a>者：</p><p style=\"margin-top: 0px; margin-bottom: 15px; padding: 0px; line-height: 24px; text-indent: 2em; zoom: 1;\">饮茶过多，会使心跳加快，有的还可出现心律不齐。</p><p style=\"margin-top: 0px; margin-bottom: 15px; padding: 0px; line-height: 24px; text-indent: 2em; zoom: 1;\">9)孕妇：</p><p style=\"margin-top: 0px; margin-bottom: 15px; padding: 0px; line-height: 24px; text-indent: 2em; zoom: 1;\">饮茶过多，会使婴儿瘦小体弱。</p><p style=\"margin-top: 0px; margin-bottom: 15px; padding: 0px; line-height: 24px; text-indent: 2em; zoom: 1;\">10) 醉酒者：</p><p style=\"margin-top: 0px; margin-bottom: 15px; padding: 0px; line-height: 24px; text-indent: 2em; zoom: 1;\">酒精对心血管刺激很大，咖啡因可使心跳加快，两者一起发挥作用，对心脏功能欠佳者，十分危险。</p><p style=\"margin-top: 0px; margin-bottom: 15px; padding: 0px; line-height: 24px; text-indent: 2em; zoom: 1;\">编辑本段喝茶要注意1.忌空腹饮茶，茶入肺腑会冷脾胃。</p><p style=\"margin-top: 0px; margin-bottom: 15px; padding: 0px; line-height: 24px; text-indent: 2em; zoom: 1;\">2.忌饮烫茶，最好56℃以下。</p><p style=\"margin-top: 0px; margin-bottom: 15px; padding: 0px; line-height: 24px; text-indent: 2em; zoom: 1;\">3.忌饮冷茶，冷茶寒滞、聚痰。</p><p style=\"margin-top: 0px; margin-bottom: 15px; padding: 0px; line-height: 24px; text-indent: 2em; zoom: 1;\">4.忌冲泡过久，防止氧化、受细菌污染。</p><p style=\"margin-top: 0px; margin-bottom: 15px; padding: 0px; line-height: 24px; text-indent: 2em; zoom: 1;\">5.忌冲泡次数多，茶中有害微量元素会在最后泡出。</p><p style=\"margin-top: 0px; margin-bottom: 15px; padding: 0px; line-height: 24px; text-indent: 2em; zoom: 1;\">6.忌饭前饮，茶水会冲淡胃酸。</p><p style=\"margin-top: 0px; margin-bottom: 15px; padding: 0px; line-height: 24px; text-indent: 2em; zoom: 1;\">7.忌饭后马上饮茶，茶中的鞣酸会影响消化。</p><p style=\"margin-top: 0px; margin-bottom: 15px; padding: 0px; line-height: 24px; text-indent: 2em; zoom: 1;\">8.忌用茶水服药，茶中鞣酸会影响药效。</p><p style=\"margin-top: 0px; margin-bottom: 15px; padding: 0px; line-height: 24px; text-indent: 2em; zoom: 1;\">9.忌饮隔夜茶，茶水时间久会变质。</p><p style=\"margin-top: 0px; margin-bottom: 15px; padding: 0px; line-height: 24px; text-indent: 2em; zoom: 1;\">10.忌酒后饮茶，酒后饮茶伤肾。</p><p style=\"margin-top: 0px; margin-bottom: 15px; padding: 0px; line-height: 24px; text-indent: 2em; zoom: 1;\">11.忌饮浓茶，咖啡因使人上瘾中毒。</p><p style=\"margin-top: 0px; margin-bottom: 15px; padding: 0px; line-height: 24px; text-indent: 2em; zoom: 1;\">12.不宜饮用的茶叶有：焦味茶、霉变茶、串味茶。</p><p style=\"margin-top: 0px; margin-bottom: 15px; padding: 0px; line-height: 24px; text-indent: 2em; zoom: 1;\">13.忌发烧喝茶：茶叶中含有茶碱，有升高体温的作用，发烧病人喝茶无异于“火上浇油”。</p><p><img src=\"/data/upload/ueditor/20161229/5864ac29e1dcc.jpg\" title=\"cha.jpg\" alt=\"cha.jpg\"/></p>', '喝茶', null, '1', '1', '2016-12-29 14:24:43', null, '0', '1', '', '1', '{\"thumb\":\"\"}', '34', '0', '1', '1', '');
+INSERT INTO `cmf_posts` VALUES ('16', '5', '', null, '2016-12-29 18:33:53', '哈', null, null, '1', '1', '2000-01-01 00:00:00', null, '0', '1', '', '1', null, '0', '1', '0', '0', '/data/upload/default/20161229/5864e68e2d2bb.png');
+INSERT INTO `cmf_posts` VALUES ('17', '5', '', null, '2016-12-29 22:09:06', '我就试试', null, null, '1', '1', '2000-01-01 00:00:00', null, '0', '1', '', '1', null, '0', '1', '0', '0', '/data/upload/default/20161229/58651901cc831.png');
 
 -- ----------------------------
 -- Table structure for cmf_role
@@ -1000,6 +1083,28 @@ CREATE TABLE `cmf_slide_cat` (
 -- ----------------------------
 
 -- ----------------------------
+-- Table structure for cmf_sport
+-- ----------------------------
+DROP TABLE IF EXISTS `cmf_sport`;
+CREATE TABLE `cmf_sport` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `image` varchar(100) NOT NULL DEFAULT '' COMMENT '步数图片',
+  `time` varchar(50) NOT NULL DEFAULT '' COMMENT '上传时间',
+  `num` int(11) NOT NULL DEFAULT '0' COMMENT '步数',
+  `openid` varchar(100) NOT NULL DEFAULT '' COMMENT 'openid',
+  `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '审核状态1未1已',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of cmf_sport
+-- ----------------------------
+INSERT INTO `cmf_sport` VALUES ('1', '/data/upload/default/20161228/586290d32f277.jpg', '1482913447', '5555', 'oO2Bfwp1X3a1sBOgN7ZYNJ6_-w-M', '0');
+INSERT INTO `cmf_sport` VALUES ('2', '/data/upload/default/20161228/5863588ca1b8f.jpg', '1482913451', '5555', 'oO2Bfwp1X3a1sBOgN7ZYNJ6_-w-M', '0');
+INSERT INTO `cmf_sport` VALUES ('3', '/data/upload/default/20161229/5864a8bf0d0f0.jpeg', '1482991807', '50', 'oO2BfwjGuSw4p6sEDoPADOtTo2sM', '0');
+INSERT INTO `cmf_sport` VALUES ('4', '/data/upload/default/20161229/5864a8cc81f95.jpeg', '1482991820', '50', 'oO2BfwjGuSw4p6sEDoPADOtTo2sM', '1');
+
+-- ----------------------------
 -- Table structure for cmf_sport_record
 -- ----------------------------
 DROP TABLE IF EXISTS `cmf_sport_record`;
@@ -1010,7 +1115,7 @@ CREATE TABLE `cmf_sport_record` (
   `add_time` int(11) DEFAULT NULL COMMENT '添加时间',
   `step_nums` int(11) DEFAULT NULL COMMENT '步数',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=111 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=127 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of cmf_sport_record
@@ -1124,6 +1229,22 @@ INSERT INTO `cmf_sport_record` VALUES ('107', '12', '4', '1482510099', '22');
 INSERT INTO `cmf_sport_record` VALUES ('108', '11', '324', '1482510100', '22');
 INSERT INTO `cmf_sport_record` VALUES ('109', 'oO2Bfwota1zns9zFvlvGDgO7UsU0', '3', '1482510100', '222');
 INSERT INTO `cmf_sport_record` VALUES ('110', 'oO2Bfwota1zns9zFvlvGDgO7UsU0', '234', '1482510100', '22');
+INSERT INTO `cmf_sport_record` VALUES ('111', 'admin', 'admin', '1482657150', '0');
+INSERT INTO `cmf_sport_record` VALUES ('112', 'oO2Bfwp1X3a1sBOgN7ZYNJ6_-w-M', '和任何人', '1482657150', '0');
+INSERT INTO `cmf_sport_record` VALUES ('113', 'oO2Bfwo8VLLZOlawBD3Pi5_TMVh0', '谭华欣', '1482657150', '0');
+INSERT INTO `cmf_sport_record` VALUES ('114', 'oO2Bfwota1zns9zFvlvGDgO7UsU0', '爸爸', '1482657151', '0');
+INSERT INTO `cmf_sport_record` VALUES ('115', 'admin', 'admin', '1482657234', '10');
+INSERT INTO `cmf_sport_record` VALUES ('116', 'oO2Bfwp1X3a1sBOgN7ZYNJ6_-w-M', '和任何人', '1482657234', '10');
+INSERT INTO `cmf_sport_record` VALUES ('117', 'oO2Bfwota1zns9zFvlvGDgO7UsU0', '爸爸', '1482657234', '10');
+INSERT INTO `cmf_sport_record` VALUES ('118', 'admin', 'admin', '1482657235', '10');
+INSERT INTO `cmf_sport_record` VALUES ('119', 'oO2Bfwp1X3a1sBOgN7ZYNJ6_-w-M', '和任何人', '1482657235', '10');
+INSERT INTO `cmf_sport_record` VALUES ('120', 'oO2Bfwota1zns9zFvlvGDgO7UsU0', '爸爸', '1482657235', '10');
+INSERT INTO `cmf_sport_record` VALUES ('121', 'admin', 'admin', '1482987571', '100');
+INSERT INTO `cmf_sport_record` VALUES ('122', 'oO2Bfwp1X3a1sBOgN7ZYNJ6_-w-M', '324', '1482987571', '312');
+INSERT INTO `cmf_sport_record` VALUES ('123', 'oO2Bfwo8VLLZOlawBD3Pi5_TMVh0', '谭华欣', '1482987571', '43243');
+INSERT INTO `cmf_sport_record` VALUES ('124', 'oO2Bfwota1zns9zFvlvGDgO7UsU0', '啦啦啦', '1482987571', '2323');
+INSERT INTO `cmf_sport_record` VALUES ('125', 'oO2BfwjGuSw4p6sEDoPADOtTo2sM', '叶宇燕', '1482987571', '423');
+INSERT INTO `cmf_sport_record` VALUES ('126', 'oO2Bfwoz_QfJu4FrnP_FpMD6o2-Q', 'stone', '1482987571', '1');
 
 -- ----------------------------
 -- Table structure for cmf_terms
@@ -1166,13 +1287,14 @@ CREATE TABLE `cmf_term_relationships` (
   `status` int(2) NOT NULL DEFAULT '1' COMMENT '状态，1发布，0不发布',
   PRIMARY KEY (`tid`),
   KEY `term_taxonomy_id` (`term_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='Portal 文章分类对应表';
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='Portal 文章分类对应表';
 
 -- ----------------------------
 -- Records of cmf_term_relationships
 -- ----------------------------
 INSERT INTO `cmf_term_relationships` VALUES ('1', '1', '1', '0', '1');
 INSERT INTO `cmf_term_relationships` VALUES ('2', '1', '2', '0', '1');
+INSERT INTO `cmf_term_relationships` VALUES ('3', '15', '1', '0', '1');
 
 -- ----------------------------
 -- Table structure for cmf_users
@@ -1198,18 +1320,23 @@ CREATE TABLE `cmf_users` (
   `user_type` smallint(1) DEFAULT '1' COMMENT '用户类型，1:admin ;2:会员',
   `coin` int(11) NOT NULL DEFAULT '0' COMMENT '用户已用腾币',
   `mobile` varchar(20) NOT NULL DEFAULT '' COMMENT '手机号',
+  `groupid` int(11) DEFAULT NULL COMMENT '用户组',
+  `status` tinyint(1) DEFAULT '0' COMMENT '修改名字状态0未1已',
   PRIMARY KEY (`id`),
   KEY `user_login_key` (`user_login`),
-  KEY `user_nicename` (`user_nicename`)
-) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='用户表';
+  KEY `user_nicename` (`user_nicename`),
+  KEY `user_group` (`groupid`)
+) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COMMENT='用户表';
 
 -- ----------------------------
 -- Records of cmf_users
 -- ----------------------------
-INSERT INTO `cmf_users` VALUES ('1', 'admin', '###0a599186db1fa72d87ae5d905aa828bd', 'admin', '455019211@qq.com', '', null, '0', '2000-01-01', null, '14.18.236.187', '2016-12-25 10:51:50', '2016-12-20 02:46:58', '', '1', '0', '1', '0', '');
-INSERT INTO `cmf_users` VALUES ('3', 'oO2Bfwp1X3a1sBOgN7ZYNJ6_-w-M', '###0a599186db1fa72d87ae5d905aa828bd', '谭小六', '', '', 'http://wx.qlogo.cn/mmopen/4HibL8bRTEPIdYmWo8vez08zmGnRqzIXAMlJN3xGRmkCDUejdhZQ9Jc4LfLg7I9hmdKgib1r3tyPv8PgVhEAb7wddKPYmVGHQv/0', '1', '2000-01-01', null, null, '2016-12-22 17:47:38', '2016-12-22 17:47:38', '', '1', '932', '2', '0', '');
-INSERT INTO `cmf_users` VALUES ('4', 'oO2Bfwo8VLLZOlawBD3Pi5_TMVh0', '###0a599186db1fa72d87ae5d905aa828bd', '谭华欣', '', '', 'http://wx.qlogo.cn/mmopen/4HibL8bRTEPK4htQqRibd2k5jFjHcibwibNgh9tP3Awia34xiaEbFMa1oveh6d7WSI0cNHDarpuKFedO7CdB64XxEMoQwYwDkrj4B5/0', '1', '2000-01-01', null, null, '2016-12-22 17:58:02', '2016-12-22 17:58:02', '', '1', '1332', '2', '0', '');
-INSERT INTO `cmf_users` VALUES ('5', 'oO2Bfwota1zns9zFvlvGDgO7UsU0', '###0a599186db1fa72d87ae5d905aa828bd', '爸爸', '', '', 'http://wx.qlogo.cn/mmopen/I1OPdTuWhEicgXecAACaFSpLJ9RRzSW6YR7X6iaqmCEl09bN2Of6e3Z6wpGCw99ia9hxBLU2lr36AW9zgNibBJVv8hj7UibqqID0f/0', '1', '2000-01-01', null, null, '2016-12-22 21:03:47', '2016-12-22 21:03:47', '', '1', '488', '2', '47', '');
+INSERT INTO `cmf_users` VALUES ('1', 'admin', '###12a66e92e1dc2aa427d91d76df4fa2d0', 'admin', '455019211@qq.com', '', null, '0', '2000-01-01', null, '223.73.57.202', '2016-12-29 20:48:59', '2016-12-20 02:46:58', '', '1', '120', '1', '0', '', '3', '0');
+INSERT INTO `cmf_users` VALUES ('3', 'oO2Bfwp1X3a1sBOgN7ZYNJ6_-w-M', '###0a599186db1fa72d87ae5d905aa828bd', '324', '', '', 'http://wx.qlogo.cn/mmopen/4HibL8bRTEPIdYmWo8vez08zmGnRqzIXAMlJN3xGRmkCDUejdhZQ9Jc4LfLg7I9hmdKgib1r3tyPv8PgVhEAb7wddKPYmVGHQv/0', '1', '2000-01-01', null, null, '2016-12-22 17:47:38', '2016-12-22 17:47:38', '', '1', '1264', '2', '0', '', '3', '0');
+INSERT INTO `cmf_users` VALUES ('4', 'oO2Bfwo8VLLZOlawBD3Pi5_TMVh0', '###0a599186db1fa72d87ae5d905aa828bd', '谭华欣', '', '', 'http://wx.qlogo.cn/mmopen/4HibL8bRTEPK4htQqRibd2k5jFjHcibwibNgh9tP3Awia34xiaEbFMa1oveh6d7WSI0cNHDarpuKFedO7CdB64XxEMoQwYwDkrj4B5/0', '1', '2000-01-01', null, null, '2016-12-22 17:58:02', '2016-12-22 17:58:02', '', '1', '44575', '2', '0', '', '5', '0');
+INSERT INTO `cmf_users` VALUES ('5', 'oO2Bfwota1zns9zFvlvGDgO7UsU0', '###0a599186db1fa72d87ae5d905aa828bd', '哈', '', '', 'http://wx.qlogo.cn/mmopen/I1OPdTuWhEicgXecAACaFSpLJ9RRzSW6YR7X6iaqmCEl09bN2Of6e3Z6wpGCw99ia9hxBLU2lr36AW9zgNibBJVv8hj7UibqqID0f/0', '1', '2000-01-01', null, null, '2016-12-22 21:03:47', '2016-12-22 21:03:47', '', '1', '2831', '2', '317', '', '3', '1');
+INSERT INTO `cmf_users` VALUES ('6', 'oO2BfwjGuSw4p6sEDoPADOtTo2sM', '###0a599186db1fa72d87ae5d905aa828bd', '叶宇燕呢', '', '', 'http://wx.qlogo.cn/mmopen/OLVCsjfnBBqUV1tsTZ4uCRXkV94G5SbNK1PILt8hZkIT3dcdhcibJPIiaPcug50j2vf1DCQfgvgkUOibLtwEouxTzQJg28dNUUy/0', '2', '2000-01-01', null, null, '2016-12-27 09:10:09', '2016-12-27 09:10:09', '', '1', '423', '2', '0', '', '5', '1');
+INSERT INTO `cmf_users` VALUES ('7', 'oO2Bfwoz_QfJu4FrnP_FpMD6o2-Q', '###0a599186db1fa72d87ae5d905aa828bd', 'stone', '', '', 'http://wx.qlogo.cn/mmopen/OLVCsjfnBBqiaF6hKl19IFicrAbfv1icRyJmp4ZZrrQ22NMbaIhA2auW4xnLGAaqFice73yhbNiaS0fQgayo7ZFInHKwYeostLdLv/0', '1', '2000-01-01', null, null, '2016-12-27 09:24:27', '2016-12-27 09:24:27', '', '1', '1', '2', '0', '', '3', '0');
 
 -- ----------------------------
 -- Table structure for cmf_user_favorites

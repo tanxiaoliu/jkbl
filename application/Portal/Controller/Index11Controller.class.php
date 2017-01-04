@@ -35,12 +35,11 @@ class IndexController extends HomebaseController
 
     protected $weObj;
     protected $theme = 'jkbl';
-    const TOKEN = 'tengke';
-    const APPID = 'wx243493b23d1f6432';
-    const APPSECRET = 'b039a3327c3f6e5ab187385f748e112b';
+    const TOKEN = 'test';
+    const APPID = 'wx33d9402ea60d3681';
+    const APPSECRET = 'eb34a1662269b9027b7ed8635b04c6ed';
     const API_BASE_URL_PREFIX = 'https://api.weixin.qq.com';
-    const URL = 'http://thiff.togogosz.net';
-
+    const URL = 'http://laoit.top';
     public function __construct()
     {
         parent::__construct();
@@ -54,9 +53,9 @@ class IndexController extends HomebaseController
     {
         //微信登录
         $options = array(
-            'token' => 'tengke', //填写你设定的key
-            'appid' => 'wx243493b23d1f6432', //填写高级调用功能的app id
-            'appsecret' => 'b039a3327c3f6e5ab187385f748e112b' //填写高级调用功能的密钥
+            'token' => self::TOKEN, //填写你设定的key
+            'appid' => self::APPID, //填写高级调用功能的app id
+            'appsecret' => self::APPSECRET //填写高级调用功能的密钥
         );
         $this->weObj = new Wechat($options);
         $this->weObj->valid();
@@ -69,17 +68,17 @@ class IndexController extends HomebaseController
     public function checkLogin()
     {
         if (sp_is_weixin()) {
-            $userInfo = json_decode($_COOKIE['userInfo']);
             $user = session('user');
-            if (empty($userInfo) ||empty($user) || !isset($userInfo->openid)) {
+            $userInfo = json_decode($_COOKIE['userInfo']);
+            if (empty($user) || !isset($userInfo->openid)) {
                 //微信登录
                 $options = array(
-                    'token' => 'tengke', //填写你设定的key
-                    'appid' => 'wx243493b23d1f6432', //填写高级调用功能的app id
-                    'appsecret' => 'b039a3327c3f6e5ab187385f748e112b' //填写高级调用功能的密钥
+                    'token' => self::TOKEN, //填写你设定的key
+                    'appid' => self::APPID, //填写高级调用功能的app id
+                    'appsecret' => self::APPSECRET //填写高级调用功能的密钥
                 );
                 $this->weObj = new Wechat($options);
-                redirect($this->weObj->getOauthRedirect(self::URL . U('callback'), '', 'snsapi_userinfo'));
+                redirect($this->weObj->getOauthRedirect(self::URL . U('callback'), '', 'snsapi_base'));
             } else {
                 return $userInfo;
             }
@@ -96,19 +95,10 @@ class IndexController extends HomebaseController
     function callback()
     {
         $code = $_GET['code'];
-        $url = self::API_BASE_URL_PREFIX . '/sns/oauth2/access_token?appid=' . self::APPID . '&secret=' . self::APPSECRET . '&code=' . $code . '&code=' . $code . '&grant_type=authorization_code';
+        $url = self::API_BASE_URL_PREFIX . '/sns/oauth2/access_token?appid=' . self::APPID . '&secret=' . self::APPSECRET . '&code=' . $code . '&grant_type=authorization_code';
         $result = json_decode(file_get_contents($url));
-        // $url3 = self::API_BASE_URL_PREFIX . '/sns/oauth2/refresh_token?appid=' . self::APPID . '&grant_type=refresh_token&refresh_token='. $result->refresh_token;
-        // $result3 = json_decode(file_get_contents($url3));
-        // print_r($result);
-        // print_r($result3);
-        // $url4 = self::API_BASE_URL_PREFIX . '/sns/auth?access_token=' . $result3->access_token . '&openid=' . $result3->openid;
-        // $result4 = file_get_contents($url4);
-        // print_r($result4);
         $url2 = self::API_BASE_URL_PREFIX . '/sns/userinfo?access_token=' . $result->access_token . '&openid=' . $result->openid . '&lang=zh_CN';
         $result2 = file_get_contents($url2);
-        // print_r($result2);
-        // exit();
         $userInfo = json_decode($result2);
         if (!empty($userInfo) || isset($userInfo->openid)) {
             //保存用户信息入库
@@ -137,7 +127,8 @@ class IndexController extends HomebaseController
             }
             redirect(U('index'));
         } else {
-            die ('获取用户信息失败，请联系管理员');
+            redirect(U('error'));
+//            redirect(U('follow'));
         }
     }
 
@@ -294,7 +285,6 @@ class IndexController extends HomebaseController
      */
     public function community()
     {
-        $userInfo = $this->checkLogin();
         $map['istop'] = 1;
         $map['recommended'] = 1;
         $map['post_type'] = 1;
@@ -304,7 +294,7 @@ class IndexController extends HomebaseController
         $userscount = M('Users')->count();
         $map['istop'] = 0;
         $map['recommended'] = 0;
-        $pengyouquan = M('Posts')->field('id,post_content,post_date,post_image,post_author,post_like,comment_count')->where($map)->order('id DESC')->limit(30)->select();
+        $pengyouquan = M('Posts')->field('id,post_content,post_date,post_image,post_author,post_like')->where($map)->order('id DESC')->limit(30)->select();
         foreach ($pengyouquan as $key => $vl) {
             $map['id'] = $vl['post_author'];
             $users = D('users')->where($map)->find();
@@ -869,10 +859,7 @@ class IndexController extends HomebaseController
                 $data['openid'] = $userInfo->openid;
                 $result = M('sport')->add($data);
                 if ($result) {
-                    header("Content-type:text/html;charset=utf-8");
-                    echo "<script> alert('上传成功'); </script>"; 
-                    echo "<meta http-equiv='Refresh' content='0;URL=".U('personal')."'>"; 
-                    // redirect(U('personal'));
+                    redirect(U('personal'));
                 } else {
                     $this->error('上传数据出错', U('personal'));
                 }
@@ -880,6 +867,19 @@ class IndexController extends HomebaseController
                 $this->error('上传文件出错', U('personal'));
             }
         }
+    }
+
+    public function follow()
+    {
+        $this->display(":follow");
+    }
+    public  function arrayToObject($e){
+        if( gettype($e)!='array' ) return;
+        foreach($e as $k=>$v){
+            if( gettype($v)=='array' || getType($v)=='object' )
+                $e[$k]=(object)arrayToObject($v);
+        }
+        return (object)$e;
     }
 }
 

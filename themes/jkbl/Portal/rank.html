@@ -14,7 +14,8 @@
             <li <if condition="$grouptype eq 1">class="gray_rank"</if>><a style="color:white;" href="{:U('Index/rank', array('grouptype'=>1))}">联盟排名</a></li>
         </ul>
     </div>
-    <p class="type-title">{$type}</p>
+    <br />
+    <p class="type-title" style="width:100%; text-align:center; ">{$typeName}</p>
     <div class="content" style="margin-top:2rem;">
         <a class="detail-btn flatbtn modaltrigger" href="#loginmodal" style="position: relative;top: 1.6rem;left: 10.6rem;">详情</a>
         <div class="one" style="padding-top: 1rem;">
@@ -35,7 +36,7 @@
         </div>
         <div class="award"></div>
         <div class="rank">
-            <div style="width:100%; height:11rem; overflow:scroll; margin-top: -7rem;">
+            <div style="width:100%; height:11rem; overflow: hidden; margin-top: -7rem;">
                 <volist name="data" id="vo" offset="4" length='500'>
                     <ul>
                         <li class="rank-num">NO.{$key}</li>
@@ -51,7 +52,7 @@
                 <li class="rank-num">NO.{$user['rank']|default='无'}</li>
                 <li>
                     <span class="rank_head" style="background-image: url('{$user['avatar']|default='__TMPL__Public/assets/images/0.png'}');"></span>
-                    <span class="r_orange"><if condition="$type lt 4">当前自己排名<else/>当前自组排名</if></span>
+                    <span class="r_orange"><if condition="$grouptype eq 0">当前自己排名<else/>当前联盟排名</if></span>
                 </li>
                 <li class="count">{$user['num']|default='0'}步</li>
             </ul>
