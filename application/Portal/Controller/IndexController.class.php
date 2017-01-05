@@ -294,7 +294,7 @@ class IndexController extends HomebaseController
      */
     public function community()
     {
-        // $userInfo = $this->checkLogin();
+        $userInfo = $this->checkLogin();
         $map['istop'] = 1;
         $map['recommended'] = 1;
         $map['post_type'] = 1;
@@ -321,13 +321,14 @@ class IndexController extends HomebaseController
         $this->assign("footer", "shequ");
         $this->display(":community");
     }
+
     /**
      * 我的话题
      * @author tanhuaxin
      */
     public function myhuati()
     {
-        // $this->checkLogin();
+        $this->checkLogin();
         $user = session('user');
         $map['post_author'] = $user['id'];
         $map['post_author'] = 1;
@@ -355,8 +356,8 @@ class IndexController extends HomebaseController
      */
     public function publishedpAbout()
     {
-        // $userInfo = $this->checkLogin();
-        $userInfo->openid='admin';
+        $userInfo = $this->checkLogin();
+        // $userInfo->openid='admin';
         $data['post_image'] = I('post_image');
         $data['post_content'] = I('post_content');
         $map['user_login'] = $userInfo->openid;
