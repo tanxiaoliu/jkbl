@@ -166,11 +166,11 @@ html,body{
 }
 
 /*个人页面*/
-.p-content {
-    background-size: 100% 100%;
-    height: 20rem;
-    margin-top: 2.5rem;
-}
+/*.p-content {*/
+    /*background-size: 100% 100%;*/
+    /*height: 20rem;*/
+    /*margin-top: 2.5rem;*/
+/*}*/
 .p-img1{
     display: block;
     width: 2.8rem;
@@ -188,7 +188,8 @@ html,body{
     top: 10.5rem;
     left: 1rem;
     font-size: 0.7rem;
-    color: #18abe1;
+    color: #00658d;
+    font-weight: bold;
 }
 .p-kilometer {
     position: relative;
@@ -196,33 +197,30 @@ html,body{
     top: 5.9rem;
     left: 3.5rem;
     font-size: 0.7rem;
-    color: #18abe1;
+    color: #00658d;
     width: 3rem;
     text-align: center;
+    font-weight: bold;
 }
 .p-leiji {
     position: relative;
-    z-index: 2;
-    top: 5.6rem;
+    top: 5.7rem;
     left: 3.5rem;
     font-size: 1rem;
-    color: #00658d;
+    color: #ffffff;
     width: 3rem;
     text-align: center;
     font-weight: bold;
 }
 .p-sc {
     position: relative;
-    top: 0.8rem;
+    top: 1.5rem;
     left: 1rem;
     font-size: 0.9rem;
-    color: #00658d;
+    color: #ffffff;
     width: 5rem;
     text-align: center;
     font-weight: bold;
-    -webkit-transform: rotate(-90deg);
-    -moz-transform: rotate(-90deg);
-    filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
 }
 .detail-btn {
     background: #18abe1;
