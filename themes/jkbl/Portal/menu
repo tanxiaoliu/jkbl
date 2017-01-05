@@ -1,0 +1,79 @@
+ {
+        "button": [
+            {
+                "name": "关于平台", 
+                "sub_button": [
+                    {
+                        "type": "view", 
+                        "name": "IT俱乐部", 
+                        "url": "http://mp.weixin.qq.com/s/dl2xLH--PtV6z85rBVU2MA", 
+                        "sub_button": [ ]
+                    }, 
+                    {
+                        "type": "view", 
+                        "name": "平台大事", 
+                        "url": "http://mp.weixin.qq.com/s/wwykSe9AB8warqpbGqBylw", 
+                        "sub_button": [ ]
+                    }, 
+                    {
+                        "type": "view", 
+                        "name": "院校新资讯", 
+                        "url": "http://mp.weixin.qq.com/s/JbFer0RYnMOeN2XxMyOJww", 
+                        "sub_button": [ ]
+                    }
+                ]
+            }, 
+            {
+                "name": "健康部落", 
+                "sub_button": [
+                    {
+                        "type": "view", 
+                        "name": "健康心部落", 
+                        "url": "http://thiff.togogosz.net/index.php/portal/Index/community", 
+                        "sub_button": [ ]
+                    }, 
+                    {
+                        "type": "view", 
+                        "name": "健康心指数", 
+                        "url": "http://thiff.togogosz.net/index.php/portal/Index/personal", 
+                        "sub_button": [ ]
+                    }, 
+                    {
+                        "type": "view", 
+                        "name": "健康福利社", 
+                        "url": "http://thiff.togogosz.net", 
+                        "sub_button": [ ]
+                    }
+                ]
+            }, 
+            {
+                "name": "高校合作", 
+                "sub_button": [
+                    {
+                        "type": "view", 
+                        "name": "校企合作优势特点", 
+                        "url": "http://mp.weixin.qq.com/s/SqCS0y-VcLYxXrXRBdKsjQ", 
+                        "sub_button": [ ]
+                    }, 
+                    {
+                        "type": "view", 
+                        "name": "教学教务管理系统", 
+                        "url": "http://mp.weixin.qq.com/s/8Vu-Gbprp34NZtXDbM81Aw", 
+                        "sub_button": [ ]
+                    }, 
+                    {
+                        "type": "view", 
+                        "name": "培养解决方案提供商", 
+                        "url": "http://mp.weixin.qq.com/s/3rBx02kv-1AOPJdO5ij_uQ", 
+                        "sub_button": [ ]
+                    }, 
+                    {
+                        "type": "view", 
+                        "name": "腾科官网", 
+                        "url": "http://www.togogo.net", 
+                        "sub_button": [ ]
+                    }
+                ]
+            }
+        ]
+    }
