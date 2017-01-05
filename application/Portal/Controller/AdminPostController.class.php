@@ -25,7 +25,21 @@ class AdminPostController extends AdminbaseController {
 	
 	// 后台文章管理列表
 	public function index(){
-		$this->_lists(array("post_status"=>array('neq',3)));
+		$map['istop'] = 1;
+        $map['recommended'] = 1;
+        $map['post_type'] = 1;
+        $map['post_status'] = array('neq',3);
+		$this->_lists($map);
+		$this->_getTree();
+		$this->display();
+	}
+	// 后台文章管理列表
+	public function huati(){
+		$map['istop'] = 0;
+        $map['recommended'] = 0;
+        $map['post_type'] = 1;
+        $map['post_status'] = array('neq',3);
+		$this->_lists($map);
 		$this->_getTree();
 		$this->display();
 	}
@@ -186,7 +200,7 @@ class AdminPostController extends AdminbaseController {
 		    $this->posts_model->join("__TERM_RELATIONSHIPS__ b ON a.id = b.object_id");
 		}
 		
-		$count=$this->posts_model->count();
+		$count=$this->posts_model->where($where)->count();
 			
 		$page = $this->page($count, 20);
 			
@@ -202,10 +216,8 @@ class AdminPostController extends AdminbaseController {
 		    $this->posts_model->field('a.*,c.user_login,c.user_nicename,b.listorder,b.tid');
 		    $this->posts_model->join("__TERM_RELATIONSHIPS__ b ON a.id = b.object_id");
 		}
-		$map['istop'] = 1;
-        $map['recommended'] = 1;
-        $map['post_type'] = 1;
-		$posts=$this->posts_model->where($map)->select();
+
+		$posts=$this->posts_model->where($where)->select();
 		
 		$this->assign("page", $page->show('Admin'));
 		$this->assign("formget",array_merge($_GET,$_POST));

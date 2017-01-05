@@ -144,58 +144,60 @@
             <div class="PostList" style="width:100%;margin-bottom:3.5rem; height:30rem; overflow:scroll;">
                 <ul class="scroll-view post-list">
                     <foreach name="pengyouquan" item="vo">
-                    <li class="feeds-li feeds-li-normal" style="z-index:0;">
-                        <div class="detail-top">
-                            <div class="item-user">
-                                <div class="item-user-wrap">
-                                    <div class="item-user-avator">
-                                        <img class="avator-img img-ph" src="{$vo.avatar|default='__TMPL__Public/assets/images/0.png'}">
-                                    </div>
-                                        <span class="item-user-text">
-                                            <span class="item-user-name">
-                                                {$vo.user_nicename}
+                    <if condition="!empty($vo['user_nicename'])">
+                        <li class="feeds-li feeds-li-normal" style="z-index:0;">
+                            <div class="detail-top">
+                                <div class="item-user">
+                                    <div class="item-user-wrap">
+                                        <div class="item-user-avator">
+                                            <img class="avator-img img-ph" src="{$vo.avatar|default='__TMPL__Public/assets/images/0.png'}">
+                                        </div>
+                                            <span class="item-user-text">
+                                                <span class="item-user-name">
+                                                    {$vo.user_nicename}
+                                                </span>
+                                                <!-- react-empty: 52 -->
+                                                <!--<span class="honour admin" data-lcontent="首席酋长">-->
+                                                    <!--首席酋长-->
+                                                <!--</span>-->
                                             </span>
-                                            <!-- react-empty: 52 -->
-                                            <!--<span class="honour admin" data-lcontent="首席酋长">-->
-                                                <!--首席酋长-->
-                                            <!--</span>-->
-                                        </span>
-                                        <span class="item-user-time">
-                                            {$vo.post_date}
-                                        </span>
+                                            <span class="item-user-time">
+                                                {$vo.post_date}
+                                            </span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div  class="detail-bottom">
-                            <div class="report-content">
-                                <p class="groupbrief feed-two-line">
-                                    {$vo.post_content}
-                                </p>
-                                <if condition="$vo.post_image neq ''">
-                                    <p class="groupbrief feed-two-line tupian">
-                                        <img src="{$vo.post_image}">
+                            <div  class="detail-bottom">
+                                <div class="report-content">
+                                    <p class="groupbrief feed-two-line">
+                                        {$vo.post_content}
                                     </p>
-                                </if>
-                            </div>
-                            <div class="img-wrap clearfix">
-                            </div>
-                            <div class="post-bottom-v3">
-                                <div class="reply-btn-v3 post-btn-v3">
-                                    {$vo.comment_count}
+                                    <if condition="$vo.post_image neq ''">
+                                        <p class="groupbrief feed-two-line tupian">
+                                            <img src="{$vo.post_image}">
+                                        </p>
+                                    </if>
                                 </div>
-                                <div class="like-btn-v3 post-btn-v3">
-                                <a  href="{:U('article/do_like',array('id'=>$vo['id']))}" class="js-count-btn">
-                                <span class="count">{$vo.post_like}</span></a>
+                                <div class="img-wrap clearfix">
                                 </div>
-                                <if condition="$vo['uid'] eq $uid">
-                                 <div class="delete-btn-v3 post-btn-v3">
-                                    <a href="{:U('Portal/AdminPost/delete',array('id'=>$vo['id']))}" class="js-ajax-delete">删除</a>
-                                 </div>   
-                                </if>
+                                <div class="post-bottom-v3">
+                                    <div class="reply-btn-v3 post-btn-v3">
+                                        {$vo.comment_count}
+                                    </div>
+                                    <div class="like-btn-v3 post-btn-v3">
+                                    <a  href="{:U('article/do_like',array('id'=>$vo['id']))}" class="js-count-btn">
+                                    <span class="count">{$vo.post_like}</span></a>
+                                    </div>
+                                    <if condition="$vo['uid'] eq $uid">
+                                     <div class="delete-btn-v3 post-btn-v3">
+                                        <a href="{:U('Portal/AdminPost/delete',array('id'=>$vo['id']))}" class="js-ajax-delete">删除</a>
+                                     </div>   
+                                    </if>
+                                </div>
+                                {:Comments("posts",$vo['id'],array('tpl'=>'reply'))}
                             </div>
-                            {:Comments("posts",$vo['id'],array('tpl'=>'reply'))}
-                        </div>
-                    </li>
+                        </li>
+                    </if>
                     </foreach>
                     <!-- <li class="feeds-li feeds-li-normal">
                         <div class="detail-top">
