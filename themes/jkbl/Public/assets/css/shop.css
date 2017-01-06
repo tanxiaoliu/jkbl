@@ -19,8 +19,7 @@
     border: 0.1rem solid #18abe1;
 }
 .bi {
-    height: 4.5rem;
-    width: 7rem;
+    width: 46%;
     float: left;
     font-size: 0.60rem;
     color: #18abe1;
@@ -30,8 +29,6 @@
     padding: 1.2rem 0 0 0.3rem;
 }
 .btn {
-    height: 4.5rem;
-    width: 4rem;
     float: left;
 }
 .btn li{
@@ -54,9 +51,7 @@
     -webkit-border-radius: 2rem;
     border-radius:2rem;
 }
-.health-title ul li{
-    width: 5.8rem;
-    float: left;
+.health-title-li{
     margin-left: 0.3rem;
 }
 .health-shop {
@@ -84,6 +79,7 @@
 }
 .type {
     font-size: 0.7rem;
+    margin-right: 1.8rem;
 }
 .commonweal {
     margin-bottom: 2.3rem;
@@ -98,8 +94,6 @@
     border-radius:2rem;
 }
 .commonweal-title ul li{
-    width: 5.8rem;
-    float: left;
     margin-left: 0.3rem;
 }
 .commonweal-shop {

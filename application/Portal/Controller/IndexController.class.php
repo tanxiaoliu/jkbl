@@ -47,7 +47,7 @@ class IndexController extends HomebaseController
     }
 
     /**
-     * 检查登录
+     * 对接公众号
      * @return mixed
      */
     public function test()
@@ -193,8 +193,8 @@ class IndexController extends HomebaseController
      */
     public function member()
     {
-
         $userInfo = $this->checkLogin();
+//        $userInfo->openid = 'admin';
         $map['user_login'] = $userInfo->openid;
         $users = M('Users')->where($map)->find();
         $map = array();
@@ -440,8 +440,9 @@ class IndexController extends HomebaseController
     {
         $user = array();
         $userInfo = $this->checkLogin();
-        $type = intval(I('type'));
-        $grouptype = intval(I('grouptype'));
+//        $userInfo->openid = 'admin';
+        $type = I('type', '', 'intval');
+        $grouptype = I('grouptype', '', 'intval');
         $rankDataCachKey = 'rankData_' . date('Y-m-d:H', time()) . '_' . $type . '_' . $grouptype;
         $rankUserCachKey = $userInfo->openid . 'rankUser_' . date('Y-m-d:H', time()) . '_' . $type . '_' . $grouptype;
         $data = unserialize(S($rankDataCachKey));
@@ -453,21 +454,17 @@ class IndexController extends HomebaseController
             if (!empty($_POST) && $type == 4) {//时间段
                 $startTime = strtotime(I('startTime'));
                 $endTime = strtotime(I('endTime'));
-                $typeName = date('Y-m-d', $startTime) . ' - ' . date('Y-m-d', $endTime);
                 $map['add_time'] = array('between', array($startTime, $endTime));
             }
             if ($type == 1) {//昨天
-                $typeName = '昨天排行';
                 $startYesterday = mktime(0, 0, 0, date('m'), date('d') - 1, date('Y'));
                 $endYesterday = mktime(0, 0, 0, date('m'), date('d'), date('Y')) - 1;
                 $map['add_time'] = array('between', array($startYesterday, $endYesterday));
             } elseif ($type == 2) {//上周
-                $typeName = '上周排行';
                 $beginLastweek = mktime(0, 0, 0, date('m'), date('d') - date('w') + 1 - 7, date('Y'));
                 $endLastweek = mktime(23, 59, 59, date('m'), date('d') - date('w') + 7 - 7, date('Y'));
                 $map['add_time'] = array('between', array($beginLastweek, $endLastweek));
             } elseif ($type == 3) {//上月
-                $typeName = '上月排行';
                 $beginThismonth = mktime(0, 0, 0, date('m'), 1, date('Y'));
                 $endThismonth = mktime(23, 59, 59, date('m'), date('t'), date('Y'));
                 $map['add_time'] = array('between', array($beginThismonth, $endThismonth));
@@ -508,6 +505,17 @@ class IndexController extends HomebaseController
                 $user = $this->_getUserRank($grouptype, $data, $userInfo);
                 S($rankUserCachKey, serialize($user), 60);
             }
+        }
+
+        if (!empty($_POST) && $type == 4) {//时间段
+            $typeName = date('Y-m-d', $startTime) . ' - ' . date('Y-m-d', $endTime);
+        }
+        if ($type == 1) {//昨天
+            $typeName = '昨天排行';
+        } elseif ($type == 2) {//上周
+            $typeName = '上周排行';
+        } elseif ($type == 3) {//上月
+            $typeName = '上月排行';
         }
 
         $this->assign("grouptype", $grouptype);
@@ -555,6 +563,7 @@ class IndexController extends HomebaseController
     public function shop()
     {
         $userInfo = $this->checkLogin();
+//        $userInfo->openid = 'admin';
         $data['openid'] = $userInfo->openid;
         $map['user_login'] = $data['openid'];
         $score = current(M('Users')->where($map)->getField('user_login,score,coin', 1));

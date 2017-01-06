@@ -19,7 +19,7 @@ html,body{
 }
 .top ul li{
     font-weight:bold;
-    width: 7.5rem;
+    width: 50%;
     float: left;
     background:#FFFFFF;
     color: #18abe1;
@@ -65,7 +65,7 @@ html,body{
     font-weight:bold;
 }
 .bottom ul li{
-    width: 4.4rem;
+    width: 29%;
     float: left;
     margin: 0.3rem;
     -moz-border-radius: 0.2rem;
@@ -89,7 +89,7 @@ html,body{
     font-weight:bold;
 }
 .rank-top ul li{
-    width: 4.4rem;
+    width: 29%;
     float: left;
     margin: 0.3rem;
     -moz-border-radius: 0.2rem;
@@ -134,12 +134,13 @@ html,body{
     top: 3.3rem;
     color: #39bbd8;
     font-weight: bold;
+    width: 100%;
+    text-align: center;
 }
 
 /*联盟页面*/
 .m-content-nav {
     position:relative;
-    top: -1.3rem;
     text-align: center;
 }
 .m-title img {
@@ -152,11 +153,15 @@ html,body{
     font-weight: bold;
 }
 .m-content {
-    margin-top: 3.55rem;
+    margin-top: 2.3rem;
 }
 .m-type {
     color: #00658d;
     font-weight: bold;
+    position: relative;
+    font-size: 0.7rem;
+    bottom:3.8rem;
+    text-align: center;
 }
 .hg {
     position: relative;
