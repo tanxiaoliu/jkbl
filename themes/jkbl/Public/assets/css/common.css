@@ -173,14 +173,14 @@ html,body{
     border-radius: 50%;
     position: relative;
     z-index: 2;
-    top: 11.9rem;
+    top: 9.9rem;
     left: 0.7rem;
     border: 0.1rem solid #ffffff;
 }
 .p-name {
     position: relative;
     z-index: 2;
-    top: 12.3rem;
+    top: 6.5rem;
     left: 1rem;
     font-size: 0.7rem;
     color: #00658d;
@@ -189,7 +189,7 @@ html,body{
 .p-an {
     position: relative;
     z-index: 2;
-    top: 12.3rem;
+    top: 6.5rem;
     left: 0.1rem;
     font-size: 0.7rem;
     color: #00658d;
@@ -199,7 +199,7 @@ html,body{
     position: relative;
     z-index: 2;
     top: 6.7rem;
-    left: 3.7rem;
+    left: 3.9rem;
     font-size: 0.7rem;
     color: #00658d;
     width: 3rem;
@@ -208,8 +208,8 @@ html,body{
 }
 .p-leiji {
     position: relative;
-    top: 6.5rem;
-    left: 3.5rem;
+    top: 6.6rem;
+    left: 4rem;
     font-size: 1.2rem;
     color: #ffffff;
     width: 3rem;
@@ -218,10 +218,19 @@ html,body{
 }
 .p-sc {
     position: relative;
-    top: 2rem;
+    top: 8.5rem;
     left: 1rem;
     width: 5.3rem;
     height: 1.5rem;
+}
+.p-bu {
+    position: relative;
+    top: 6.6rem;
+    left: 4.7rem;
+    width: 5.3rem;
+    height: 1.5rem;
+    font-size: 1.2rem;
+    color: #ffffff;
 }
 .detail-btn {
     background: #18abe1;
