@@ -460,7 +460,7 @@ class IndexController extends HomebaseController
     public function personal()
     {
         $userInfo = $this->checkLogin();
-//                $userInfo->openid='admin';
+//        $userInfo->openid='admin';
         $map['openid'] = $userInfo->openid;
         $num = D('sport_record')->where($map)->sum('step_nums');
         $umap['user_login'] = $userInfo->openid;

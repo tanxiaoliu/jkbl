@@ -166,11 +166,6 @@ html,body{
 }
 
 /*个人页面*/
-/*.p-content {*/
-    /*background-size: 100% 100%;*/
-    /*height: 20rem;*/
-    /*margin-top: 2.5rem;*/
-/*}*/
 .p-img1{
     display: block;
     width: 2.8rem;
@@ -178,14 +173,14 @@ html,body{
     border-radius: 50%;
     position: relative;
     z-index: 2;
-    top: 10rem;
+    top: 11.9rem;
     left: 0.7rem;
     border: 0.1rem solid #ffffff;
 }
 .p-name {
     position: relative;
     z-index: 2;
-    top: 10.5rem;
+    top: 12.3rem;
     left: 1rem;
     font-size: 0.7rem;
     color: #00658d;
@@ -194,8 +189,8 @@ html,body{
 .p-kilometer {
     position: relative;
     z-index: 2;
-    top: 5.9rem;
-    left: 3.5rem;
+    top: 7.7rem;
+    left: 3.7rem;
     font-size: 0.7rem;
     color: #00658d;
     width: 3rem;
@@ -204,9 +199,9 @@ html,body{
 }
 .p-leiji {
     position: relative;
-    top: 5.7rem;
+    top: 7.5rem;
     left: 3.5rem;
-    font-size: 1rem;
+    font-size: 1.2rem;
     color: #ffffff;
     width: 3rem;
     text-align: center;
@@ -214,13 +209,10 @@ html,body{
 }
 .p-sc {
     position: relative;
-    top: 1.5rem;
+    top: 2rem;
     left: 1rem;
-    font-size: 0.9rem;
-    color: #ffffff;
-    width: 5rem;
-    text-align: center;
-    font-weight: bold;
+    width: 5.3rem;
+    height: 1.5rem;
 }
 .detail-btn {
     background: #18abe1;
