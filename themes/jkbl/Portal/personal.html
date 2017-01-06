@@ -9,7 +9,8 @@
     <tc_include file="Public:nav1" />
     <!--<div class="p-content">-->
         <img class="p-img1" src="{$userInfo->headimgurl|default='__TMPL__Public/assets/images/0.png'}" alt="">
-        <span class="p-name">{$userInfo->nickname}qweqwe<eq name="status" value="0"><a class="detail-btn modaltrigger" href="#loginmodal" style=" position: relative;left: 1rem;">修改名字</a></eq></span>
+        <span class="p-name">{$userInfo->nickname}</span>
+        <div class="p-an"> <eq name="status" value="0"><a class="detail-btn modaltrigger" href="#loginmodal" style=" position: relative;left: 1rem;">修改名字</a></eq></div>
         <div class="p-leiji">累积</div>
         <div class="p-kilometer">{$num|default=0} <span style="font-weight: bold;color: #ffffff;">步</span></div>
         <a class="modaltrigger" href="#sportmodal"><div class="p-sc"></div></a>
