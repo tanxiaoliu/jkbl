@@ -54,9 +54,9 @@ class IndexController extends HomebaseController
     {
         //微信登录
         $options = array(
-            'token' => 'tengke', //填写你设定的key
-            'appid' => 'wx243493b23d1f6432', //填写高级调用功能的app id
-            'appsecret' => 'b039a3327c3f6e5ab187385f748e112b' //填写高级调用功能的密钥
+            'token' => self::TOKEN, //填写你设定的key
+            'appid' => self::APPID, //填写高级调用功能的app id
+            'appsecret' => self::APPSECRET //填写高级调用功能的密钥
         );
         $this->weObj = new Wechat($options);
         $this->weObj->valid();
@@ -71,12 +71,12 @@ class IndexController extends HomebaseController
         if (sp_is_weixin()) {
             $userInfo = json_decode($_COOKIE['userInfo']);
             $user = session('user');
-            if (empty($userInfo) ||empty($user) || !isset($userInfo->openid)) {
+            if (empty($userInfo) || empty($user) || !isset($userInfo->openid)) {
                 //微信登录
                 $options = array(
-                    'token' => 'tengke', //填写你设定的key
-                    'appid' => 'wx243493b23d1f6432', //填写高级调用功能的app id
-                    'appsecret' => 'b039a3327c3f6e5ab187385f748e112b' //填写高级调用功能的密钥
+                    'token' => self::TOKEN, //填写你设定的key
+                    'appid' => self::APPID, //填写高级调用功能的app id
+                    'appsecret' => self::APPSECRET //填写高级调用功能的密钥
                 );
                 $this->weObj = new Wechat($options);
                 redirect($this->weObj->getOauthRedirect(self::URL . U('callback'), '', 'snsapi_userinfo'));
@@ -98,25 +98,16 @@ class IndexController extends HomebaseController
         $code = $_GET['code'];
         $url = self::API_BASE_URL_PREFIX . '/sns/oauth2/access_token?appid=' . self::APPID . '&secret=' . self::APPSECRET . '&code=' . $code . '&code=' . $code . '&grant_type=authorization_code';
         $result = json_decode(file_get_contents($url));
-        // $url3 = self::API_BASE_URL_PREFIX . '/sns/oauth2/refresh_token?appid=' . self::APPID . '&grant_type=refresh_token&refresh_token='. $result->refresh_token;
-        // $result3 = json_decode(file_get_contents($url3));
-        // print_r($result);
-        // print_r($result3);
-        // $url4 = self::API_BASE_URL_PREFIX . '/sns/auth?access_token=' . $result3->access_token . '&openid=' . $result3->openid;
-        // $result4 = file_get_contents($url4);
-        // print_r($result4);
         $url2 = self::API_BASE_URL_PREFIX . '/sns/userinfo?access_token=' . $result->access_token . '&openid=' . $result->openid . '&lang=zh_CN';
         $result2 = file_get_contents($url2);
-        // print_r($result2);
-        // exit();
         $userInfo = json_decode($result2);
         if (!empty($userInfo) || isset($userInfo->openid)) {
             //保存用户信息入库
             $map['user_login'] = $userInfo->openid;
             $users = D('users')->where($map)->find();
             if ($users) {
-                session('ADMIN_ID',1);
-                session('user',$users);
+                session('ADMIN_ID', 1);
+                session('user', $users);
                 $data['last_login_time'] = date("Y-m-d H:i:s", time());
                 D('users')->save($data);
                 $userInfo->nickname = $users['user_nicename'];
@@ -131,8 +122,8 @@ class IndexController extends HomebaseController
                 $data['create_time'] = date("Y-m-d H:i:s", time());
                 $data['user_type'] = 2;
                 $data['id'] = D('users')->add($data);
-                session('ADMIN_ID',1);
-                session('user',$data);
+                session('ADMIN_ID', 1);
+                session('user', $data);
                 setcookie('userInfo', $result2);
             }
             redirect(U('index'));
@@ -148,8 +139,6 @@ class IndexController extends HomebaseController
     public function index()
     {
         $userInfo = $this->checkLogin();
-        // $userInfo->openid = 'admin';
-        // $userInfo->headimgurl = 'admin';
         $type = intval(I('type'));
         $usersModel = D('users');
         $user = array();
@@ -206,22 +195,20 @@ class IndexController extends HomebaseController
     {
 
         $userInfo = $this->checkLogin();
-        // $userInfo->openid = 'admin';
         $map['user_login'] = $userInfo->openid;
         $users = M('Users')->where($map)->find();
         $map = array();
-        $record = array();
         $type = intval(I('type'));
         $memberCachKey = $users['groupid'] . '_member_' . date('Y-m-d:H', time()) . '_' . $type;
-        S($memberCachKey,null);
+        S($memberCachKey, null);
         $data = unserialize(S($memberCachKey));
         $sum = 0;
-        $status = empty($users['groupid'])?0:1;
-        if ($status==1 && (empty($data) || $type == 4 || $data['data']=='[]')) {
+        $status = empty($users['groupid']) ? 0 : 1;
+        if ($status == 1 && (empty($data) || $type == 4 || $data['data'] == '[]')) {
             if (!empty($_POST) && $type == 4) {//时间段
                 $startTime = strtotime(I('startTime'));
                 $endTime = strtotime(I('endTime'));
-                $typeName = date('Y-m-d', $startTime).' - '.date('Y-m-d', $endTime);
+                $typeName = date('Y-m-d', $startTime) . ' - ' . date('Y-m-d', $endTime);
                 $map['add_time'] = array('between', array($startTime, $endTime));
             }
             if ($type == 1) {//昨天
@@ -271,12 +258,12 @@ class IndexController extends HomebaseController
             );
             S($memberCachKey, serialize($list), 3600);
         } else {
-            if ($status==0) {
+            if ($status == 0) {
                 $data = '[]';
-            }else{
-               $sum = $data['sum'];
+            } else {
+                $sum = $data['sum'];
                 $data = $data['data'];
-                $status = $data['status']; 
+                $status = $data['status'];
             }
         }
         $this->assign("userInfo", $userInfo);
@@ -294,11 +281,11 @@ class IndexController extends HomebaseController
      */
     public function community()
     {
-         $userInfo = $this->checkLogin();
+        $this->checkLogin();
         $map['istop'] = 1;
         $map['recommended'] = 1;
         $map['post_type'] = 1;
-        $map['post_status'] = array('neq',3);
+        $map['post_status'] = array('neq', 3);
         $posts = M('Posts')->field('id,post_title,post_date')->where($map)->order('istop desc,recommended desc,post_date desc')->limit(5)->select();
         $postscount = M('Posts')->count();
         $userscount = M('Users')->count();
@@ -321,20 +308,21 @@ class IndexController extends HomebaseController
         $this->assign("footer", "shequ");
         $this->display(":community");
     }
+
     /**
      * 我的话题
      * @author tanhuaxin
      */
     public function myhuati()
     {
-         $this->checkLogin();
+        $this->checkLogin();
         $user = session('user');
         $map['post_author'] = $user['id'];
         $map['post_author'] = 1;
         $map['post_type'] = 1;
         $map['istop'] = 0;
         $map['recommended'] = 0;
-        $map['post_status'] = array('neq',3);
+        $map['post_status'] = array('neq', 3);
         $pengyouquan = M('Posts')->field('id,post_content,post_date,post_image,post_author,post_like')->where($map)->order('id DESC')->limit(30)->select();
         foreach ($pengyouquan as $key => $vl) {
             $map['id'] = $vl['post_author'];
@@ -356,7 +344,6 @@ class IndexController extends HomebaseController
     public function publishedpAbout()
     {
         $userInfo = $this->checkLogin();
-//        $userInfo->openid='admin';
         $data['post_image'] = I('post_image');
         $data['post_content'] = I('post_content');
         $map['user_login'] = $userInfo->openid;
@@ -372,48 +359,18 @@ class IndexController extends HomebaseController
      */
     public function uploadImage()
     {
-        $upload_setting = sp_get_upload_setting();
-
-        $filetypes = array(
-            'image' => array('title' => 'Image files', 'extensions' => $upload_setting['image']['extensions']),
-            'video' => array('title' => 'Video files', 'extensions' => $upload_setting['video']['extensions']),
-            'audio' => array('title' => 'Audio files', 'extensions' => $upload_setting['audio']['extensions']),
-            'file' => array('title' => 'Custom files', 'extensions' => $upload_setting['file']['extensions'])
-        );
-
-        $image_extensions = explode(',', $upload_setting['image']['extensions']);
-
         if (IS_POST) {
-            $all_allowed_exts = array();
-            foreach ($filetypes as $mfiletype) {
-                array_push($all_allowed_exts, $mfiletype['extensions']);
-            }
-            $all_allowed_exts = implode(',', $all_allowed_exts);
-            $all_allowed_exts = explode(',', $all_allowed_exts);
-            $all_allowed_exts = array_unique($all_allowed_exts);
-
-            $file_extension = sp_get_file_extension($_FILES['file']['name']);
-            $upload_max_filesize = $upload_setting['upload_max_filesize'][$file_extension];
-            $upload_max_filesize = empty($upload_max_filesize) ? 2097152 : $upload_max_filesize;//默认2M
-
-            $app = I('post.app/s', '');
-            if (!in_array($app, C('MODULE_ALLOW_LIST'))) {
-                $app = 'default';
-            } else {
-                $app = strtolower($app);
-            }
-
-            $savepath = $app . '/' . date('Ymd') . '/';
+            $savepath = 'default/' . date('Ymd') . '/';
             //上传处理类
             $config = array(
                 'rootPath' => './' . C("UPLOADPATH"),
                 'savePath' => $savepath,
-                'maxSize' => $upload_max_filesize,
+                'maxSize' => 20971520,
                 'saveName' => array('uniqid', ''),
-                'exts' => $all_allowed_exts,
+                'exts' => array('jpg', 'gif', 'png', 'jpeg'),
                 'autoSub' => false,
             );
-            $upload = new \Think\Upload($config);//
+            $upload = new \Think\Upload($config);
             $info = $upload->upload();
             //开始上传
             if ($info) {
@@ -421,31 +378,9 @@ class IndexController extends HomebaseController
                 $oriName = $_FILES['file']['name'];
                 //写入附件数据库信息
                 $first = array_shift($info);
-                if (!empty($first['url'])) {
-                    $url = $first['url'];
-                    $storage_setting = sp_get_cmf_settings('storage');
-                    $qiniu_setting = $storage_setting['Qiniu']['setting'];
-                    $url = preg_replace('/^https/', $qiniu_setting['protocol'], $url);
-                    $url = preg_replace('/^http/', $qiniu_setting['protocol'], $url);
-
-                    $preview_url = $url;
-
-                    if (in_array($file_extension, $image_extensions)) {
-                        if (C('FILE_UPLOAD_TYPE') == 'Qiniu' && $qiniu_setting['enable_picture_protect']) {
-                            $preview_url = $url . $qiniu_setting['style_separator'] . $qiniu_setting['styles']['thumbnail300x300'];
-                            $url = $url . $qiniu_setting['style_separator'] . $qiniu_setting['styles']['watermark'];
-                        }
-                    } else {
-                        $preview_url = '';
-                        $url = sp_get_file_download_url($first['savepath'] . $first['savename'], 3600 * 24 * 365 * 50);//过期时间设置为50年
-                    }
-
-                } else {
-                    $url = C("TMPL_PARSE_STRING.__UPLOAD__") . $savepath . $first['savename'];
-                    $preview_url = $url;
-                }
+                $url = C("TMPL_PARSE_STRING.__UPLOAD__") . $savepath . $first['savename'];
+                $preview_url = $url;
                 $filepath = $savepath . $first['savename'];
-
                 $this->ajaxReturn(array('preview_url' => $preview_url, 'filepath' => $filepath, 'url' => $url, 'name' => $oriName, 'status' => 1, 'message' => 'success'));
             } else {
                 $this->ajaxReturn(array('name' => '', 'status' => 0, 'message' => $upload->getError()));
@@ -460,7 +395,6 @@ class IndexController extends HomebaseController
     public function personal()
     {
         $userInfo = $this->checkLogin();
-//        $userInfo->openid='admin';
         $map['openid'] = $userInfo->openid;
         $num = D('sport_record')->where($map)->sum('step_nums');
         $umap['user_login'] = $userInfo->openid;
@@ -491,7 +425,7 @@ class IndexController extends HomebaseController
                 $data['user_nicename'] = $userInfo->nickname;
                 $user = session('user');
                 $user['user_nicename'] = $userInfo->nickname;
-                session('user',$user);
+                session('user', $user);
                 setcookie('userInfo', json_encode($userInfo));
             }
         }
@@ -504,11 +438,8 @@ class IndexController extends HomebaseController
      */
     public function rank()
     {
-        $data = array();
         $user = array();
         $userInfo = $this->checkLogin();
-        // $userInfo->openid = 'admin';
-        // $userInfo->headimgurl = 'admin';
         $type = intval(I('type'));
         $grouptype = intval(I('grouptype'));
         $rankDataCachKey = 'rankData_' . date('Y-m-d:H', time()) . '_' . $type . '_' . $grouptype;
@@ -522,7 +453,7 @@ class IndexController extends HomebaseController
             if (!empty($_POST) && $type == 4) {//时间段
                 $startTime = strtotime(I('startTime'));
                 $endTime = strtotime(I('endTime'));
-                $typeName = date('Y-m-d', $startTime).' - '.date('Y-m-d', $endTime);
+                $typeName = date('Y-m-d', $startTime) . ' - ' . date('Y-m-d', $endTime);
                 $map['add_time'] = array('between', array($startTime, $endTime));
             }
             if ($type == 1) {//昨天
@@ -549,12 +480,6 @@ class IndexController extends HomebaseController
                     $users = $usersModel->where($map)->find();
                     $data[$key]['avatar'] = $users['avatar'];
                     $data[$key]['nick_name'] = $users['user_nicename'];
-                    /*if ($userInfo->openid == $vl['openid']) {
-                        $user['rank'] = $key + 1;
-                        $user['nick_name'] = $users['user_nicename'];
-                        $user['num'] = $vl['num'];
-                        $user['avatar'] = $userInfo->headimgurl;
-                    }*/
                 }
             } elseif ($grouptype == 1) {
                 $groups = array();
@@ -574,16 +499,6 @@ class IndexController extends HomebaseController
                 }
                 unset($groups[0]);
                 usort($groups, 'sortByNum');
-                /*foreach ($groups as $key => $vl) {
-                    $map['user_login'] = $userInfo->openid;
-                    $users = $usersModel->where($map)->find();
-                    if ($vl['id']==$users['groupid']) {
-                        $user['rank'] = $key + 1;
-                        $user['nick_name'] = $vl['nick_name'];
-                        $user['num'] = $vl['num'];
-                        $user['avatar'] = $vl['avatar'];
-                    }
-                }*/
                 $data = $groups;
             }
             $user = $this->_getUserRank($grouptype, $data, $userInfo);
@@ -600,7 +515,6 @@ class IndexController extends HomebaseController
         $this->assign("user", $user);
         $this->assign("type", $typeName);
         $this->assign("footer", "zhishu");
-        // $this->assign("userInfo", $userInfo);
         $this->display(":rank");
     }
 
@@ -641,7 +555,6 @@ class IndexController extends HomebaseController
     public function shop()
     {
         $userInfo = $this->checkLogin();
-        // $userInfo->openid = 'admin';
         $data['openid'] = $userInfo->openid;
         $map['user_login'] = $data['openid'];
         $score = current(M('Users')->where($map)->getField('user_login,score,coin', 1));
@@ -667,7 +580,6 @@ class IndexController extends HomebaseController
         if (!empty($_POST)) {
             $userInfo = $this->checkLogin();
             $data['openid'] = $userInfo->openid;
-            // $data['openid'] = 'admin';
             $map['user_login'] = $data['openid'];
             $score = current(M('Users')->where($map)->getField('user_login,score,coin', 1));
             if ($score['score'] <= $score['coin'] || $score['score'] <= 0) {
@@ -707,13 +619,13 @@ class IndexController extends HomebaseController
                                 'add_time' => time(),
                                 'type_id' => $id,
                             );
-                            if (M('CoinRecord')->add($data1)){
-                                if ($good['type']==2) {
+                            if (M('CoinRecord')->add($data1)) {
+                                if ($good['type'] == 2) {
                                     $this->success("THIFF将代您送出爱心~", U('Index/shop'), true);
-                                }else{
+                                } else {
                                     $this->success("下单成功", U('Index/shop'), true);
                                 }
-                            }else {
+                            } else {
                                 $users['coin'] -= $good['price'];
                                 M('users')->save($users);
                                 M('GoodOrder')->where(array('id' => $id))->delete();
@@ -732,7 +644,6 @@ class IndexController extends HomebaseController
                 }
             } else {
                 $this->error("下单失败", true);
-                // $this->error(M('GoodOrder')->getError());
             }
 
         } else {
@@ -749,7 +660,6 @@ class IndexController extends HomebaseController
     {
         $userInfo = $this->checkLogin();
         $map['openid'] = $userInfo->openid;
-        // $map['openid'] = 'admin';
         $orders = M('GoodOrder')->where($map)->order('add_time desc')->select();
         foreach ($orders as $key => &$value) {
             $good = M('Good')->find($value['goodid']);
@@ -757,7 +667,6 @@ class IndexController extends HomebaseController
                 $value['url'] = $good['url'];
             }
         }
-        // $this->assign("userInfo", $userInfo);
         $this->assign("orders", $orders);
         $this->display(":orderlist");
     }
@@ -770,7 +679,6 @@ class IndexController extends HomebaseController
     {
         $userInfo = $this->checkLogin();
         $map['openid'] = $userInfo->openid;
-        // $map['openid'] = 'admin';
         $Records = M('CoinRecord')->where($map)->order('add_time desc')->select();
         foreach ($Records as $key => &$value) {
             if ($value['type'] == 2) {
@@ -782,11 +690,10 @@ class IndexController extends HomebaseController
                 }
             }
         }
-        // $this->assign("userInfo", $userInfo);
         $this->assign("Records", $Records);
         $this->display(":coinlist");
     }
-    
+
     public function error()
     {
         $this->display(":error");
@@ -800,72 +707,25 @@ class IndexController extends HomebaseController
     {
         $num = I('num', 0, 'int');
         $userInfo = $this->checkLogin();
-        $upload_setting = sp_get_upload_setting();
-
-        $filetypes = array(
-            'image' => array('title' => 'Image files', 'extensions' => $upload_setting['image']['extensions']),
-            'video' => array('title' => 'Video files', 'extensions' => $upload_setting['video']['extensions']),
-            'audio' => array('title' => 'Audio files', 'extensions' => $upload_setting['audio']['extensions']),
-            'file' => array('title' => 'Custom files', 'extensions' => $upload_setting['file']['extensions'])
-        );
-
-        $image_extensions = explode(',', $upload_setting['image']['extensions']);
 
         if (IS_POST) {
-            $all_allowed_exts = array();
-            foreach ($filetypes as $mfiletype) {
-                array_push($all_allowed_exts, $mfiletype['extensions']);
-            }
-            $all_allowed_exts = implode(',', $all_allowed_exts);
-            $all_allowed_exts = explode(',', $all_allowed_exts);
-            $all_allowed_exts = array_unique($all_allowed_exts);
-
-            $file_extension = sp_get_file_extension($_FILES['file']['name']);
-            $upload_max_filesize = $upload_setting['upload_max_filesize'][$file_extension];
-            $upload_max_filesize = empty($upload_max_filesize) ? 2097152 : $upload_max_filesize;//默认2M
-
-            $app = I('post.app/s', '');
-            if (!in_array($app, C('MODULE_ALLOW_LIST'))) {
-                $app = 'default';
-            } else {
-                $app = strtolower($app);
-            }
-
-            $savepath = $app . '/' . date('Ymd') . '/';
+            $savepath = 'default/' . date('Ymd') . '/';
             //上传处理类
             $config = array(
                 'rootPath' => './' . C("UPLOADPATH"),
                 'savePath' => $savepath,
-                'maxSize' => $upload_max_filesize,
+                'maxSize' => 20971520,
                 'saveName' => array('uniqid', ''),
-                'exts' => $all_allowed_exts,
+                'exts' => array('jpg', 'gif', 'png', 'jpeg'),
                 'autoSub' => false,
             );
-            $upload = new \Think\Upload($config);//
+            $upload = new \Think\Upload($config);
             $info = $upload->upload();
             //开始上传
             if ($info) {
-                //上传成功
                 //写入附件数据库信息
                 $first = array_shift($info);
-                if (!empty($first['url'])) {
-                    $url = $first['url'];
-                    $storage_setting = sp_get_cmf_settings('storage');
-                    $qiniu_setting = $storage_setting['Qiniu']['setting'];
-                    $url = preg_replace('/^https/', $qiniu_setting['protocol'], $url);
-                    $url = preg_replace('/^http/', $qiniu_setting['protocol'], $url);
-
-                    if (in_array($file_extension, $image_extensions)) {
-                        if (C('FILE_UPLOAD_TYPE') == 'Qiniu' && $qiniu_setting['enable_picture_protect']) {
-                            $url = $url . $qiniu_setting['style_separator'] . $qiniu_setting['styles']['watermark'];
-                        }
-                    } else {
-                        $url = sp_get_file_download_url($first['savepath'] . $first['savename'], 3600 * 24 * 365 * 50);//过期时间设置为50年
-                    }
-                } else {
-                    $url = C("TMPL_PARSE_STRING.__UPLOAD__") . $savepath . $first['savename'];
-                }
-
+                $url = C("TMPL_PARSE_STRING.__UPLOAD__") . $savepath . $first['savename'];
                 $data['num'] = $num;
                 $data['image'] = $url;
                 $data['time'] = time();
@@ -873,9 +733,8 @@ class IndexController extends HomebaseController
                 $result = M('sport')->add($data);
                 if ($result) {
                     header("Content-type:text/html;charset=utf-8");
-                    echo "<script> alert('上传成功'); </script>"; 
-                    echo "<meta http-equiv='Refresh' content='0;URL=".U('personal')."'>"; 
-                    // redirect(U('personal'));
+                    echo "<script> alert('上传成功'); </script>";
+                    echo "<meta http-equiv='Refresh' content='0;URL=" . U('personal') . "'>";
                 } else {
                     $this->error('上传数据出错', U('personal'));
                 }
