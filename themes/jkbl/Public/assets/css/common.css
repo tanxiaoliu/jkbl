@@ -1,6 +1,7 @@
 @charset "UTF-8";
 html,body{
     height:100%;
+    width: 100%;
     background-image: url('./../images/bg.jpg');
     -webkit-background-size: 100% 100%;
     background-size: 100% 100%;
@@ -19,7 +20,7 @@ html,body{
 }
 .top ul li{
     font-weight:bold;
-    width: 7.5rem;
+    width: 50%;
     float: left;
     background:#FFFFFF;
     color: #18abe1;
@@ -65,7 +66,7 @@ html,body{
     font-weight:bold;
 }
 .bottom ul li{
-    width: 4.4rem;
+    width: 29%;
     float: left;
     margin: 0.3rem;
     -moz-border-radius: 0.2rem;
