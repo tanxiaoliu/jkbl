@@ -19,7 +19,7 @@ html,body{
 }
 .top ul li{
     font-weight:bold;
-    width: 50%;
+    width: 7.5rem;
     float: left;
     background:#FFFFFF;
     color: #18abe1;
@@ -65,7 +65,7 @@ html,body{
     font-weight:bold;
 }
 .bottom ul li{
-    width: 29%;
+    width: 4.4rem;
     float: left;
     margin: 0.3rem;
     -moz-border-radius: 0.2rem;
