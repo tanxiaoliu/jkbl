@@ -17,8 +17,8 @@
     <br/>
     <p class="type-title">{$type}</p>
     <div class="content" style="margin-top:1.5rem;">
-        <a class="detail-btn flatbtn modaltrigger" href="#loginmodal" style="position: relative;top: 1.6rem;left: 10.6rem;">详情</a>
-        <div class="one" style="padding-top: 1rem;">
+        <a class="detail-btn flatbtn modaltrigger" href="#loginmodal" style="position: relative;top: 1.3rem;left: 10.6rem;">详情</a>
+        <div class="one" style="padding-top: 0.4rem;">
             <img src="__TMPL__Public/assets/images/hg.png" class="hg">
             <span class="head" style="background-image: url('{$data[0]['avatar']|default='__TMPL__Public/assets/images/0.png'}');"></span>
             <div class="r_orange" style="bottom: 0.8rem;">{$data[0]['nick_name']|default='待定'}</div>
@@ -66,6 +66,7 @@
         <form id="loginform" name="loginform" method="post" action="{:U('Index/rank')}" onsubmit="return check(this)">
             <input type="hidden" name="type" id="type" value="4">
             <input type="hidden" name="grouptype" id="grouptype" value="{$grouptype}">
+            <div class="center" style="color: #18abe1;">选择时间段</div>
             <div class="center" style="margin: 0.5rem 0;padding-right: 2rem;"><span style="color: #18abe1;">结束时间：</span><span><input type="date" name="startTime" id="startTime" style="height: 1rem;"></span></div>
             <div class="center" style="margin: 0.5rem 0;padding-right: 2rem;"><span style="color: #18abe1;">开始时间：</span><span><input type="date" name="endTime" id="endTime" style="height: 1rem;"></span></div>
             <div class="center" style="margin: 0.5rem 0;"><input type="submit" class="flatbtn-blu hidemodal" value="搜索"></a></div>
@@ -75,6 +76,8 @@
 <script>
     $(function(){
         $('.modaltrigger').leanModal({ top: 110, overlay: 0.45});
+        document.getElementById('startTime').valueAsDate = new Date();
+        document.getElementById('endTime').valueAsDate = new Date();
         $(".rank-top ul li").click(function(){
             $(this).addClass("blue").siblings().removeClass("blue");
         });

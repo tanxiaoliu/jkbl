@@ -205,10 +205,11 @@ class IndexController extends HomebaseController
         $sum = 0;
         $status = empty($users['groupid']) ? 0 : 1;
         if ($status == 1 && (empty($data) || $type == 4 || $data['data'] == '[]')) {
+            $typeName = date('Y-m-d', time());//默认时间
             if (!empty($_POST) && $type == 4) {//时间段
                 $startTime = strtotime(I('startTime'));
                 $endTime = strtotime(I('endTime'));
-                $typeName = date('Y-m-d', $startTime) . ' - ' . date('Y-m-d', $endTime);
+                $typeName = date('Y-m-d', $startTime) . ' ~ ' . date('Y-m-d', $endTime);
                 $map['add_time'] = array('between', array($startTime, $endTime));
             }
             if ($type == 1) {//昨天
@@ -508,7 +509,7 @@ class IndexController extends HomebaseController
         }
 
         if (!empty($_POST) && $type == 4) {//时间段
-            $typeName = date('Y-m-d', $startTime) . ' - ' . date('Y-m-d', $endTime);
+            $typeName = date('Y-m-d', $startTime) . ' ~ ' . date('Y-m-d', $endTime);
         }
         if ($type == 1) {//昨天
             $typeName = '昨天排行';
@@ -563,7 +564,7 @@ class IndexController extends HomebaseController
     public function shop()
     {
         $userInfo = $this->checkLogin();
-//        $userInfo->openid = 'admin';
+        $userInfo->openid = 'admin';
         $data['openid'] = $userInfo->openid;
         $map['user_login'] = $data['openid'];
         $score = current(M('Users')->where($map)->getField('user_login,score,coin', 1));

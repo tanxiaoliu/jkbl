@@ -55,7 +55,7 @@
     margin-left: 0.3rem;
 }
 .health-shop {
-    margin: 0 1rem;
+    margin: 0.25rem 1rem;
 }
 .health-shop ul{
     overflow:hidden
@@ -63,15 +63,15 @@
 .health-shop ul li{
     height:7rem;
     text-align: center;
-    border:0.35rem solid #18abe1;
+    padding:0.35rem;
     width: 6rem;
     float: left;
-    margin: 0.1rem 0.25rem 0.5rem 0.25rem;
+    margin: 0.25rem;
     background-color: #FFFFFF;
 }
 .health-shop ul li img{
     width: 5rem;
-    height: 4rem;
+    height: 4.3rem;
 }
 .health-shop ul li span{
     line-height: 1rem;
@@ -97,22 +97,22 @@
     margin-left: 0.3rem;
 }
 .commonweal-shop {
-    margin: 0 1rem;
+    margin: 0.25rem 1rem;
 }
 .commonweal-shop ul{
     overflow:hidden
 }
 .commonweal-shop ul li{
     text-align: center;
-    border:0.35rem solid #81c269;
+    padding:0.35rem;
     width: 6rem;
     float: left;
-    margin: 0.1rem 0.25rem 0.5rem 0.25rem;
+    margin: 0.25rem;
     background-color: #FFFFFF;
 }
 .commonweal-shop ul li img{
     width: 5rem;
-    height: 4rem;
+    height: 4.3rem;
 }
 .commonweal-shop ul li span{
     line-height: 1rem;

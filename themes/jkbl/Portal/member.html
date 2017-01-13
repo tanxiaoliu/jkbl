@@ -25,6 +25,7 @@
         <form id="loginform" name="loginform" method="post" action="{:U('Index/member')}" onsubmit="return check(this)">
             <input type="hidden" name="type" id="type" value="4">
             <input type="hidden" value="{$grouptype}">
+            <div class="center" style="color: #18abe1;">选择时间段</div>
             <div class="center" style="margin: 0.5rem 0;padding-right: 2rem;"><span style="color: #18abe1;">结束时间：</span><span><input type="date" name="startTime" id="startTime" style="height: 1rem;"></span></div>
             <div class="center" style="margin: 0.5rem 0;padding-right: 2rem;"><span style="color: #18abe1;">开始时间：</span><span><input type="date" name="endTime" id="endTime" style="height: 1rem;"></span></div>
             <div class="center" style="margin: 0.5rem 0;"><input type="submit" class="flatbtn-blu hidemodal" value="搜索"></a></div>
@@ -36,8 +37,9 @@
 <script src="__TMPL__Public/assets/js/jquery.leanModal.min.js"></script>
 <script>
     $(function(){
-
         $('.modaltrigger').leanModal({ top: 110, overlay: 0.45});
+        document.getElementById('startTime').valueAsDate = new Date();
+        document.getElementById('endTime').valueAsDate = new Date();
         $(".flatbtn").each(function(i){
             $(this).click(function(){
                 $("#goodid").val($(this).parent().prev().val())
@@ -70,7 +72,7 @@
     // data1 = eval(data1);
     var data = $("#data").val();
     var status = $("#status").val();
-    console.log(status)
+    console.log(status);
     if (status=="0") {
         data = eval("[{value:1, name:'暂无分组'}]");
     }
