@@ -134,8 +134,9 @@ html,body{
 .type-title{
     position: relative;
     z-index: 2;
-    top: 2.5rem;
-    color: #39bbd8;
+    line-height: 1rem;
+    top: 2.7rem;
+    color: #00658d;
     font-weight: bold;
     width: 100%;
     text-align: center;
