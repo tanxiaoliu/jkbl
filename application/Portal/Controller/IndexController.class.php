@@ -68,6 +68,8 @@ class IndexController extends HomebaseController
      */
     public function checkLogin()
     {
+//        $userInfo->openid = 'admin';
+//        return $userInfo;
         if (sp_is_weixin()) {
             $userInfo = json_decode($_COOKIE['userInfo']);
             $user = session('user');
@@ -194,7 +196,6 @@ class IndexController extends HomebaseController
     public function member()
     {
         $userInfo = $this->checkLogin();
-//        $userInfo->openid = 'admin';
         $map['user_login'] = $userInfo->openid;
         $users = M('Users')->where($map)->find();
         $map = array();
@@ -202,6 +203,7 @@ class IndexController extends HomebaseController
         $memberCachKey = $users['groupid'] . '_member_' . date('Y-m-d:H', time()) . '_' . $type;
         S($memberCachKey, null);
         $data = unserialize(S($memberCachKey));
+//        $data = array();
         $sum = 0;
         $status = empty($users['groupid']) ? 0 : 1;
         if ($status == 1 && (empty($data) || $type == 4 || $data['data'] == '[]')) {
@@ -230,7 +232,7 @@ class IndexController extends HomebaseController
             }
             $data = '[';
             if (!empty($map)) {
-                $users = M('Users')->field('user_login,groupid,score')->where(array('groupid' => $users['groupid']))->select();
+                $users = M('Users')->field('user_login,groupid,score,school')->where(array('groupid' => $users['groupid']))->select();
                 $ids = '';
                 foreach ($users as $value) {
                     $ids .= $value["user_login"] . ',';
@@ -238,17 +240,35 @@ class IndexController extends HomebaseController
                 $ids = rtrim($ids, ',');
                 $map['openid'] = array('in', $ids);
                 $record = D('sport_record')->where($map)->field('openid,sum(step_nums) as num')->group('openid')->order('num DESC')->select();
-                foreach ($record as $value) {
+                foreach ($record as $key=>$value) {
                     $map['user_login'] = $value['openid'];
                     $users = M('Users')->where($map)->find();
                     $sum += $value['num'];
-                    $data .= "{value:{$value['num']}, name:'{$users['user_nicename']}'},";
+                    if(empty($users['school'])){
+                        $name = $users['school'].$users['user_nicename'];
+                    } else {
+                        $name = $users['school'].'-'.$users['user_nicename'];
+                    }
+                    if($key == 0){
+                        $data .= "{value:{$value['num']}, name:'{$name}', selected:true},";
+                    } else {
+                        $data .= "{value:{$value['num']}, name:'{$name}'},";
+                    }
                 }
             } else {
-                $users = M('Users')->field('user_nicename,groupid,score')->where(array('groupid' => $users['groupid']))->select();
-                foreach ($users as $value) {
+                $users = M('Users')->field('user_nicename,groupid,score,school')->where(array('groupid' => $users['groupid']))->order('score DESC')->select();
+                foreach ($users as $key=>$value) {
                     $sum += $value['score'];
-                    $data .= "{value:{$value['score']}, name:'{$value['user_nicename']}'},";
+                    if(empty($value['school'])){
+                        $name = $value['school'].$value['user_nicename'];
+                    } else {
+                        $name = $value['school'].'-'.$value['user_nicename'];
+                    }
+                    if($key == 0){
+                        $data .= "{value:{$value['score']}, name:'{$name}', selected:true},";
+                    } else {
+                        $data .= "{value:{$value['score']}, name:'{$name}'},";
+                    }
                 }
             }
             $data = rtrim($data, ',') . ']';
@@ -298,6 +318,7 @@ class IndexController extends HomebaseController
             $users = D('users')->where($map)->find();
             $pengyouquan[$key]['avatar'] = $users['avatar'];
             $pengyouquan[$key]['user_nicename'] = $users['user_nicename'];
+            $pengyouquan[$key]['school'] = $users['school'];
             $pengyouquan[$key]['uid'] = $vl['post_author'];
         }
         $user = session('user');
@@ -414,18 +435,21 @@ class IndexController extends HomebaseController
     {
         $userInfo = $this->checkLogin();
         if (IS_POST) {
+            $school = I('school');
             $user_nicename = I('user_nicename');
             $map['user_login'] = $userInfo->openid;
             $usersModel = D('users');
             $status = $usersModel->where($map)->getField('status');
             if ($status == 0) {
                 $data['user_nicename'] = $user_nicename;
+                $data['school'] = $school;
                 $data['status'] = 1;
                 $usersModel->where($map)->save($data);
                 $userInfo->nickname = $user_nicename;
-                $data['user_nicename'] = $userInfo->nickname;
+                $userInfo->school = $school;
                 $user = session('user');
                 $user['user_nicename'] = $userInfo->nickname;
+                $user['school'] = $userInfo->school;
                 session('user', $user);
                 setcookie('userInfo', json_encode($userInfo));
             }
@@ -441,7 +465,6 @@ class IndexController extends HomebaseController
     {
         $user = array();
         $userInfo = $this->checkLogin();
-//        $userInfo->openid = 'admin';
         $type = I('type', '', 'intval');
         $grouptype = I('grouptype', '', 'intval');
         $rankDataCachKey = 'rankData_' . date('Y-m-d:H', time()) . '_' . $type . '_' . $grouptype;
@@ -449,6 +472,7 @@ class IndexController extends HomebaseController
         $data = unserialize(S($rankDataCachKey));
         if (!empty($data)) {
             $user = unserialize(S($rankUserCachKey));
+//            $data = array();
         }
         if (empty($data) || $type == 4) {
             $map = '';
@@ -478,6 +502,7 @@ class IndexController extends HomebaseController
                     $users = $usersModel->where($map)->find();
                     $data[$key]['avatar'] = $users['avatar'];
                     $data[$key]['nick_name'] = $users['user_nicename'];
+                    $data[$key]['school'] = $users['school'];
                 }
             } elseif ($grouptype == 1) {
                 $groups = array();
@@ -518,7 +543,9 @@ class IndexController extends HomebaseController
         } elseif ($type == 3) {//上月
             $typeName = '上月排行';
         }
-
+        if(empty($data)){
+            $typeName = $typeName.'无记录';
+        }
         $this->assign("grouptype", $grouptype);
         $this->assign("data", $data);
         $this->assign("user", $user);
@@ -564,7 +591,6 @@ class IndexController extends HomebaseController
     public function shop()
     {
         $userInfo = $this->checkLogin();
-        $userInfo->openid = 'admin';
         $data['openid'] = $userInfo->openid;
         $map['user_login'] = $data['openid'];
         $score = current(M('Users')->where($map)->getField('user_login,score,coin', 1));

@@ -21,22 +21,22 @@
     bottom: 6.65rem;
 }
 .one {
-    padding-left: 5.5rem;
-    margin-bottom: 0.5rem;
+    padding-left: 5rem;
+    margin-bottom: -0.7rem;
 }
 .two {
-    padding-left: 2.5rem;
+    padding-left: 1.8rem;
     position: relative;
-    bottom: 2.6rem;
+    bottom: 2.05rem;
 }
 .three {
-    padding-left: 8.2rem;
+    padding-left: 8.1rem;
     position: relative;
     bottom: 4.9rem;
 }
 .r_blue{
     background: #7fccec;
-    width: 2rem;
+    width: 3rem;
     text-align: center;
     position:relative;
     bottom: 0.75rem;
@@ -49,8 +49,7 @@
     text-align: center;
     font-size: 0.4rem;
     position: relative;
-    bottom: 0.5rem;
-    width: 2rem;
+    bottom: 0.6rem;
     line-height: 0.65rem;
 }
 .head {
@@ -63,7 +62,7 @@
     background-size: 1.5rem 1.5rem;
     position: relative;
     bottom: 0.5rem;
-    left: 0.3rem;
+    left: 0.8rem;
 }
 .rank_head {
     display:block;
@@ -99,17 +98,17 @@
     float: left;
     width:4.33rem;
     text-align: center;
-    height: 2.1rem;
+    height: 2.4rem;
 }
 .rank ul li img{
     margin: 0.2rem 0 0 1.8rem;
 }
 .rank-num {
-    line-height: 1.5rem;
+    line-height: 2.4rem;
     padding-left:2rem;
 }
 .count {
-    line-height:  1.5rem;
+    line-height: 2.4rem;
     padding-right:2rem;
 }
 .my-rank{
