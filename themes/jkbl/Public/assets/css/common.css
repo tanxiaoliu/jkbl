@@ -245,7 +245,10 @@ html,body{
 .p-bu {
     width: 100%;
     position: relative;
-    top:-0.5rem;
+    top:-1.5rem;
+    z-index: 3;
+    height: 2.5rem;
+    line-height: 2.5rem;
 }
 .p-bu ul li {
     width: 50%;
@@ -253,14 +256,15 @@ html,body{
     font-size: 0.8rem;
     font-weight: bold;
     text-align: center;
-    height: 2.5rem;
     float: left;
-    line-height: 2.5rem;
+
 }
 .p-zq {
     width: 100%;
     position: relative;
-    top:-1rem;
+    top:-1.5rem;
+    height: 1.5rem;
+    line-height: 1.5rem;
 }
 .p-zq ul li {
     width: 33%;
@@ -268,9 +272,7 @@ html,body{
     font-size: 0.7rem;
     font-weight: bold;
     text-align: center;
-    height: 1.5rem;
     float: left;
-    line-height: 1.5rem;
 }
 .p-zq ul li a{
     background: #18abe1;
@@ -282,10 +284,11 @@ html,body{
 }
 .p-gg {
     width: 100%;
-    height: 3.5rem;
-    margin-top: 0.2rem;
+    height: 4rem;
+    position: relative;
+    top:-1rem;
 }
 .p-gg img{
     width: 100%;
-    height: 3.5rem;
+    height: 4rem;
 }

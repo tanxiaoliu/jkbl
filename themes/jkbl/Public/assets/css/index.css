@@ -8,7 +8,7 @@
     height: 100%;
     font-size: 0.55rem;
     background: #b7eafd;
-    color: #333;
+    color: #666;
     font-weight: bold;
 }
 .award {
@@ -72,6 +72,45 @@
     border: 0.1rem solid #e6de40;
     background-size: 1.5rem 1.5rem;
     margin-left: 1.4rem;
+}
+.rank_head1 {
+    display:block;
+    width:1.5rem;
+    height:1.5rem;
+    border-radius:50%;
+    border: 0.1rem solid #e6de40;
+    background-size: 1.5rem 1.5rem;
+}
+.rank1 {
+    margin-top: 1.6rem;
+}
+.rank1 ul{
+    float: left;
+    /*text-align: center;*/
+    height: 2rem;
+    /*line-height: 2.5rem*/
+    border-bottom: 0.1rem solid #ffffff;
+    width: 100%;
+}
+.rank1 ul li{
+    float: left;
+    /*text-align: center;*/
+    /*height: 2rem;*/
+    /*line-height: 2rem;*/
+    text-align: left;
+}
+.rank1 ul li img{
+    line-height: 2rem;
+}
+.rank-num1 {
+    padding-left: 0.5rem;
+    line-height: 2rem;
+    width: 2.2rem;
+}
+.count1 {
+    line-height: 2rem;
+    /*line-height: 2.4rem;*/
+    /*padding-right:2rem;*/
 }
 .txt1{
     padding: 0.4rem 0 0 0.5rem;
