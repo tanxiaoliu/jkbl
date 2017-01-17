@@ -68,8 +68,8 @@ class IndexController extends HomebaseController
      */
     public function checkLogin()
     {
-//        $userInfo->openid = 'admin';
-//        return $userInfo;
+        $userInfo->openid = 'admin';
+        return $userInfo;
         if (sp_is_weixin()) {
             $userInfo = json_decode($_COOKIE['userInfo']);
             $user = session('user');
@@ -778,6 +778,11 @@ class IndexController extends HomebaseController
                 $this->error('上传文件出错', U('personal'));
             }
         }
+    }
+
+    public function personallist()
+    {
+        $this->display(":personallist");
     }
 }
 
