@@ -328,14 +328,11 @@ html,body{
     width: 100%;
     /*position: relative;*/
     /*top:-1.3rem;*/
-    height: 1.5rem;
-    line-height: 1.5rem;
+    height: 1rem;
+    line-height: 1rem;
 }
 .p-zq ul li {
     width: 33%;
-    color: #01374c;
-    font-size: 0.7rem;
-    font-weight: bold;
     text-align: center;
     float: left;
 }
@@ -352,7 +349,6 @@ html,body{
     /*position: relative;*/
     /*top:-1.1rem;*/
     margin-top: 0.5rem;
-    z-index: 3;
     height: 2.6rem;
     background-color: #95d8ff;
 }
