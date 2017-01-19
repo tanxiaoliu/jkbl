@@ -7,34 +7,35 @@
 
 <div>
     <tc_include file="Public:nav1" />
-    <!--<div class="p-content">-->
+    <p class="ggz" style="padding-top: 2.3rem;">Togogo Healthy Life for Family</p>
+    <div class="p-content">
     <!--<a class="modaltrigger" href="#sportmodal"><div class="p-sc"><img src="__TMPL__Public/assets/images/sc.png" alt="" style="width: 0.8rem;height: 0.8rem;"> 同步足迹</div></a>-->
     <a class="modaltrigger" href="#sportmodal"><div class="p-sc">同步足迹</div></a>
     <img class="p-img1" src="{$userInfo->headimgurl|default='__TMPL__Public/assets/images/0.png'}" alt="">
     <div class="p-kilometer">累计步数：{$num|default=0}</div>
     <span class="p-name">{$userInfo->school}{$userInfo->nickname}</span>
     <div class="p-an"> <eq name="status" value="0"><a class="detail-btn modaltrigger" href="#loginmodal">修改名字</a></eq></div>
-    <!--</div>-->
-    <div id="main" style="position: relative; width:16rem; height: 8rem; top: -0.5rem;"></div>
+    </div>
+    <div id="main" style="position: relative; width:16.5rem; height: 10rem;"></div>
     <div class="p-zq">
         <ul>
-            <li><a href="">日</a></li>
-            <li><a href="">周</a></li>
-            <li><a href="">月</a></li>
+            <li><a href="{:U('personal', array('type'=>'0'))}">日</a></li>
+            <li><a href="{:U('personal', array('type'=>'1'))}">周</a></li>
+            <li><a href="{:U('personal', array('type'=>'2'))}">月</a></li>
         </ul>
     </div>
     <div class="p-bu">
         <ul>
-            <a href="{:U('personallist')}"><li>步数：881步</li></a>
-            <a href="{:U('personallist')}"><li>消耗：23大卡</li></a>
+            <a href="{:U('personallist', array('type'=>'0'))}"><li>步数：<br/>{$nowNum}<psan style="font-size: 0.6rem"> 步</psan></li></a>
+            <a href="{:U('personallist', array('type'=>'1'))}"><li>消耗：<br/>{$nowKa}<psan style="font-size: 0.6rem"> 大卡</psan></li></a>
         </ul>
     </div>
-    <div class="p-gg"><img src="__TMPL__Public/assets/images/gg.png" alt=""></div>
+    <!--<div class="p-gg"><img src="__TMPL__Public/assets/images/gg.png" alt=""></div>-->
     <tc_include file="Public:footer" />
     <div id="loginmodal" class="modal" style="display:none;">
         <form id="loginform" class="form" name="loginform" method="post" action="{:U('Index/editName')}" onsubmit="return check(this)">
             <p class="center" style="color: red;">注：只能修改一次，请填写真实院校和姓名！</p>
-            <div class="center" style="margin: 0.5rem 0;"><span style="color: #18abe1;">院&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp校：</span><span><input type="text" name="school" id="school" style="height: 1rem;"></span></div>
+            <div class="center" style="margin: 0.5rem 0;"><span style="color: #18abe1;">院&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp校：</span><span><input type="text" name="school" id="school" style="height: 1rem;" placeholder="院校简称"></span></div>
             <div class="center" style="margin: 0.5rem 0;"><span style="color: #18abe1;">真实姓名：</span><span><input type="text" name="user_nicename" id="user_nicename" style="height: 1rem;"></span></div>
             <div class="center" style="margin: 0.5rem 0;"><input type="submit" class="flatbtn-blu hidemodal" value="确定"></a></div>
         </form>
@@ -84,7 +85,12 @@
     }
 </script>
 <script type="text/javascript">
-
+    var theme = {
+        // 默认色板
+        color: [
+            '#3E98C5'
+        ]
+    };
     require.config({
         paths: {
             echarts: 'http://echarts.baidu.com/build/dist'
@@ -96,7 +102,7 @@
                 'echarts/chart/line'
             ],
             function (ec) {
-                var myChart = ec.init(document.getElementById('main'));
+                var myChart = ec.init(document.getElementById('main'), theme);
                 var option = {
 //                    title: {
 //                        text: '未来一周气温变化',
@@ -123,7 +129,7 @@
                     xAxis:  {
                         type: 'category',
                         boundaryGap: false,
-                        data: ['1','2','3','4','5','6','7','8','9','10','11','12']
+                        data: {$dates}
                     },
                     yAxis: {
                         type: 'value',
@@ -135,7 +141,7 @@
                         {
                             name:'最高气温',
                             type:'line',
-                            data:[11, 11, 15, 13, 12, 13, 10, 13, 12, 13, 13, 13],
+                            data: {$datas},
                             markPoint: {
                                 data: [
                                     {type: 'max', name: '最大值'},
@@ -150,10 +156,6 @@
                         }
                     ]
                 };
-//                for (var i = data.length - 1; i >= 0; i--) {
-//                    option.series[0].data.push(data[i])
-//                }
-                // console.log(option.series[0].data)
                 myChart.setOption(option);
             }
     );

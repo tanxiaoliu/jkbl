@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <tc_include file="Public:head" />
+    <link rel="stylesheet" href="__TMPL__Public/assets/css/index.css">
+</head>
+<body>
+
+<div>
+    <tc_include file="Public:nav" />
+    <div class="content-nav">
+        <ul>
+            <li <eq name="{type}" value="0">class="gray"</eq>><a href="{:U('Index/index', array('type'=>0))}">毅力达人堂</a></li>
+            <li <eq name="{type}" value="1">class="gray"</eq>><a href="{:U('Index/index', array('type'=>1))}">腾币达人堂</a></li>
+            <li <eq name="{type}" value="2">class="gray"</eq>><a href="{:U('Index/index', array('type'=>2))}">爱心达人堂</a></li>
+        </ul>
+    </div>
+    <div class="content">
+        <p class="txt1">
+        <if condition="$type eq 0" >根据在“健康心指数”中上传运动数据次数进行排序</if>
+        <if condition="$type eq 1" >根据累计腾币总数进行排序</if>
+        <if condition="$type eq 2" >根据兑换公益福利腾币总数进行排序</if>
+        </p>
+        <div class="one">
+            <img src="__TMPL__Public/assets/images/hg.png" class="hg">
+            <span class="head" style="background-image: url('{$data[0]['avatar']|default='__TMPL__Public/assets/images/0.png'}');"></span>
+            <div class="r_orange" style="bottom: 0.8rem;width: 3rem;">{$vo.school|default='暂无'|mb_substr=###,0,9,'utf-8'}<br/>{$data[0]['nick_name']|default='待定'}</div>
+            <div class="r_blue">{$data[0]['num']|default='0'}{$type == 0 ? '次':'币'}</div>
+        </div>
+        <div class="two">
+            <span class="head" style="background-image: url('{$data[1]['avatar']|default='__TMPL__Public/assets/images/0.png'}');"></span>
+            <div class="r_orange" style="bottom: 0.8rem;width: 3rem;">{$vo.school|default='暂无'|mb_substr=###,0,9,'utf-8'}<br/>{$data[1]['nick_name']|default='待定'}</div>
+            <div class="r_blue">{$data[1]['num']|default='0'}{$type == 0 ? '次':'币'}</div>
+        </div>
+        <div class="three">
+            <span class="head" style="background-image: url('{$data[2]['avatar']|default='__TMPL__Public/assets/images/0.png'}');"></span>
+            <div class="r_orange" style="bottom: 0.8rem;width: 3rem;">{$vo.school|default='暂无'|mb_substr=###,0,9,'utf-8'}<br/>{$data[2]['nick_name']|default='待定'}</div>
+            <div class="r_blue">{$data[3]['num']|default='0'}{$type == 0 ? '次':'币'}</div>
+        </div>
+        <div class="award"></div>
+        <div class="rank">
+            <div style="width:100%; height:11rem; overflow:hidden; margin-top: -7rem;">
+                <volist name="data" id="vo" offset="4" length='500'>
+                    <ul>
+                        <li class="rank-num">NO.{$key}</li>
+                        <li>
+                            <span class="rank_head" style="background-image: url('{$vo.avatar|default='__TMPL__Public/assets/images/0.png'}');"></span>
+                            <div class="r_orange">{$vo.school|default='暂无'|mb_substr=###,0,9,'utf-8'}<br/>{$vo.nick_name}</div>
+                        </li>
+                        <li class="count">{$vo.num}{$type == 1 ? '币':'次'}</li>
+                    </ul>
+                </volist>
+            </div>
+            <ul class="my-rank" style="background-color: #2372ad;color: #ffffff;">
+                <li class="rank-num">NO.{$user['rank']|default='无'}</li>
+                <li>
+                    <span class="rank_head" style="background-image: url('{$userInfo->headimgurl|default='__TMPL__Public/assets/images/0.png'}');"></span>
+                    <span class="r_orange">当前自己排名</span>
+                </li>
+                <li class="count">{$user['num']|default='0'}{$type == 0 ? '次':'币'}</li>
+            </ul>
+        </div>
+    </div>
+    <tc_include file="Public:footer" />
+</div>
+<script>
+    $(function(){
+        $(".top ul li").click(function(){
+            $(this).addClass("white").siblings().removeClass("white");
+        });
+        $(".content-nav ul li").click(function(){
+            $(this).addClass("gray").siblings().removeClass("gray");
+        });
+    });
+</script>
+</body>
+</html>

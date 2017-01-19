@@ -57,37 +57,38 @@
       <h1 class="j-page-name page-name" style="float:left;margin-left:2%;"><a style="color:white;" href="{:U('personal')}">返回</a></h1>
       <h1 class="j-page-name page-name" style="color: #ffffff;">我的运动记录</h1>
 	</header>
-<foreach name="Records" item="vo">
-    <if condition="1 eq 1" >
-        <div class="field">
-            <div class="field-head">
-                <span class="field-head-left">新增步数：20</span>
-                <span class="field-head-right">增加</span>
-            </div>
-            <a class="field-item clearfix" href="javascript:void;">
-                <div class="content">
-                    <p class="price">步数：200</p>
-                    <p class="order-time"></p>
+
+    <if condition="$type eq 0" >
+        <foreach name="record" item="vo">
+            <div class="field">
+                <div class="field-head">
+                    <span class="field-head-left">新增步数：{$vo.step_nums}</span>
+                    <span class="field-head-right">增加</span>
                 </div>
-                <i class="field-arrow icon-arrow-right"><span style="color:red;">200 步</span></i>
-            </a>
-        </div>
+                <a class="field-item clearfix" href="javascript:void;">
+                    <div class="content">
+                        <p class="order-time">{$vo.add_time|date='Y-d-m H:i:s',###}</p>
+                    </div>
+                    <i class="field-arrow icon-arrow-right"><span style="color:red;">{$vo.step_nums} 步</span></i>
+                </a>
+            </div>
+        </foreach>
     <else />
-        <div class="field">
-            <div class="field-head">
-                <span class="field-head-left">消耗大卡：20</span>
-                <span class="field-head-right">消耗</span>
-            </div>
-            <a class="field-item clearfix" href="javascript:void;">
-                <div class="content">
-                    <p class="price">大卡：20</p>
-                    <p class="order-time"></p>
+        <foreach name="record" item="vo">
+            <div class="field">
+                <div class="field-head">
+                    <span class="field-head-left">消耗大卡：{$vo.step_ka}</span>
+                    <span class="field-head-right">消耗</span>
                 </div>
-                <i class="field-arrow icon-arrow-right"><span style="color:red;">20 卡</span></i>
-            </a>
-        </div>
+                <a class="field-item clearfix" href="javascript:void;">
+                    <div class="content">
+                        <p class="order-time">{$vo.add_time|date='Y-d-m H:i:s',###}</p>
+                    </div>
+                    <i class="field-arrow icon-arrow-right"><span style="color:red;">{$vo.step_ka} 卡</span></i>
+                </a>
+            </div>
+        </foreach>
     </if>
-</foreach>
 
 
 </body></html>

@@ -11,8 +11,8 @@ html,body{
 }
 .top {
     width:100%;
-    height: 2.5rem;
-    line-height: 2.5rem;
+    height: 2.2rem;
+    line-height: 2.2rem;
     font-size: 0.74rem;
     text-align: center;
     top: 0;
@@ -82,8 +82,8 @@ html,body{
 }
 .rank-top {
     width: 100%;
-    line-height: 2rem;
-    height: 2.5rem;
+    line-height: 1.9rem;
+    height: 1.9rem;
     font-size: 0.65rem;
     text-align: center;
     top: 0;
@@ -111,7 +111,7 @@ html,body{
     font-size: 0.6rem;
     position:relative;
     z-index:2;
-    top: 2.7rem;
+    top: 1.7rem;
     font-weight: bold;
 }
 .rank-content-nav ul li{
@@ -135,8 +135,9 @@ html,body{
     position: relative;
     z-index: 2;
     line-height: 1rem;
-    top: 2.7rem;
-    color: #00658d;
+    height: 1rem;
+    top: 1.9rem;
+    color: #01374c;
     font-weight: bold;
     width: 100%;
     text-align: center;
@@ -149,18 +150,18 @@ html,body{
 }
 .m-title img {
     width: 13rem;
-    margin: 0.5rem 0;
+    margin: 0.1rem 0 0.5rem 0;
 }
 .m-count {
     font-size: 0.7rem;
-    color: #00658d;
+    color: #01374c;
     font-weight: bold;
 }
 .m-content {
     margin-top: 2.3rem;
 }
 .m-type {
-    color: #00658d;
+    color: #01374c;
     font-weight: bold;
     position: relative;
     font-size: 0.7rem;
@@ -176,6 +177,10 @@ html,body{
 }
 
 /*个人页面*/
+.p-content {
+    margin-top: 1.5rem;
+    background: #95d8ff;
+}
 .p-img1{
     display: block;
     width: 2.5rem;
@@ -183,40 +188,40 @@ html,body{
     border-radius: 50%;
     position: relative;
     z-index: 2;
-    top: 1.5rem;
-    left: 0.7rem;
+    top: -0.5rem;
+    left: 1.5rem;
     border: 0.1rem solid #ffffff;
 }
 .p-name {
     position: relative;
-    top: 0.5rem;
+    top: -1rem;
     font-size: 0.6rem;
-    left: 0.2rem;
-    color: #00658d;
+    left: 1.4rem;
+    color: #01374c;
     font-weight: bold;
+    text-align: center;
 }
 .p-an {
     position: relative;
-    top: 0.5rem;
-    left: 0.8rem;
+    top: -1rem;
+    left: 1.4rem;
     font-size: 0.7rem;
     color: #ffffff;
     font-weight: bold;
-    margin-bottom: 1rem;
 }
 .p-kilometer {
     position: relative;
-    top: 1.7rem;
-    left: 7rem;
-    font-size: 0.7rem;
-    color: #00658d;
+    /*top: 1.7rem;*/
+    left: 6.5rem;
+    font-size: 0.6rem;
+    color: #01374c;
     width: 8rem;
     text-align: center;
     font-weight: bold;
 }
 .p-sc {
     position: relative;
-    top: 3.2rem;
+    top: 1.2rem;
     left: 8.5rem;
     width: 4rem;
     height: 1.2rem;
@@ -242,33 +247,16 @@ html,body{
     background: rgba(0,0,0,0);
     color:#9a9a9a;
 }
-.p-bu {
-    width: 100%;
-    position: relative;
-    top:-1.5rem;
-    z-index: 3;
-    height: 2.5rem;
-    line-height: 2.5rem;
-}
-.p-bu ul li {
-    width: 50%;
-    color: #00658d;
-    font-size: 0.8rem;
-    font-weight: bold;
-    text-align: center;
-    float: left;
-
-}
 .p-zq {
     width: 100%;
     position: relative;
-    top:-1.5rem;
+    top:-1.3rem;
     height: 1.5rem;
     line-height: 1.5rem;
 }
 .p-zq ul li {
     width: 33%;
-    color: #00658d;
+    color: #01374c;
     font-size: 0.7rem;
     font-weight: bold;
     text-align: center;
@@ -282,13 +270,28 @@ html,body{
     font-size: 0.5rem;
     padding: 0.2rem 0.3rem;
 }
-.p-gg {
+.p-bu {
     width: 100%;
-    height: 4rem;
     position: relative;
-    top:-1rem;
+    top:-1.1rem;
+    z-index: 3;
+    height: 2.6rem;
+    background-color: #95d8ff;
 }
-.p-gg img{
-    width: 100%;
-    height: 4rem;
+.p-bu ul li {
+    width: 50%;
+    color: #01374c;
+    font-size: 0.7rem;
+    font-weight: bold;
+    text-align: center;
+    float: left;
+    height: 1.3rem;
+    line-height: 1.3rem;
+}
+.ggz {
+    color:#01374c;
+    text-align: center;
+    font-weight: bold;
+    height: 1.5rem;
+    line-height: 1.5rem;
 }
