@@ -180,21 +180,22 @@ html,body{
 .p-content {
     margin-top: 1.5rem;
     background: #95d8ff;
+    height: 4rem;
 }
 .p-img1{
     display: block;
-    width: 2.5rem;
-    height: 2.5rem;
+    width: 2.3rem;
+    height: 2.3rem;
     border-radius: 50%;
     position: relative;
     z-index: 2;
-    top: -0.5rem;
+    top: -1rem;
     left: 1.5rem;
     border: 0.1rem solid #ffffff;
 }
 .p-name {
     position: relative;
-    top: -1rem;
+    top: -1.7rem;
     font-size: 0.6rem;
     left: 1.4rem;
     color: #01374c;
@@ -203,7 +204,7 @@ html,body{
 }
 .p-an {
     position: relative;
-    top: -1rem;
+    top: -1.7rem;
     left: 1.4rem;
     font-size: 0.7rem;
     color: #ffffff;
@@ -211,7 +212,7 @@ html,body{
 }
 .p-kilometer {
     position: relative;
-    /*top: 1.7rem;*/
+    top: -0.7rem;
     left: 6.5rem;
     font-size: 0.6rem;
     color: #01374c;
@@ -221,7 +222,7 @@ html,body{
 }
 .p-sc {
     position: relative;
-    top: 1.2rem;
+    top: 0.9rem;
     left: 8.5rem;
     width: 4rem;
     height: 1.2rem;
@@ -275,18 +276,18 @@ html,body{
     position: relative;
     top:-1.1rem;
     z-index: 3;
-    height: 2.6rem;
+    height: 2.5rem;
     background-color: #95d8ff;
 }
 .p-bu ul li {
     width: 50%;
     color: #01374c;
-    font-size: 0.7rem;
+    font-size: 0.65rem;
     font-weight: bold;
     text-align: center;
     float: left;
-    height: 1.3rem;
-    line-height: 1.3rem;
+    height: 1.25rem;
+    line-height: 1.25rem;
 }
 .ggz {
     color:#01374c;
