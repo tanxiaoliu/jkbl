@@ -11,47 +11,47 @@
     color: #666;
     font-weight: bold;
 }
-.award {
-    background-image: url('./../images/ljt.png');
-    background-size: 8.5rem 2.1rem;
-    background-repeat:no-repeat;
-    height:2.1rem;
-    margin-left: 2rem;
-    position: relative;
-    bottom: 6.65rem;
-}
-.one {
-    padding-left: 5rem;
-    margin-bottom: -0.7rem;
-}
-.two {
-    padding-left: 1.8rem;
-    position: relative;
-    bottom: 2.05rem;
-}
-.three {
-    padding-left: 8.1rem;
-    position: relative;
-    bottom: 4.9rem;
-}
-.r_blue{
-    background: #7fccec;
-    width: 3rem;
-    text-align: center;
-    position:relative;
-    bottom: 0.75rem;
-    height: 0.6rem;
-    line-height: 0.6rem;
-    font-size: 0.4rem;
-}
-.r_orange{
-    background: #f36f2f;
-    text-align: center;
-    font-size: 0.4rem;
-    position: relative;
-    bottom: 0.6rem;
-    line-height: 0.65rem;
-}
+/*.award {*/
+    /*background-image: url('./../images/ljt.png');*/
+    /*background-size: 8.5rem 2.1rem;*/
+    /*background-repeat:no-repeat;*/
+    /*height:2.1rem;*/
+    /*margin-left: 2rem;*/
+    /*position: relative;*/
+    /*bottom: 6.65rem;*/
+/*}*/
+/*.one {*/
+    /*padding-left: 5rem;*/
+    /*margin-bottom: -0.7rem;*/
+/*}*/
+/*.two {*/
+    /*padding-left: 1.8rem;*/
+    /*position: relative;*/
+    /*bottom: 2.05rem;*/
+/*}*/
+/*.three {*/
+    /*padding-left: 8.1rem;*/
+    /*position: relative;*/
+    /*bottom: 4.9rem;*/
+/*}*/
+/*.r_blue{*/
+    /*background: #7fccec;*/
+    /*width: 3rem;*/
+    /*text-align: center;*/
+    /*position:relative;*/
+    /*bottom: 0.75rem;*/
+    /*height: 0.6rem;*/
+    /*line-height: 0.6rem;*/
+    /*font-size: 0.4rem;*/
+/*}*/
+/*.r_orange{*/
+    /*background: #f36f2f;*/
+    /*text-align: center;*/
+    /*font-size: 0.4rem;*/
+    /*position: relative;*/
+    /*bottom: 0.6rem;*/
+    /*line-height: 0.65rem;*/
+/*}*/
 .head {
     display:block;
     width:1.5rem;

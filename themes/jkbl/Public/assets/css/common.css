@@ -181,68 +181,144 @@ html,body{
     margin-top: 1.5rem;
     background: #95d8ff;
     height: 4rem;
+    width: 100%;
+    font-size: 0.6rem;
+    padding:0.2rem 1.4rem ;
+}
+.p-content ul li{
+    float: left;
 }
 .p-img1{
+    height: 2.2rem;
+}
+.p-img1 img{
     display: block;
-    width: 2.3rem;
-    height: 2.3rem;
+    width: 2rem;
+    height: 2rem;
     border-radius: 50%;
-    position: relative;
-    z-index: 2;
-    top: -1rem;
-    left: 1.5rem;
     border: 0.1rem solid #ffffff;
+    margin-left: 0.2rem;
 }
 .p-name {
-    position: relative;
-    top: -1.7rem;
-    font-size: 0.6rem;
-    left: 1.4rem;
+    height: 0.65rem;
+    line-height: 0.65rem;
     color: #01374c;
     font-weight: bold;
     text-align: center;
 }
-.p-an {
-    position: relative;
-    top: -1.7rem;
-    left: 1.4rem;
-    font-size: 0.7rem;
+/*.p-an {*/
+    /*height: 0.65rem;*/
+    /*line-height: 0.65rem;*/
+    /*color: #ffffff;*/
+    /*font-weight: bold;*/
+/*}*/
+.detail-btn {
+    width: 2.5rem;
+    height: 0.8rem;
+    line-height: 0.8rem;
+    background: #18abe1;
+    -moz-border-radius: 0.2rem;
+    border-radius: 0.2rem;
+    font-size: 0.5rem;
+    font-weight: bold;
+    text-align: center;
+    /*padding: 0.2rem 0.3rem;*/
+}
+.detail-btn a{
     color: #ffffff;
-    font-weight: bold;
-}
-.p-kilometer {
-    position: relative;
-    top: -0.7rem;
-    left: 6.5rem;
-    font-size: 0.6rem;
-    color: #01374c;
-    width: 8rem;
-    text-align: center;
-    font-weight: bold;
 }
 .p-sc {
-    position: relative;
-    top: 0.9rem;
-    left: 8.5rem;
     width: 4rem;
-    height: 1.2rem;
-    line-height: 1.2rem;
+    height: 1.35rem;
+    line-height: 1.35rem;
     background: #18abe1;
     -moz-border-radius: 0.2rem;
     border-radius: 0.2rem;
     color: #ffffff;
-    font-size: 0.6rem;
     font-weight: bold;
     text-align: center;
 }
-.detail-btn {
-    background: #18abe1;
-    -moz-border-radius: 0.2rem;
-    border-radius: 0.2rem;
-    color: #ffffff;
-    font-size: 0.5rem;
-    padding: 0.2rem 0.3rem;
+.p-kilometer {
+    height: 1.75rem;
+    line-height: 1.75rem;
+    color: #01374c;
+    text-align: center;
+    font-weight: bold;
 }
+/*.detail-btn {*/
+    /*background: #18abe1;*/
+    /*-moz-border-radius: 0.2rem;*/
+    /*border-radius: 0.2rem;*/
+    /*color: #ffffff;*/
+    /*font-size: 0.5rem;*/
+    /*padding: 0.2rem 0.3rem;*/
+/*}*/
+/*.p-content {*/
+    /*margin-top: 1.5rem;*/
+    /*background: #95d8ff;*/
+    /*height: 4rem;*/
+/*}*/
+/*.p-img1{*/
+    /*display: block;*/
+    /*width: 2.3rem;*/
+    /*height: 2.3rem;*/
+    /*border-radius: 50%;*/
+    /*position: relative;*/
+    /*z-index: 2;*/
+    /*top: -1rem;*/
+    /*left: 1.5rem;*/
+    /*border: 0.1rem solid #ffffff;*/
+/*}*/
+/*.p-name {*/
+    /*position: relative;*/
+    /*top: -1.7rem;*/
+    /*font-size: 0.6rem;*/
+    /*left: 1.4rem;*/
+    /*color: #01374c;*/
+    /*font-weight: bold;*/
+    /*text-align: center;*/
+/*}*/
+/*.p-an {*/
+    /*position: relative;*/
+    /*top: -1.7rem;*/
+    /*left: 1.4rem;*/
+    /*font-size: 0.7rem;*/
+    /*color: #ffffff;*/
+    /*font-weight: bold;*/
+/*}*/
+/*.p-kilometer {*/
+    /*position: relative;*/
+    /*top: -0.7rem;*/
+    /*left: 6.5rem;*/
+    /*font-size: 0.6rem;*/
+    /*color: #01374c;*/
+    /*width: 8rem;*/
+    /*text-align: center;*/
+    /*font-weight: bold;*/
+/*}*/
+/*.p-sc {*/
+    /*position: relative;*/
+    /*top: 0.9rem;*/
+    /*left: 8.5rem;*/
+    /*width: 4rem;*/
+    /*height: 1.2rem;*/
+    /*line-height: 1.2rem;*/
+    /*background: #18abe1;*/
+    /*-moz-border-radius: 0.2rem;*/
+    /*border-radius: 0.2rem;*/
+    /*color: #ffffff;*/
+    /*font-size: 0.6rem;*/
+    /*font-weight: bold;*/
+    /*text-align: center;*/
+/*}*/
+/*.detail-btn {*/
+    /*background: #18abe1;*/
+    /*-moz-border-radius: 0.2rem;*/
+    /*border-radius: 0.2rem;*/
+    /*color: #ffffff;*/
+    /*font-size: 0.5rem;*/
+    /*padding: 0.2rem 0.3rem;*/
+/*}*/
 .date {
     border:none;
     background: rgba(0,0,0,0);
@@ -250,8 +326,8 @@ html,body{
 }
 .p-zq {
     width: 100%;
-    position: relative;
-    top:-1.3rem;
+    /*position: relative;*/
+    /*top:-1.3rem;*/
     height: 1.5rem;
     line-height: 1.5rem;
 }
@@ -273,10 +349,11 @@ html,body{
 }
 .p-bu {
     width: 100%;
-    position: relative;
-    top:-1.1rem;
+    /*position: relative;*/
+    /*top:-1.1rem;*/
+    margin-top: 0.5rem;
     z-index: 3;
-    height: 2.5rem;
+    height: 2.6rem;
     background-color: #95d8ff;
 }
 .p-bu ul li {
@@ -286,8 +363,8 @@ html,body{
     font-weight: bold;
     text-align: center;
     float: left;
-    height: 1.25rem;
-    line-height: 1.25rem;
+    height: 1.3rem;
+    line-height: 1.3rem;
 }
 .ggz {
     color:#01374c;
