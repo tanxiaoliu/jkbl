@@ -13,7 +13,7 @@
             <li>
                 <div class="p-img1"><img src="{$userInfo->headimgurl|default='__TMPL__Public/assets/images/0.png'}" alt=""></div>
                 <div>
-                    <div class="p-name">{$userInfo->school}{$userInfo->nickname}123</div>
+                    <div class="p-name">{$userInfo->school}{$userInfo->nickname}</div>
                     <eq name="status" value="0"><div class="detail-btn"><a class="modaltrigger" href="#loginmodal">修改名字</a></div></eq>
                 </div>
             </li>
@@ -23,14 +23,6 @@
            </li>
         </ul>
     </div>
-    <!--<div class="p-content">-->
-    <!--&lt;!&ndash;<a class="modaltrigger" href="#sportmodal"><div class="p-sc"><img src="__TMPL__Public/assets/images/sc.png" alt="" style="width: 0.8rem;height: 0.8rem;"> 同步足迹</div></a>&ndash;&gt;-->
-    <!--<a class="modaltrigger" href="#sportmodal"><div class="p-sc">同步足迹</div></a>-->
-    <!--<img class="p-img1" src="{$userInfo->headimgurl|default='__TMPL__Public/assets/images/0.png'}" alt="">-->
-    <!--<div class="p-kilometer">累计步数：{$num|default=0}</div>-->
-    <!--<span class="p-name">{$userInfo->school}{$userInfo->nickname}</span>-->
-    <!--<div class="p-an"> <eq name="status" value="0"><a class="detail-btn modaltrigger" href="#loginmodal">修改名字</a></eq></div>-->
-    <!--</div>-->
     <div id="main" style="width:16.5rem; height: 10.4rem;"></div>
     <div class="p-zq">
         <ul>
@@ -45,7 +37,6 @@
             <a href="{:U('personallist', array('type'=>'1'))}"><li>消耗：<br/>{$nowKa}<psan style="font-size: 0.6rem"> 大卡</psan></li></a>
         </ul>
     </div>
-    <!--<div class="p-gg"><img src="__TMPL__Public/assets/images/gg.png" alt=""></div>-->
     <tc_include file="Public:footer" />
     <div id="loginmodal" class="modal" style="display:none;">
         <form id="loginform" class="form" name="loginform" method="post" action="{:U('Index/editName')}" onsubmit="return check(this)">
