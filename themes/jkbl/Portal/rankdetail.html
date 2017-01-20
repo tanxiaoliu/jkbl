@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <tc_include file="Public:head" />
+    <link rel="stylesheet" href="__TMPL__Public/assets/css/index.css">
+</head>
+<body>
+
+<div>
+    <tc_include file="Public:nav1" />
+    <p class="ggz" style="padding-top: 2.3rem;"><img src="__TMPL__Public/assets/images/gg.png"></p>
+    <div class="rank-content-nav">
+        <ul>
+            <li <if condition="$grouptype eq 0">class="gray_rank"</if>><a style="color:white;" href="{:U('Index/rank')}">个人排名</a></li>
+            <li <if condition="$grouptype eq 1">class="gray_rank"</if>><a style="color:white;" href="{:U('Index/rank', array('grouptype'=>1))}">联盟排名</a></li>
+        </ul>
+    </div>
+    <br/>
+    <div class="content" style="margin-top:1.5rem;">
+        <div class="rank1">
+            <div style="width:100%; height:15.5rem; overflow-x: hidden; overflow-y: auto; font-size: 0.45rem;">
+                <volist name="data" id="vo" offset="0" length='50'>
+                    <ul>
+                        <li class="rank-num1">NO.{$i}</li>
+                        <li><span class="rank_head1" style="background-image: url('{$vo.avatar|default='__TMPL__Public/assets/images/0.png'}');"></span></li>
+                        <li style="width: 5rem; padding-left: 0.3rem;">
+                            <div style="height: 1rem;">{$vo.nick_name}</div>
+                            <div style="height: 1rem;">{$vo.school|default='暂无'|msubstr=0,9,'utf-8'}</div>
+                        </li>
+                        <li class="count1">步数:{$vo.num}</li>
+                        <eq name="i" value="1">
+                            <li class="pai"><img src="__TMPL__Public/assets/images/1.png"></li>
+                        </eq>
+                        <eq name="i" value="2">
+                            <li class="pai"><img src="__TMPL__Public/assets/images/2.png"></li>
+                        </eq>
+                        <eq name="i" value="3">
+                            <li class="pai"><img src="__TMPL__Public/assets/images/3.png"></li>
+                        </eq>
+                    </ul>
+                </volist>
+            </div>
+        </div>
+    </div>
+    <tc_include file="Public:footer" />
+</div>
+<script>
+    $(function(){
+        $('.modaltrigger').leanModal({ top: 110, overlay: 0.45});
+        document.getElementById('startTime').valueAsDate = new Date();
+        document.getElementById('endTime').valueAsDate = new Date();
+        $(".rank-top ul li").click(function(){
+            $(this).addClass("blue").siblings().removeClass("blue");
+        });
+        $(".rank-content-nav ul li").click(function(){
+            $(this).addClass("gray_rank").siblings().removeClass("gray_rank");
+        });
+    });
+</script>
+<script src="__TMPL__Public/assets/js/jquery-1.9.1.min.js"></script>
+<script src="__TMPL__Public/assets/js/jquery.leanModal.min.js"></script>
+</body>
+</html>

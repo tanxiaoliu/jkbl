@@ -240,7 +240,7 @@ class IndexController extends HomebaseController
                 $ids = rtrim($ids, ',');
                 $map['openid'] = array('in', $ids);
                 $record = D('sport_record')->where($map)->field('openid,sum(step_nums) as num')->group('openid')->order('num DESC')->select();
-                foreach ($record as $key=>$value) {
+                foreach ($record as $value) {
                     $map['user_login'] = $value['openid'];
                     $users = M('Users')->where($map)->find();
                     $sum += $value['num'];
@@ -249,26 +249,18 @@ class IndexController extends HomebaseController
                     } else {
                         $name = $users['school'].'-'.$users['user_nicename'];
                     }
-                    if($key == 0){
-                        $data .= "{value:{$value['num']}, name:'{$name}', selected:true},";
-                    } else {
-                        $data .= "{value:{$value['num']}, name:'{$name}'},";
-                    }
+                    $data .= "{value:{$value['num']}, name:'{$name}'},";
                 }
             } else {
                 $users = M('Users')->field('user_nicename,groupid,score,school')->where(array('groupid' => $users['groupid']))->order('score DESC')->select();
-                foreach ($users as $key=>$value) {
+                foreach ($users as $value) {
                     $sum += $value['score'];
                     if(empty($value['school'])){
                         $name = $value['school'].$value['user_nicename'];
                     } else {
                         $name = $value['school'].'-'.$value['user_nicename'];
                     }
-                    if($key == 0){
-                        $data .= "{value:{$value['score']}, name:'{$name}', selected:true},";
-                    } else {
-                        $data .= "{value:{$value['score']}, name:'{$name}'},";
-                    }
+                    $data .= "{value:{$value['score']}, name:'{$name}'},";
                 }
             }
             $data = rtrim($data, ',') . ']';
@@ -421,71 +413,95 @@ class IndexController extends HomebaseController
         $type = I('type', 0, 'int');
         $dates = '[';
         $datas = '[';
-        if($type == 1){//周
-            for($i=0; $i<7; $i++){
+        if ($type == 1) {//周
+            for ($i = 0; $i < 7; $i++) {
                 $k = 7 - $i;
-                $timeStart=mktime(0,0,0,date('m'),date('d')-date('w')-6-(7*($k-1)),date('Y'));
-                $timeEnd=mktime(23,59,59,date('m'),date('d')-date('w')-(7*($k-1)),date('Y'));
+                $timeStart = mktime(0, 0, 0, date('m'), date('d') - date('w') - 6 - (7 * ($k - 1)), date('Y'));
+                $timeEnd = mktime(23, 59, 59, date('m'), date('d') - date('w') - (7 * ($k - 1)), date('Y'));
                 $map['add_time'] = array('between', array($timeStart, $timeEnd));
-                $date = date('W周',$timeStart);
+                $date = date('W周', $timeStart);
                 $data = D('sport_record')->where($map)->sum('step_nums');
-                $data = $data ?:0;
+                $data = $data ?: 0;
                 $dates .= "'$date',";
                 $datas .= "$data,";
             }
-            $timeStart=mktime(0,0,0,date('m'),date('d')-date('w')-6,date('Y'));
-            $timeEnd=mktime(23,59,59,date('m'),date('d')-date('w'),date('Y'));
-            $map['add_time'] = array('between', array($timeStart, $timeEnd));
-            $nowNum = D('sport_record')->where($map)->sum('step_nums');
-        } elseif ($type == 2){//月
-            for($i=0; $i<7; $i++){
+        } elseif ($type == 2) {//月
+            for ($i = 0; $i < 7; $i++) {
                 $k = 7 - $i;
-                $timeStart=mktime(0,0,0,date('m')-($k-1),1,date('Y'));
-                $timeEnd=mktime(23,59,59,date('m')-($k-1),date('t'),date('Y'));
+                $timeStart = mktime(0, 0, 0, date('m') - ($k - 1), 1, date('Y'));
+                $timeEnd = mktime(23, 59, 59, date('m') - ($k - 1), date('t'), date('Y'));
                 $map['add_time'] = array('between', array($timeStart, $timeEnd));
-                $date = date('m月',$timeStart);
+                $date = date('m月', $timeStart);
                 $data = D('sport_record')->where($map)->sum('step_nums');
-                $data = $data ?:0;
+                $data = $data ?: 0;
                 $dates .= "'$date',";
                 $datas .= "$data,";
             }
-            $timeStart=mktime(0,0,0,date('m'),1,date('Y'));
-            $timeEnd=mktime(23,59,59,date('m'),date('t'),date('Y'));
-            $map['add_time'] = array('between', array($timeStart, $timeEnd));
-            $nowNum = D('sport_record')->where($map)->sum('step_nums');
         } else {//天
-            for($i=0; $i<7; $i++){
+            for ($i = 0; $i < 7; $i++) {
                 $k = 7 - $i;
-                $timeStart =mktime(0,0,0,date('m'),date('d')-$k,date('Y'));
-                $timeEnd = mktime(0,0,0,date('m'),date('d')-($k-1),date('Y'))-1;
+                $timeStart = mktime(0, 0, 0, date('m'), date('d') - $k, date('Y'));
+                $timeEnd = mktime(0, 0, 0, date('m'), date('d') - ($k - 1), date('Y')) - 1;
                 $map['add_time'] = array('between', array($timeStart, $timeEnd));
-                $date = date('d日',$timeStart);
+                $date = date('d日', $timeStart);
                 $data = D('sport_record')->where($map)->sum('step_nums');
-                $data = $data ?:0;
+                $data = $data ?: 0;
                 $dates .= "'$date',";
                 $datas .= "$data,";
             }
-            $timeStart =mktime(0,0,0,date('m'),date('d')-1,date('Y'));
-            $timeEnd = mktime(0,0,0,date('m'),date('d'),date('Y'))-1;
-            $map['add_time'] = array('between', array($timeStart, $timeEnd));
-            $nowNum = D('sport_record')->where($map)->sum('step_nums');
         }
         $dates = rtrim($dates, ',') . ']';
         $datas = rtrim($datas, ',') . ']';
-        $num = D('sport_record')->where(array('openid'=>$userInfo->openid))->sum('step_nums');
+
+        //天
+        $timeStart = mktime(0, 0, 0, date('m'), date('d') - 6, date('Y'));
+        $timeEnd = mktime(0, 0, 0, date('m'), date('d'), date('Y')) - 1;
+        $map['add_time'] = array('between', array($timeStart, $timeEnd));
+        $nowNum = D('sport_record')->where($map)->sum('step_nums');
+
+        //周
+        $timeStart1 = mktime(0, 0, 0, date('m'), date('d') - date('w') - 42, date('Y'));
+        $timeEnd1 = mktime(23, 59, 59, date('m'), date('d') - date('w') - 6, date('Y'));
+        $map1['add_time'] = array('between', array($timeStart1, $timeEnd1));
+        $nowNum1 = D('sport_record')->where($map1)->sum('step_nums');
+
+        //月
+        $timeStart2 = mktime(0, 0, 0, date('m') - 6, 1, date('Y'));
+        $timeEnd2 = mktime(23, 59, 59, date('m'), date('t'), date('Y'));
+        $map2['add_time'] = array('between', array($timeStart2, $timeEnd2));
+        $nowNum2 = D('sport_record')->where($map2)->sum('step_nums');
+
+        $num = D('sport_record')->where(array('openid' => $userInfo->openid))->sum('step_nums');
         $umap['user_login'] = $userInfo->openid;
         $status = D('users')->where($umap)->getField('status');
-        $nowNum = $nowNum?:0;
-        $nowKa = $nowNum == 0?0:$nowNum*0.04;
+        $nowNum = $nowNum ? $nowNum / 7 : 0;
+        $nowNum1 = $nowNum1 ? $nowNum1 / 7 : 0;
+        $nowNum2 = $nowNum2 ? $nowNum2 / 7 : 0;
         $this->assign("userInfo", $userInfo);
         $this->assign("num", $num);
-        $this->assign("nowNum", $nowNum);
-        $this->assign("nowKa", $nowKa);
+        $this->assign("nowNum", sprintf("%.2f", $nowNum));
+        $this->assign("nowKa", $this->getKa($nowNum));
+        $this->assign("nowNum1", sprintf("%.2f", $nowNum1));
+        $this->assign("nowKa1", $this->getKa($nowNum1));
+        $this->assign("nowNum2", sprintf("%.2f", $nowNum2));
+        $this->assign("nowKa2", $this->getKa($nowNum2));
         $this->assign("dates", $dates);
         $this->assign("datas", $datas);
         $this->assign("status", $status);
         $this->assign("footer", "zhishu");
         $this->display(":personal");
+    }
+
+    /**
+     * 步数换大卡
+     * @author tanhuaxin
+     * @param $num
+     * @return int|string
+     */
+    public function getKa($num)
+    {
+        $result = $num == 0 ? 0 : sprintf("%.2f", $num * 0.04);
+        return $result;
     }
 
     /**
@@ -849,18 +865,68 @@ class IndexController extends HomebaseController
     public function personallist()
     {
         $userInfo = $this->checkLogin();
+        $date = I('date', 0, 'int');
         $type = I('type', 0, 'int');
+        $map['openid'] = $userInfo->openid;
+        $record = array();
+        if($date == 1){//周
+            for ($i = 1; $i <= 52; $i++) {
+                $timeStart = mktime(0, 0, 0, date('m'), date('d') - date('w') - 6 - (7 * ($i - 1)), date('Y'));
+                $timeEnd = mktime(23, 59, 59, date('m'), date('d') - date('w') - (7 * ($i - 1)), date('Y'));
+                $map['add_time'] = array('between', array($timeStart, $timeEnd));
+                $data['add_time'] = date('Y年W周', $timeStart);
+                $step_nums = D('sport_record')->where($map)->sum('step_nums');
+                if($type == 1) {
+                    $data['step_ka'] = $step_nums ? $this->getKa($step_nums): 0;
+                } else {
+                    $data['step_nums'] = $step_nums ?: 0;
+                }
+                $record[] = $data;
+            }
+        } elseif($date == 2){
+            for ($i = 1; $i <= 25; $i++) {
+                $timeStart = mktime(0, 0, 0, date('m') - ($i - 1), 1, date('Y'));
+                $timeEnd = mktime(23, 59, 59, date('m') - ($i - 1), date('t'), date('Y'));
+                $map['add_time'] = array('between', array($timeStart, $timeEnd));
+                $data['add_time'] = date('Y年m月', $timeStart);
+                $step_nums = D('sport_record')->where($map)->sum('step_nums');
+                if($type == 1) {
+                    $data['step_ka'] = $step_nums ? $this->getKa($step_nums): 0;
+                } else {
+                    $data['step_nums'] = $step_nums ?: 0;
+                }
+                $record[] = $data;
+            }
+        } else {
             $map['openid'] = $userInfo->openid;
             $record = D('sport_record')->where($map)->order('id DESC')->select();
-        if($type == 1){//卡
-            foreach ($record as $key=>$value){
-                $record[$key]['step_ka'] = $value['step_nums'] * 0.04;
+            if($type == 1){//卡
+                foreach ($record as $key=>$value){
+                    $record[$key]['step_ka'] = $this->getKa($value['step_nums']);
+                }
             }
         }
         $this->assign("userInfo", $userInfo);
         $this->assign("record", $record);
         $this->assign("type", $type);
+        $this->assign("date", $date);
         $this->display(":personallist");
+    }
+
+    /**
+     * 小组列表
+     * @author tanhuaxin
+     */
+    public function rankdetail()
+    {
+        $userInfo = $this->checkLogin();
+        $map['user_login'] = $userInfo->openid;
+        $groupid = I('groupid', 0 , 'int');
+        $users = M('Users')->field('user_nicename,groupid,score,school')->where(array('groupid' => $groupid))->order('score DESC')->select();
+        $this->assign("userInfo", $userInfo);
+        $this->assign("data", $users);
+        $this->assign("footer", "zhishu");
+        $this->display(":rankdetail");
     }
 }
 

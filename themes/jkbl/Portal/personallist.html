@@ -55,19 +55,23 @@
 	<header id="header" class="header page-header  ">
     <div class="header-right"></div>
       <h1 class="j-page-name page-name" style="float:left;margin-left:2%;"><a style="color:white;" href="{:U('personal')}">返回</a></h1>
-      <h1 class="j-page-name page-name" style="color: #ffffff;">我的运动记录</h1>
+        <if condition="$type eq 0" >
+            <h1 class="j-page-name page-name" style="color: #ffffff;">我的运动记录</h1>
+            <else />
+            <h1 class="j-page-name page-name" style="color: #ffffff;">消耗大卡</h1>
+        </if>
 	</header>
 
     <if condition="$type eq 0" >
         <foreach name="record" item="vo">
-            <div class="field">
-                <div class="field-head">
-                    <span class="field-head-left">新增步数：{$vo.step_nums}</span>
-                    <span class="field-head-right">增加</span>
-                </div>
-                <a class="field-item clearfix" href="javascript:void;">
+            <div class="field" style="margin-top: 5px;">
+                <a class="field-item clearfix" href="#">
                     <div class="content">
-                        <p class="order-time">{$vo.add_time|date='Y-d-m H:i:s',###}</p>
+                        <if condition="$date eq 0" >
+                            <p class="order-time">{$vo.add_time|date='Y-d-m',###}</p>
+                            <else />
+                            <p class="order-time">{$vo.add_time}</p>
+                        </if>
                     </div>
                     <i class="field-arrow icon-arrow-right"><span style="color:red;">{$vo.step_nums} 步</span></i>
                 </a>
@@ -75,14 +79,14 @@
         </foreach>
     <else />
         <foreach name="record" item="vo">
-            <div class="field">
-                <div class="field-head">
-                    <span class="field-head-left">消耗大卡：{$vo.step_ka}</span>
-                    <span class="field-head-right">消耗</span>
-                </div>
-                <a class="field-item clearfix" href="javascript:void;">
+            <div class="field" style="margin-top: 5px;">
+                <a class="field-item clearfix" href="#">
                     <div class="content">
-                        <p class="order-time">{$vo.add_time|date='Y-d-m H:i:s',###}</p>
+                        <if condition="$date eq 0" >
+                            <p class="order-time">{$vo.add_time|date='Y-d-m',###}</p>
+                            <else />
+                            <p class="order-time">{$vo.add_time}</p>
+                        </if>
                     </div>
                     <i class="field-arrow icon-arrow-right"><span style="color:red;">{$vo.step_ka} 卡</span></i>
                 </a>

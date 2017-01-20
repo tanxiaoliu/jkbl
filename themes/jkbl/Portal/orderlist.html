@@ -68,7 +68,7 @@
 	            <img src="/data/upload/{$vo.url}" class="j-avatar-img avatar-img">
 	        </div>
 	        <div class="content">
-	            <p class="price">{$vo.address}</p>
+	            <p class="price">{$vo.address|default='无'}</p>
 
 	            <p class="order-time">{:date('Y-m-d H:i:s', $vo['add_time'])}</p>
 

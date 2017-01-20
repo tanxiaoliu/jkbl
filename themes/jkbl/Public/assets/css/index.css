@@ -47,7 +47,7 @@
     float: left;
     height: 2rem;
     border-bottom: 0.02rem solid #ffffff;
-    width: 100%;
+    width:13rem;
 }
 .rank1 ul li{
     float: left;
@@ -60,6 +60,15 @@
     padding-left: 0.5rem;
     line-height: 2rem;
     width: 2.2rem;
+}
+.rank-my {
+    background-color: #2372ad;
+    color: #ffffff;
+    font-size: 0.45rem;
+    font-weight: normal;
+    position:fixed;
+    bottom: 2.6rem;
+    width:13rem;
 }
 .count1 {
     line-height: 2rem;

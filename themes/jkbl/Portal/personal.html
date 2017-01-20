@@ -3,57 +3,98 @@
 <head>
     <tc_include file="Public:head" />
 </head>
-<body>
+<body style="overflow: auto">
 
 <div>
     <tc_include file="Public:nav1" />
-    <p class="ggz" style="padding-top: 2.3rem;">Togogo Healthy Life for Family</p>
-    <div class="p-content">
-        <ul>
-            <li>
-                <div class="p-img1"><img src="{$userInfo->headimgurl|default='__TMPL__Public/assets/images/0.png'}" alt=""></div>
-                <div>
-                    <div class="p-name">{$userInfo->school}{$userInfo->nickname}</div>
-                    <eq name="status" value="0"><div class="detail-btn"><a class="modaltrigger" href="#loginmodal">修改名字</a></div></eq>
-                </div>
-            </li>
-           <li style="margin: 0.5rem 0 0 4rem;">
-               <div><a class="modaltrigger" href="#sportmodal"><div class="p-sc">同步足迹</div></a></div>
-               <div class="p-kilometer">累计步数：{$num|default=0}</div>
-           </li>
-        </ul>
-    </div>
-    <div id="main" style="width:16.5rem; height: 10.4rem;"></div>
-    <div class="p-zq">
-        <ul>
-            <li><a href="{:U('personal', array('type'=>'0'))}">日</a></li>
-            <li><a href="{:U('personal', array('type'=>'1'))}">周</a></li>
-            <li><a href="{:U('personal', array('type'=>'2'))}">月</a></li>
-        </ul>
-    </div>
-    <div class="p-bu">
-        <ul>
-            <a href="{:U('personallist', array('type'=>'0'))}"><li>步数：<br/>{$nowNum}<psan style="font-size: 0.6rem"> 步</psan></li></a>
-            <a href="{:U('personallist', array('type'=>'1'))}"><li>消耗：<br/>{$nowKa}<psan style="font-size: 0.6rem"> 大卡</psan></li></a>
-        </ul>
-    </div>
-    <tc_include file="Public:footer" />
-    <div id="loginmodal" class="modal" style="display:none;">
-        <form id="loginform" class="form" name="loginform" method="post" action="{:U('Index/editName')}" onsubmit="return check(this)">
-            <p class="center" style="color: red;">注：只能修改一次，请填写真实院校和姓名！</p>
-            <div class="center" style="margin: 0.5rem 0;"><span style="color: #18abe1;">院&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp校：</span><span><input type="text" name="school" id="school" style="height: 1rem;" placeholder="院校简称"></span></div>
-            <div class="center" style="margin: 0.5rem 0;"><span style="color: #18abe1;">真实姓名：</span><span><input type="text" name="user_nicename" id="user_nicename" style="height: 1rem;"></span></div>
-            <div class="center" style="margin: 0.5rem 0;"><input type="submit" class="flatbtn-blu hidemodal" value="确定"></a></div>
-        </form>
-    </div>
-    <div id="sportmodal" class="modal" style="display:none;">
-        <form id="sportform" class="form" name="sportmodal" method="post" action="{:U('Index/uploadSport')}" onsubmit="return check1(this)" enctype="multipart/form-data">
-            <p class="center" style="color: red;">注：运动记录“以微信运动的”为准！</p>
-            <div class="center" style="margin: 0.5rem 0;"><span style="color: #18abe1;">图片：</span><span><input type="file" name="image" id="image" style="height: 1rem; width: 6.9rem;"></span></div>
-            <div class="center" style="margin: 0.5rem 0;"><span style="color: #18abe1;">步数：</span><span><input type="text" name="num" id="num" style="height: 1rem;"></span></div>
-            <div class="center" style="margin: 0.5rem 0;"><input type="submit" class="flatbtn-blu hidemodal" value="确定"></a></div>
-        </form>
-    </div>
+    <!--<div style="height:24rem; overflow-x: hidden; overflow-y: auto;">-->
+    <!--<div style="height:21.4rem; overflow-x: hidden; overflow-y: auto;">-->
+        <p class="ggz" style="padding-top: 2.3rem;"><img src="__TMPL__Public/assets/images/gg.png"></p>
+        <div class="p-content">
+            <ul>
+                <li>
+                    <div class="p-img1"><img src="{$userInfo->headimgurl|default='__TMPL__Public/assets/images/0.png'}" alt=""></div>
+                    <div>
+                        <div class="p-name">{$userInfo->school}{$userInfo->nickname}</div>
+                        <eq name="status" value="0"><div class="detail-btn1"><a class="modaltrigger" href="#loginmodal">修改名字</a></div></eq>
+                    </div>
+                </li>
+               <li style="margin: 0.5rem 0 0 4rem;">
+                   <div><a class="modaltrigger" href="#sportmodal"><div class="p-sc">同步足迹</div></a></div>
+                   <div class="p-kilometer">累计步数：{$num|default=0}</div>
+               </li>
+            </ul>
+        </div>
+        <div id="main" style="width:16.5rem; height: 10rem;"></div>
+        <div class="p-zq">
+            <ul>
+                <li><a href="{:U('personal', array('type'=>'0'))}">日</a></li>
+                <li><a href="{:U('personal', array('type'=>'1'))}">周</a></li>
+                <li><a href="{:U('personal', array('type'=>'2'))}">月</a></li>
+            </ul>
+        </div>
+        <div class="p-bu">
+            <ul>
+                <li>
+                    <a href="{:U('personallist', array('type'=>'0', 'date'=>'0'))}">
+                        <div>周步数：</div>
+                        <div style="font-size: 0.65rem">{$nowNum} 步</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="{:U('personallist', array('type'=>'1', 'date'=>'0'))}">
+                        <div>消耗：</div>
+                        <div style="font-size: 0.65rem">{$nowKa} 卡</div>
+                    </a>
+                </li>
+            </ul>
+            <ul>
+                <li>
+                    <a href="{:U('personallist', array('type'=>'0', 'date'=>'1'))}">
+                        <div>周步数：</div>
+                        <div style="font-size: 0.65rem">{$nowNum1} 步</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="{:U('personallist', array('type'=>'1', 'date'=>'1'))}">
+                        <div>消耗：</div>
+                        <div style="font-size: 0.65rem">{$nowKa1} 卡</div>
+                    </a>
+                </li>
+            </ul>
+            <ul style="border-right: 0.1rem solid #ffffff;">
+                <li>
+                    <a href="{:U('personallist', array('type'=>'0', 'date'=>'2'))}">
+                        <div>月步数：</div>
+                        <div style="font-size: 0.65rem">{$nowNum2} 步</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="{:U('personallist', array('type'=>'1', 'date'=>'2'))}">
+                        <div>消耗：</div>
+                        <div style="font-size: 0.65rem">{$nowKa2} 卡</div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <tc_include file="Public:footer" />
+        <div id="loginmodal" class="modal" style="display:none;">
+            <form id="loginform" class="form" name="loginform" method="post" action="{:U('Index/editName')}" onsubmit="return check(this)">
+                <p class="center" style="color: red;">注：只能修改一次，请填写真实院校和姓名！</p>
+                <div class="center" style="margin: 0.5rem 0;"><span style="color: #18abe1;">院&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp校：</span><span><input type="text" name="school" id="school" style="height: 1rem;" placeholder="院校简称"></span></div>
+                <div class="center" style="margin: 0.5rem 0;"><span style="color: #18abe1;">真实姓名：</span><span><input type="text" name="user_nicename" id="user_nicename" style="height: 1rem;"></span></div>
+                <div class="center" style="margin: 0.5rem 0;"><input type="submit" class="flatbtn-blu hidemodal" value="确定"></a></div>
+            </form>
+        </div>
+        <div id="sportmodal" class="modal" style="display:none;">
+            <form id="sportform" class="form" name="sportmodal" method="post" action="{:U('Index/uploadSport')}" onsubmit="return check1(this)" enctype="multipart/form-data">
+                <p class="center" style="color: red;">注：运动记录“以微信运动的”为准！</p>
+                <div class="center" style="margin: 0.5rem 0;"><span style="color: #18abe1;">图片：</span><span><input type="file" name="image" id="image" style="height: 1rem; width: 6.9rem;"></span></div>
+                <div class="center" style="margin: 0.5rem 0;"><span style="color: #18abe1;">步数：</span><span><input type="text" name="num" id="num" style="height: 1rem;"></span></div>
+                <div class="center" style="margin: 0.5rem 0;"><input type="submit" class="flatbtn-blu hidemodal" value="确定"></a></div>
+            </form>
+        </div>
+    <!--</div>-->
 </div>
 <script src="http://echarts.baidu.com/build/dist/echarts.js"></script>
 <script src="__TMPL__Public/assets/js/jquery-1.9.1.min.js"></script>
@@ -145,20 +186,20 @@
                     },
                     series: [
                         {
-                            name:'最高气温',
+                            name:'最高记录',
                             type:'line',
                             data: {$datas},
                             markPoint: {
                                 data: [
-                                    {type: 'max', name: '最大值'},
-                                    {type: 'min', name: '最小值'}
+                                    {type: 'max', name: '步数'}
+//                                    {type: 'min', name: '最少步数'}
                                 ]
                             },
-                            markLine: {
-                                data: [
-                                    {type: 'average', name: '平均值'}
-                                ]
-                            }
+//                            markLine: {
+//                                data: [
+//                                    {type: 'average', name: '平均步数'}
+//                                ]
+//                            }
                         }
                     ]
                 };
