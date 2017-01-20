@@ -24,10 +24,10 @@
                         <li class="rank-num1">NO.{$i}</li>
                         <li><span class="rank_head1" style="background-image: url('{$vo.avatar|default='__TMPL__Public/assets/images/0.png'}');"></span></li>
                         <li style="width: 5rem; padding-left: 0.3rem;">
-                            <div style="height: 1rem;">{$vo.nick_name}</div>
+                            <div style="height: 1rem;">{$vo.user_nicename}</div>
                             <div style="height: 1rem;">{$vo.school|default='暂无'|msubstr=0,9,'utf-8'}</div>
                         </li>
-                        <li class="count1">步数:{$vo.num}</li>
+                        <li class="count1">步数:{$vo.score}</li>
                         <eq name="i" value="1">
                             <li class="pai"><img src="__TMPL__Public/assets/images/1.png"></li>
                         </eq>

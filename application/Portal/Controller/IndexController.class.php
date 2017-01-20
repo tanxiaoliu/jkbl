@@ -922,7 +922,7 @@ class IndexController extends HomebaseController
         $userInfo = $this->checkLogin();
         $map['user_login'] = $userInfo->openid;
         $groupid = I('groupid', 0 , 'int');
-        $users = M('Users')->field('user_nicename,groupid,score,school')->where(array('groupid' => $groupid))->order('score DESC')->select();
+        $users = M('Users')->field('user_nicename,avatar,score,school')->where(array('groupid' => $groupid))->order('score DESC')->select();
         $this->assign("userInfo", $userInfo);
         $this->assign("data", $users);
         $this->assign("footer", "zhishu");

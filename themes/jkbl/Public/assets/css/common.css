@@ -248,7 +248,7 @@ html,body{
     width: 100%;
     height: 1rem;
     line-height: 1rem;
-    margin-top: -1rem;
+    /*margin-top: -1rem;*/
 }
 .p-zq ul li {
     width: 33%;
@@ -262,6 +262,7 @@ html,body{
     color: #ffffff;
     font-size: 0.5rem;
     padding: 0.2rem 0.3rem;
+    z-index: 3;
 }
 .p-bu {
     width: 100%;
@@ -304,4 +305,5 @@ html,body{
     color: #ffffff;
     font-size: 0.5rem;
     padding: 0.2rem 0.3rem;
+    z-index: 3;
 }
