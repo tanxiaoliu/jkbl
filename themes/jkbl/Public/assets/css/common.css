@@ -267,7 +267,7 @@ html,body{
 .p-bu {
     width: 100%;
     margin-top: 0.2rem;
-    height: 6rem;
+    height: 6.2rem;
     background-color: #95d8ff;
     margin-bottom: 2.6rem;
 }
@@ -275,7 +275,7 @@ html,body{
     width: 100%;
     height: 2rem;
     line-height: 2rem;
-    border-bottom: 0.001rem solid #ffffff;
+    border-bottom: 0.01rem solid #ffffff;
 }
 .p-bu ul li {
     margin-top: 0.2rem;
