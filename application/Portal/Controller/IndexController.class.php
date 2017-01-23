@@ -62,6 +62,48 @@ class IndexController extends HomebaseController
         $this->weObj->valid();
     }
 
+    public function invite(){
+      if (!empty($_POST)) {
+        $code = $_POST['code'];
+        $user = session('user');
+        $where = array(
+          'code'=>$code
+          );
+        $invite = M('InviteCode')->where($where)->find();
+        if (!empty($invite)) {
+          if ($invite['status']==0) {
+            $this->error("邀请码已过期", U('Index/invite'), true);
+          }
+          $invite['status'] = 0;
+          $invite['userid'] = 1;
+          $invite['update_time'] = time();
+          $users = D('users')->find($invite['userid']);
+          $users['code'] = $code;
+          D('users')->save($users);
+          if (M('InviteCode')->create($invite)!==false) {
+            if (M('InviteCode')->save()!==false) {
+                $user['code'] = $code;
+                session('user',$user);
+                $this->success("欢迎来到健康部落", U('Index/index'), true);
+            }
+          }else{
+            $this->error("网络异常，请重新输入", U('Index/invite'), true);
+          }
+        }else{
+            $this->error("邀请码不存在", U('Index/invite'), true);
+        }
+      }
+      $this->display(":invite");
+    }
+    
+    public function checkInvite(){
+      $userInfo = $this->checkLogin();
+      $user = session('user');
+      if (empty($user['code'])) {
+          redirect(U('invite'));
+      }      
+    }
+    
     /**
      * 检查登录
      * @return mixed
@@ -87,7 +129,7 @@ class IndexController extends HomebaseController
             }
         } else {
             //提示请使用微信登录
-            redirect(U('error'));
+            redirect(U('weixinError'));
         }
     }
 
@@ -110,8 +152,8 @@ class IndexController extends HomebaseController
             if ($users) {
                 session('ADMIN_ID', 1);
                 session('user', $users);
-                $data['last_login_time'] = date("Y-m-d H:i:s", time());
-                D('users')->save($data);
+                $users['last_login_time'] = date("Y-m-d H:i:s", time());
+                D('users')->save($users);
                 $userInfo->nickname = $users['user_nicename'];
                 setcookie('userInfo', json_encode($userInfo));
             } else {
@@ -697,7 +739,7 @@ class IndexController extends HomebaseController
             $map['user_login'] = $data['openid'];
             $score = current(M('Users')->where($map)->getField('user_login,score,coin', 1));
             if ($score['score'] <= $score['coin'] || $score['score'] <= 0) {
-                $this->success("腾币不足", U('Index/shop'), true);
+                $this->error("腾币不足", U('Index/shop'), true);
             }
             $score = $score['score'] - $score['coin'];//余额
             $data['goodid'] = I('goodid', 0, 'intval');
@@ -712,10 +754,10 @@ class IndexController extends HomebaseController
                 $data['price'] = $good['price'];
                 $data['type'] = $good['type'];
             } else {
-                $this->error("下单失败,该商品不存在", true);
+                $this->error("下单失败,该商品不存在", U('Index/shop'), true);
             }
             if ($score < $data['price']) {
-                $this->success("腾币不足", U('Index/shop'), true);
+                $this->error("腾币不足", U('Index/shop'), true);
             }
             if (M('GoodOrder')->create($data) !== false) {
                 $id = M('GoodOrder')->add();
@@ -743,21 +785,21 @@ class IndexController extends HomebaseController
                                 $users['coin'] -= $good['price'];
                                 M('users')->save($users);
                                 M('GoodOrder')->where(array('id' => $id))->delete();
-                                $this->error("下单失败", true);
+                                $this->error("下单失败", U('Index/shop'), true);
                             }
                         } else {
                             M('GoodOrder')->where(array('id' => $id))->delete();
-                            $this->error("下单失败", true);
+                            $this->error("下单失败", U('Index/shop'), true);
                         }
                     } else {
                         M('GoodOrder')->where(array('id' => $id))->delete();
-                        $this->error("下单失败", true);
+                        $this->error("下单失败", U('Index/shop'), true);
                     }
                 } else {
-                    $this->error("下单失败", true);
+                    $this->error("下单失败", U('Index/shop'), true);
                 }
             } else {
-                $this->error("下单失败", true);
+                $this->error("下单失败", U('Index/shop'), true);
             }
 
         } else {
@@ -808,7 +850,7 @@ class IndexController extends HomebaseController
         $this->display(":coinlist");
     }
 
-    public function error()
+    public function weixinError()
     {
         $this->display(":error");
     }

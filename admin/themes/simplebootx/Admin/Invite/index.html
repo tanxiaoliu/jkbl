@@ -1,0 +1,41 @@
+<admintpl file="header" />
+</head>
+<body>
+	<div class="wrap js-check-wrap">
+	<h4><a href="{:U('Invite/addCode')}"><input type="button" class="btn" value="点击生成邀请码" /></a></h4>
+		<ul class="nav nav-tabs">
+			<li class="active"><a href="{:U('order/index')}">邀请码列表</a></li>
+		</ul>
+		<form class="form-horizontal js-ajax-form" method="post">
+			<table class="table table-hover table-bordered">
+				<thead>
+					<tr>
+						<th>ID</th>
+						<th>用户名</th>
+						<th>用户id</th>
+						<th>邀请码</th>
+						<th>状态</th>
+						<th>时间</th>
+						<!-- <th>{:L('ACTIONS')}</th> -->
+					</tr>
+				</thead>
+				<foreach name="invites" item="vo">
+				<tr>
+					<td>{$vo.id}</td>
+					<td>{$vo.username}</td>
+					<td>{$vo.userid}</td>
+					<td>{$vo.code}</td>
+					<td><if condition="$vo.status eq 1" >未发出<else />已发出</if></td>
+					<td>{:date('Y-m-d H:i:s', $vo['add_time'])}</td>
+<!-- 					<td>
+						<a href="{:U('order/delete',array('id'=>$vo['id']))}" class="js-ajax-delete">{:L('DELETE')}</a>
+					</td> -->
+				</tr>
+				</foreach>
+			</table>
+		<div class="pagination">{$page}</div>
+		</form>
+	</div>
+	<script src="__PUBLIC__/js/common.js"></script>
+</body>
+</html>
