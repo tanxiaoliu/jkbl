@@ -68,8 +68,8 @@ class IndexController extends HomebaseController
      */
     public function checkLogin()
     {
-        $userInfo->openid = 'admin';
-        return $userInfo;
+//        $userInfo->openid = 'admin';
+//        return $userInfo;
         if (sp_is_weixin()) {
             $userInfo = json_decode($_COOKIE['userInfo']);
             $user = session('user');
@@ -873,33 +873,37 @@ class IndexController extends HomebaseController
             for ($i = 1; $i <= 52; $i++) {
                 $timeStart = mktime(0, 0, 0, date('m'), date('d') - date('w') - 6 - (7 * ($i - 1)), date('Y'));
                 $timeEnd = mktime(23, 59, 59, date('m'), date('d') - date('w') - (7 * ($i - 1)), date('Y'));
-                $map['add_time'] = array('between', array($timeStart, $timeEnd));
-                $data['add_time'] = date('Y年W周', $timeStart);
-                $step_nums = D('sport_record')->where($map)->sum('step_nums');
-                if($type == 1) {
-                    $data['step_ka'] = $step_nums ? $this->getKa($step_nums): 0;
-                } else {
-                    $data['step_nums'] = $step_nums ?: 0;
+                if($timeStart > '1483056000') {
+                    $map['add_time'] = array('between', array($timeStart, $timeEnd));
+                    $data['add_time'] = date('Y年W周', $timeStart);
+                    $step_nums = D('sport_record')->where($map)->sum('step_nums');
+                    if ($type == 1) {
+                        $data['step_ka'] = $step_nums ? $this->getKa($step_nums) : 0;
+                    } else {
+                        $data['step_nums'] = $step_nums ?: 0;
+                    }
+                    $record[] = $data;
                 }
-                $record[] = $data;
             }
         } elseif($date == 2){
             for ($i = 1; $i <= 25; $i++) {
                 $timeStart = mktime(0, 0, 0, date('m') - ($i - 1), 1, date('Y'));
                 $timeEnd = mktime(23, 59, 59, date('m') - ($i - 1), date('t'), date('Y'));
-                $map['add_time'] = array('between', array($timeStart, $timeEnd));
-                $data['add_time'] = date('Y年m月', $timeStart);
-                $step_nums = D('sport_record')->where($map)->sum('step_nums');
-                if($type == 1) {
-                    $data['step_ka'] = $step_nums ? $this->getKa($step_nums): 0;
-                } else {
-                    $data['step_nums'] = $step_nums ?: 0;
+                if($timeStart > '1483056000') {
+                    $map['add_time'] = array('between', array($timeStart, $timeEnd));
+                    $data['add_time'] = date('Y年m月', $timeStart);
+                    $step_nums = D('sport_record')->where($map)->sum('step_nums');
+                    if ($type == 1) {
+                        $data['step_ka'] = $step_nums ? $this->getKa($step_nums) : 0;
+                    } else {
+                        $data['step_nums'] = $step_nums ?: 0;
+                    }
+                    $record[] = $data;
                 }
-                $record[] = $data;
             }
         } else {
             $map['openid'] = $userInfo->openid;
-            $record = D('sport_record')->where($map)->order('id DESC')->select();
+            $record = D('sport_record')->where($map)->order('add_time DESC')->select();
             if($type == 1){//卡
                 foreach ($record as $key=>$value){
                     $record[$key]['step_ka'] = $this->getKa($value['step_nums']);
@@ -922,9 +926,11 @@ class IndexController extends HomebaseController
         $userInfo = $this->checkLogin();
         $map['user_login'] = $userInfo->openid;
         $groupid = I('groupid', 0 , 'int');
+        $group = M('Group')->find($groupid);
         $users = M('Users')->field('user_nicename,avatar,score,school')->where(array('groupid' => $groupid))->order('score DESC')->select();
         $this->assign("userInfo", $userInfo);
         $this->assign("data", $users);
+        $this->assign("group", $group);
         $this->assign("footer", "zhishu");
         $this->display(":rankdetail");
     }
