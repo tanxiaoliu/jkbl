@@ -90,14 +90,14 @@ class IndexController extends HomebaseController
             $this->error("网络异常，请重新输入", U('Index/invite'), true);
           }
         }else{
-            $this->error("邀请码不存在", U('Index/invite'), true);
+            $this->error("邀请码错误", U('Index/invite'), true);
         }
       }
       $this->display(":invite");
     }
     
     public function checkInvite(){
-      $userInfo = $this->checkLogin();
+      $this->checkLogin();
       $user = session('user');
       if (empty($user['code'])) {
           redirect(U('invite'));
@@ -183,6 +183,7 @@ class IndexController extends HomebaseController
     public function index()
     {
         $userInfo = $this->checkLogin();
+        $this->checkInvite();
         $type = intval(I('type'));
         $usersModel = D('users');
         $user = array();
@@ -238,6 +239,7 @@ class IndexController extends HomebaseController
     public function member()
     {
         $userInfo = $this->checkLogin();
+        $this->checkInvite();
         $map['user_login'] = $userInfo->openid;
         $users = M('Users')->where($map)->find();
         $map = array();
@@ -400,6 +402,7 @@ class IndexController extends HomebaseController
     public function publishedpAbout()
     {
         $userInfo = $this->checkLogin();
+        $this->checkInvite();
         $data['post_image'] = I('post_image');
         $data['post_content'] = I('post_content');
         $map['user_login'] = $userInfo->openid;
@@ -451,6 +454,7 @@ class IndexController extends HomebaseController
     public function personal()
     {
         $userInfo = $this->checkLogin();
+        $this->checkInvite();
         $map['openid'] = $userInfo->openid;
         $type = I('type', 0, 'int');
         $dates = '[';
@@ -552,6 +556,7 @@ class IndexController extends HomebaseController
     public function editName()
     {
         $userInfo = $this->checkLogin();
+        $this->checkInvite();
         if (IS_POST) {
             $school = I('school');
             $user_nicename = I('user_nicename');
@@ -583,6 +588,7 @@ class IndexController extends HomebaseController
     {
         $user = array();
         $userInfo = $this->checkLogin();
+        $this->checkInvite();
         $type = I('type', '', 'intval');
         $grouptype = I('grouptype', '', 'intval');
         $rankDataCachKey = 'rankData_' . date('Y-m-d:H', time()) . '_' . $type . '_' . $grouptype;
@@ -711,6 +717,7 @@ class IndexController extends HomebaseController
     public function shop()
     {
         $userInfo = $this->checkLogin();
+        $this->checkInvite();
         $data['openid'] = $userInfo->openid;
         $map['user_login'] = $data['openid'];
         $score = current(M('Users')->where($map)->getField('user_login,score,coin', 1));
@@ -735,6 +742,7 @@ class IndexController extends HomebaseController
         $data = array();
         if (!empty($_POST)) {
             $userInfo = $this->checkLogin();
+            $this->checkInvite();
             $data['openid'] = $userInfo->openid;
             $map['user_login'] = $data['openid'];
             $score = current(M('Users')->where($map)->getField('user_login,score,coin', 1));
@@ -815,6 +823,7 @@ class IndexController extends HomebaseController
     public function orderList()
     {
         $userInfo = $this->checkLogin();
+        $this->checkInvite();
         $map['openid'] = $userInfo->openid;
         $orders = M('GoodOrder')->where($map)->order('add_time desc')->select();
         foreach ($orders as $key => &$value) {
@@ -834,6 +843,7 @@ class IndexController extends HomebaseController
     public function coinList()
     {
         $userInfo = $this->checkLogin();
+        $this->checkInvite();
         $map['openid'] = $userInfo->openid;
         $Records = M('CoinRecord')->where($map)->order('add_time desc')->select();
         foreach ($Records as $key => &$value) {
@@ -863,6 +873,7 @@ class IndexController extends HomebaseController
     {
         $num = I('num', 0, 'int');
         $userInfo = $this->checkLogin();
+        $this->checkInvite();
 
         if (IS_POST) {
             $savepath = 'default/' . date('Ymd') . '/';
@@ -907,6 +918,7 @@ class IndexController extends HomebaseController
     public function personallist()
     {
         $userInfo = $this->checkLogin();
+        $this->checkInvite();
         $date = I('date', 0, 'int');
         $type = I('type', 0, 'int');
         $map['openid'] = $userInfo->openid;
@@ -966,6 +978,7 @@ class IndexController extends HomebaseController
     public function rankdetail()
     {
         $userInfo = $this->checkLogin();
+        $this->checkInvite();
         $map['user_login'] = $userInfo->openid;
         $groupid = I('groupid', 0 , 'int');
         $group = M('Group')->find($groupid);
