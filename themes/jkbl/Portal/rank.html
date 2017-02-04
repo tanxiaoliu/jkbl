@@ -24,10 +24,10 @@
                 <volist name="data" id="vo" offset="0" length='500'>
                     <ul>
                         <li class="rank-num1">NO.{$i}</li>
-                        <li><a href="{:U('rankdetail', array('groupid'=>$vo['id']))}"><span class="rank_head1" style="background-image: url('{$vo.avatar|default='__TMPL__Public/assets/images/0.png'}');"></span></a></li>
+                        <li style="text-align: center;"><a href="{:U('rankdetail', array('groupid'=>$vo['id']))}"><span class="rank_head1" style="background-image: url('{$vo.avatar|default='__TMPL__Public/assets/images/0.png'}');"></span></a></li>
                         <li style="width: 5rem; padding-left: 0.3rem;">
                             <div style="height: 1rem;">{$vo.nick_name}</div>
-                            <div style="height: 1rem;">{$vo.school|default='暂无'|msubstr=0,8,'utf-8'}</div>
+                            <div style="height: 1rem;">{$vo.school|default='暂无'|msubstr=0,7,'utf-8'}</div>
                         </li>
                         <li class="count1">步数:{$vo.num}</li>
                         <eq name="i" value="1">
@@ -44,7 +44,7 @@
             </div>
             <ul class="rank-my">
                 <li class="rank-num1">NO.{$user['rank']|default='无'}</li>
-                <li><span class="rank_head1" style="background-image: url('{$user.avatar|default='__TMPL__Public/assets/images/0.png'}');"></span></li>
+                <li style="text-align: center;"><span class="rank_head1" style="background-image: url('{$user.avatar|default='__TMPL__Public/assets/images/0.png'}');"></span></li>
                 <li style="width: 5rem; padding-left: 0.3rem;line-height: 2rem;">
                     <if condition="$grouptype eq 0">当前自己排名<else/>当前联盟排名</if>
                 </li>

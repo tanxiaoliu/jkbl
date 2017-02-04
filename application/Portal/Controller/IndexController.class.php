@@ -660,12 +660,14 @@ class IndexController extends HomebaseController
         //周
         $timeStart1 = mktime(0, 0, 0, date('m'), date('d') - date('w') - 42, date('Y'));
         $timeEnd1 = mktime(23, 59, 59, date('m'), date('d') - date('w') - 6, date('Y'));
+        $map1['openid'] = $userInfo->openid;
         $map1['add_time'] = array('between', array($timeStart1, $timeEnd1));
         $nowNum1 = D('sport_record')->where($map1)->sum('step_nums');
 
         //月
         $timeStart2 = mktime(0, 0, 0, date('m') - 6, 1, date('Y'));
         $timeEnd2 = mktime(23, 59, 59, date('m'), date('t'), date('Y'));
+        $map2['openid'] = $userInfo->openid;
         $map2['add_time'] = array('between', array($timeStart2, $timeEnd2));
         $nowNum2 = D('sport_record')->where($map2)->sum('step_nums');
 
