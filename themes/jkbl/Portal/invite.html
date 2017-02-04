@@ -67,23 +67,19 @@
                 form.username.focus();
                 return false;
            }
-           if (confirm("请确认信息后下单")) {
-                 var url = $("#url").val();;
-                 $.post(url,$("#loginform").serialize(),function(data){
+           var url = $("#url").val();;
+           $.post(url,$("#loginform").serialize(),function(data){
 /*                    console.log($("#loginform").serialize())
-                    console.log(data)*/
-                    if (data.status==1&&data.state=='success') {
-                        alert(data.info)
-                        window.location.href=data.url; 
-                    }else{
-                        alert(data.info)
-                    }
-                  },
-                  "json");//这里返回的类型有：json,html,xml,text
-                return false;
-           }else{
-                return false;
-           }
+              console.log(data)*/
+              if (data.status==1&&data.state=='success') {
+                  alert(data.info)
+                  window.location.href=data.url; 
+              }else{
+                  alert(data.info)
+              }
+            },
+            "json");//这里返回的类型有：json,html,xml,text
+          return false;
          }
 </script>
 <script src="__TMPL__Public/assets/js/jquery-1.9.1.min.js"></script>

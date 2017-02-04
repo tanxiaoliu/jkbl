@@ -125,6 +125,11 @@
                                     </span>
                         </div>
                         <a style="position: absolute;right: 2rem;top: 0.3rem;color:white;font-weight: bold; " href="{:U('Index/myhuati')}">我的话题</a>
+                        <if condition="$type eq 1">
+                        <a style="position: absolute;right: 2rem;top: 2.3rem;color:white;font-weight: bold; " href="{:U('Index/community',array('type'=>0))}">全部话题</a>
+                        <else />
+                        <a style="position: absolute;right: 2rem;top: 2.3rem;color:white;font-weight: bold; " href="{:U('Index/community',array('type'=>1))}">我的关注</a>
+                        </if>
                     </div>
                 </div>
             </div>
@@ -134,7 +139,7 @@
                 <div class="new-tab-list">
                     <div>
                         <foreach name="posts" item="vo">
-                            <label><a href="{:U('Article/index',array('id'=>$vo['id'],'cid'=>1))}" style="border-bottom: 1px solid #e5e5e5;padding-left:1rem;text-align:left;font-size: 0.9rem;color: #39bbd8;">【{$vo.post_title}】</a></label>
+                            <label><a href="{:U('Article/index',array('id'=>$vo['id'],'cid'=>1))}" style="border-bottom: 1px solid #e5e5e5;padding-left:1rem;text-align:left;font-size: 0.9rem;color: #39bbd8;">【{$vo.post_title}】<if condition="$vo['istop'] eq 1"><span style="color:red;">置顶</span></if></a></label>
                         </foreach>
                     </div>
                 </div>
@@ -154,7 +159,7 @@
                                         </div>
                                             <span class="item-user-text">
                                                 <span class="item-user-name">
-                                                   <neq name="vo.school" value="">【{$vo.school}】</neq>{$vo.user_nicename}
+                                                   <neq name="vo.school" value="">【{$vo.school}】</neq><a href="{:U('Index/huati',array('type'=>1,'uid'=>$vo['uid']))}" >{$vo.user_nicename}</a>
                                                 </span>
                                                 <!-- react-empty: 52 -->
                                                 <!--<span class="honour admin" data-lcontent="首席酋长">-->

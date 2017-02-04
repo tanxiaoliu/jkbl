@@ -25,7 +25,6 @@ class AdminPostController extends AdminbaseController {
 	
 	// 后台文章管理列表
 	public function index(){
-		$map['istop'] = 1;
         $map['recommended'] = 1;
         $map['post_type'] = 1;
         $map['post_status'] = array('neq',3);
@@ -71,7 +70,6 @@ class AdminPostController extends AdminbaseController {
 			$article=I("post.post");
 			$article['post_type']=1;
 			$article['post_status']=1;
-			$article['istop']=1;
 			$article['recommended']=1;
 			$article['smeta']=json_encode($_POST['smeta']);
 			$article['post_content']=htmlspecialchars_decode($article['post_content']);
@@ -134,7 +132,6 @@ class AdminPostController extends AdminbaseController {
 			$article=I("post.post");
 			$article['post_type']=1;
 			$article['post_status']=1;
-			$article['istop']=1;
 			$article['recommended']=1;
 			$article['smeta']=json_encode($_POST['smeta']);
 			$article['post_content']=htmlspecialchars_decode($article['post_content']);

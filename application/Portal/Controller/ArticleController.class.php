@@ -20,12 +20,10 @@ class ArticleController extends HomebaseController {
     	
     	$article=$posts_model
     	->alias("a")
-    	->field('a.*,c.user_login,c.user_nicename,b.term_id')
-    	->join("__TERM_RELATIONSHIPS__ b ON a.id = b.object_id")
+    	->field('a.*,c.user_login,c.user_nicename')
 		->join("__USERS__ c ON a.post_author = c.id")
-		->where(array('a.id'=>$article_id,'b.term_id'=>$term_id))
+		->where(array('a.id'=>$article_id))
 		->find();
-    	
     	if(empty($article)){
     	    header('HTTP/1.1 404 Not Found');
     	    header('Status:404 Not Found');
@@ -36,8 +34,8 @@ class ArticleController extends HomebaseController {
     	    return;
     	}
     	
-    	$terms_model= M("Terms");
-    	$term=$terms_model->where(array('term_id'=>$term_id))->find();
+    	// $terms_model= M("Terms");
+    	// $term=$terms_model->where(array('term_id'=>$term_id))->find();
     	
     	$posts_model->where(array('id'=>$article_id))->setInc('post_hits');
     	
@@ -46,7 +44,7 @@ class ArticleController extends HomebaseController {
     	$join = '__POSTS__ as b on a.object_id =b.id';
     	$join2= '__USERS__ as c on b.post_author = c.id';
     	
-    	$term_relationships_model= M("TermRelationships");
+    	/*$term_relationships_model= M("TermRelationships");
     	
     	$next=$term_relationships_model
     	->alias("a")
@@ -61,7 +59,7 @@ class ArticleController extends HomebaseController {
     	->where(array('b.id'=>array('lt',$article_id),"post_date"=>array("elt",$article_date),"a.status"=>1,'a.term_id'=>$term_id,'post_status'=>1))
     	->order("post_date desc,b.id desc")
     	->find();
-    	
+    	*/
     	$this->assign("next",$next);
     	$this->assign("prev",$prev);
     	
@@ -79,7 +77,7 @@ class ArticleController extends HomebaseController {
     	$tplname=$term["one_tpl"];
     	$tplname=empty($smeta['template'])?$tplname:$smeta['template'];
         $tplname=sp_get_apphome_tpl($tplname, "article");
-        if ($article['post_type']==1&&$article['istop']==0&&$article['recommended']==0) {
+        if ($article['post_type']==1&&$article['recommended']==0) {
             $tplname='pengyouquan';
         }else{
             $tplname='top';

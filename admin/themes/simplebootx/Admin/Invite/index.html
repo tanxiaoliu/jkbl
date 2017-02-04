@@ -16,7 +16,7 @@
 						<th>邀请码</th>
 						<th>状态</th>
 						<th>时间</th>
-						<!-- <th>{:L('ACTIONS')}</th> -->
+						<th>{:L('ACTIONS')}</th>
 					</tr>
 				</thead>
 				<foreach name="invites" item="vo">
@@ -25,11 +25,11 @@
 					<td>{$vo.username}</td>
 					<td>{$vo.userid}</td>
 					<td>{$vo.code}</td>
-					<td><if condition="$vo.status eq 1" >未发出<else />已发出</if></td>
+					<td><if condition="$vo.status eq 1" >未使用<else />已使用</if></td>
 					<td>{:date('Y-m-d H:i:s', $vo['add_time'])}</td>
-<!-- 					<td>
-						<a href="{:U('order/delete',array('id'=>$vo['id']))}" class="js-ajax-delete">{:L('DELETE')}</a>
-					</td> -->
+					<td>
+						<a href="{:U('invite/delete',array('id'=>$vo['id']))}" class="js-ajax-delete">{:L('DELETE')}</a>
+					</td>
 				</tr>
 				</foreach>
 			</table>

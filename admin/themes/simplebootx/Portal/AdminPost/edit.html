@@ -121,6 +121,12 @@
 							<td><label style="width: 88px"><a href="javascript:open_iframe_dialog('{:U('comment/commentadmin/index',array('post_id'=>$post['id']))}','评论列表')">查看评论</a></label>
 							</td>
 						</tr>
+						<tr>
+							<td>
+								<label class="radio"><input type="radio" name="post[istop]" value="1" {$istop_yes}>置顶</label>
+								<label class="radio"><input type="radio" name="post[istop]" value="0" {$istop_no}>未置顶</label>
+							</td>
+						</tr>
 						<!-- <tr>
 							<th>状态</th>
 						</tr>
@@ -138,12 +144,7 @@
 								<label class="radio"><input type="radio" name="post[post_status]" value="0" {$status_no}>未审核</label>
 							</td>
 						</tr>
-						<tr>
-							<td>
-								<label class="radio"><input type="radio" name="post[istop]" value="1" {$istop_yes}>置顶</label>
-								<label class="radio"><input type="radio" name="post[istop]" value="0" {$istop_no}>未置顶</label>
-							</td>
-						</tr>
+						
 						<tr>
 							<td>
 								<label class="radio"><input type="radio" name="post[recommended]" value="1" {$recommended_yes}>推荐</label>

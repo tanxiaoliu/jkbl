@@ -75,15 +75,15 @@ class IndexController extends HomebaseController
             $this->error("邀请码已过期", U('Index/invite'), true);
           }
           $invite['status'] = 0;
-          $invite['userid'] = 1;
+          $invite['userid'] = $user['id'];
           $invite['update_time'] = time();
-          $users = D('users')->find($invite['userid']);
-          $users['code'] = $code;
-          D('users')->save($users);
+          // $users = D('users')->find($invite['userid']);
+          // $users['code'] = $code;
+          // D('users')->save($users);
           if (M('InviteCode')->create($invite)!==false) {
             if (M('InviteCode')->save()!==false) {
-                $user['code'] = $code;
-                session('user',$user);
+                // $users['code'] = $code;
+                // session('user',$users);
                 $this->success("欢迎来到健康部落", U('Index/index'), true);
             }
           }else{
@@ -99,7 +99,11 @@ class IndexController extends HomebaseController
     public function checkInvite(){
       $this->checkLogin();
       $user = session('user');
-      if (empty($user['code'])) {
+      $where = array(
+          'userid'=>$user['id']
+          );
+      $invite = M('InviteCode')->where($where)->find();      
+      if (empty($invite)) {
           redirect(U('invite'));
       }      
     }
@@ -331,6 +335,27 @@ class IndexController extends HomebaseController
         $this->assign("footer", "zhishu");
         $this->display(":member");
     }
+    
+    public function attention(){
+        $uid = intval(I('uid',0,'intval'));
+        $this->checkLogin();
+        $user = session('user');
+        $map = array(
+          'uid'=>$user['id'],
+          'follow_uid'=>$uid,
+          );
+        if (M('Attention')->where($map)->find()) {
+          M('Attention')->where($map)->delete();
+        }else{
+          $data = array(
+            'uid'=>$user['id'],
+            'follow_uid'=>$uid,
+            'add_time'=>time(),
+            );
+          M('Attention')->add($data);
+        }
+        redirect(U('Index/huati',array('type'=>1,'uid'=>$uid)));
+    }
 
     /**
      * 社区
@@ -339,26 +364,38 @@ class IndexController extends HomebaseController
     public function community()
     {
         $this->checkLogin();
-        $map['istop'] = 1;
+        $user = session('user');
         $map['recommended'] = 1;
         $map['post_type'] = 1;
         $map['post_status'] = array('neq', 3);
-        $posts = M('Posts')->field('id,post_title,post_date')->where($map)->order('istop desc,recommended desc,post_date desc')->limit(5)->select();
+        $posts = M('Posts')->field('id,post_title,post_date,istop')->where($map)->order('istop desc,recommended desc,post_date desc')->limit(5)->select();
         $postscount = M('Posts')->count();
         $userscount = M('Users')->count();
         $map['istop'] = 0;
         $map['recommended'] = 0;
-        $pengyouquan = M('Posts')->field('id,post_content,post_date,post_image,post_author,post_like,comment_count')->where($map)->order('id DESC')->limit(30)->select();
+        $type = intval(I('type','0','intval'));
+        $pengyouquan = array();
+        if ($type == 1) {
+          $attenUids = '';
+          $attens = M('Attention')->where(array('uid'=>$user['id']))->select();
+          foreach ($attens as $key => $value) {
+            $attenUids.=$value['follow_uid'].',';
+          }
+          $attenUids = rtrim($attenUids,',');
+          $map['post_author'] = array('IN',$attenUids);
+          $pengyouquan = M('Posts')->field('id,post_content,post_date,post_image,post_author,post_like,comment_count')->where($map)->order('id DESC')->limit(30)->select();
+        }else{
+          $pengyouquan = M('Posts')->field('id,post_content,post_date,post_image,post_author,post_like,comment_count')->where($map)->order('id DESC')->limit(30)->select();
+        }
         foreach ($pengyouquan as $key => $vl) {
-            $map['id'] = $vl['post_author'];
-            $users = D('users')->where($map)->find();
+            $users = D('users')->find($vl['post_author']);
             $pengyouquan[$key]['avatar'] = $users['avatar'];
             $pengyouquan[$key]['user_nicename'] = $users['user_nicename'];
             $pengyouquan[$key]['school'] = $users['school'];
             $pengyouquan[$key]['uid'] = $vl['post_author'];
         }
-        $user = session('user');
         $this->assign("uid", $user['id']);
+        $this->assign("type", $type);
         $this->assign("postscount", $postscount);
         $this->assign("userscount", $userscount);
         $this->assign("posts", $posts);
@@ -375,24 +412,139 @@ class IndexController extends HomebaseController
     {
         $this->checkLogin();
         $user = session('user');
+        // $user['id'] = 1;
         $map['post_author'] = $user['id'];
-        $map['post_author'] = 1;
         $map['post_type'] = 1;
         $map['istop'] = 0;
         $map['recommended'] = 0;
         $map['post_status'] = array('neq', 3);
-        $pengyouquan = M('Posts')->field('id,post_content,post_date,post_image,post_author,post_like')->where($map)->order('id DESC')->limit(30)->select();
-        foreach ($pengyouquan as $key => $vl) {
-            $map['id'] = $vl['post_author'];
-            $users = D('users')->where($map)->find();
-            $pengyouquan[$key]['avatar'] = $users['avatar'];
-            $pengyouquan[$key]['user_nicename'] = $users['user_nicename'];
-            $pengyouquan[$key]['uid'] = $vl['post_author'];
+        $users = D('users')->find($user['id']);
+        $type = intval(I('type','1','intval'));
+        $pengyouquan = array();
+        if ($type==1) {
+          $pengyouquan = M('Posts')->field('id,post_content,post_date,post_image,post_author,post_like')
+          ->where($map)
+          ->order('id DESC')
+          ->limit(30)->select();
+          foreach ($pengyouquan as $key => &$vl) {
+              $pengyouquan[$key]['avatar'] = $users['avatar'];
+              $pengyouquan[$key]['user_nicename'] = $users['user_nicename'];
+              $pengyouquan[$key]['uid'] = $users['id'];
+          }
+        }
+        if ($type==2) {
+          $where=array("uid"=>$user['id'],"status"=>1);
+          $pengyouquan = M('Comments')->where($where)->select();
+          foreach ($pengyouquan as $key => &$vl) {
+              $posts = M('Posts')->find($vl['post_id']);
+              if (empty($posts['post_title'])) {
+                $author = D('users')->find($user['id']);
+                $pengyouquan[$key]['title'] = $author['user_nicename'].'的话题';
+              }else{
+                $pengyouquan[$key]['title'] = $posts['post_title'];
+              }
+              $pengyouquan[$key]['avatar'] = $users['avatar'];
+              $pengyouquan[$key]['user_nicename'] = $users['user_nicename'];
+              $pengyouquan[$key]['uid'] = $users['id'];
+          }
+        }
+        if ($type==3) {
+          $where=array("user"=>$user['id'],"action"=>'Portal-Article-do_like');
+          $pengyouquan=M("CommonActionLog")->where($where)->limit(30)->select();
+          foreach ($pengyouquan as $key => &$vl) {
+              $pengyouquan[$key]['avatar'] = $users['avatar'];
+              $pengyouquan[$key]['user_nicename'] = $users['user_nicename'];
+              $pengyouquan[$key]['uid'] = $users['id'];
+              $pengyouquan[$key]['post_id'] = str_replace("posts","",$vl);
+              $posts = M('Posts')->find($pengyouquan[$key]['post_id']);
+              if (empty($posts['post_title'])) {
+                $author = D('users')->find($user['id']);
+                $pengyouquan[$key]['title'] = $author['user_nicename'].'的话题';
+              }else{
+                $pengyouquan[$key]['title'] = $posts['post_title'];
+              }
+          }
         }
         $this->assign("uid", $user['id']);
+        $this->assign("uid", 1);
+        $this->assign("type", $type);
         $this->assign("pengyouquan", $pengyouquan);
         $this->assign("footer", "shequ");
         $this->display(":myhuati");
+    }
+    /**
+     * 我的话题
+     * @author tanhuaxin
+     */
+    public function huati()
+    {
+        $this->checkLogin();
+        $uid = intval(I('uid','0','intval'));
+        $map['post_author'] = $uid;
+        $map['post_type'] = 1;
+        $map['istop'] = 0;
+        $map['recommended'] = 0;
+        $map['post_status'] = array('neq', 3);
+        $users = D('users')->find($uid);
+        $user = session('user');
+        $atten = M('Attention')->where(array('uid'=>$user['id'],'follow_uid'=>$uid))->find();
+        if ($atten) {
+          $status = 1;
+        }else{
+          $status = 0;
+        }
+        $type = intval(I('type','1','intval'));
+        $pengyouquan = array();
+        if ($type==1) {
+          $pengyouquan = M('Posts')->field('id,post_content,post_date,post_image,post_author,post_like')
+          ->where($map)
+          ->order('id DESC')
+          ->limit(30)->select();
+          foreach ($pengyouquan as $key => &$vl) {
+              $pengyouquan[$key]['avatar'] = $users['avatar'];
+              $pengyouquan[$key]['user_nicename'] = $users['user_nicename'];
+              $pengyouquan[$key]['uid'] = $users['id'];
+          }
+        }
+        if ($type==2) {
+          $where=array("uid"=>$uid,"status"=>1);
+          $pengyouquan = M('Comments')->where($where)->select();
+          foreach ($pengyouquan as $key => &$vl) {
+              $posts = M('Posts')->find($vl['post_id']);
+              if (empty($posts['post_title'])) {
+                $author = D('users')->find($user['id']);
+                $pengyouquan[$key]['title'] = $author['user_nicename'].'的话题';
+              }else{
+                $pengyouquan[$key]['title'] = $posts['post_title'];
+              }
+              $pengyouquan[$key]['avatar'] = $users['avatar'];
+              $pengyouquan[$key]['user_nicename'] = $users['user_nicename'];
+              $pengyouquan[$key]['uid'] = $users['id'];
+          }
+        }
+        if ($type==3) {
+          $where=array("user"=>$uid,"action"=>'Portal-Article-do_like');
+          $pengyouquan=M("CommonActionLog")->where($where)->limit(30)->select();
+          foreach ($pengyouquan as $key => &$vl) {
+              $pengyouquan[$key]['avatar'] = $users['avatar'];
+              $pengyouquan[$key]['user_nicename'] = $users['user_nicename'];
+              $pengyouquan[$key]['uid'] = $users['id'];
+              $pengyouquan[$key]['post_id'] = str_replace("posts","",$vl);
+              $posts = M('Posts')->find($pengyouquan[$key]['post_id']);
+              if (empty($posts['post_title'])) {
+                $author = D('users')->find($user['id']);
+                $pengyouquan[$key]['title'] = $author['user_nicename'].'的话题';
+              }else{
+                $pengyouquan[$key]['title'] = $posts['post_title'];
+              }
+          }
+        }
+        $this->assign("uid", $uid);
+        $this->assign("type", $type);
+        $this->assign("status", $status);
+        $this->assign("pengyouquan", $pengyouquan);
+        $this->assign("footer", "shequ");
+        $this->display(":huati");
     }
 
     /**

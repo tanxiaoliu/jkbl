@@ -34,7 +34,8 @@ class InviteController extends AdminbaseController{
 
 	public function addCode() {
 		$data = array(
-			'code'=>md5('invite_code_'.$this->InviteCode->count()),
+			'code'=>time(),
+			// 'code'=>md5('invite_code_'.time()),
 			'userid'=>0,
 			'status'=>1,
 			'add_time'=>time(),
