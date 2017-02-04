@@ -438,7 +438,7 @@ class IndexController extends HomebaseController
           foreach ($pengyouquan as $key => &$vl) {
               $posts = M('Posts')->find($vl['post_id']);
               if (empty($posts['post_title'])) {
-                $author = D('users')->find($user['id']);
+                $author = D('users')->find($posts['post_author']);
                 $pengyouquan[$key]['title'] = $author['user_nicename'].'的话题';
               }else{
                 $pengyouquan[$key]['title'] = $posts['post_title'];
@@ -452,13 +452,14 @@ class IndexController extends HomebaseController
           $where=array("user"=>$user['id'],"action"=>'Portal-Article-do_like');
           $pengyouquan=M("CommonActionLog")->where($where)->limit(30)->select();
           foreach ($pengyouquan as $key => &$vl) {
+              $pengyouquan[$key]['last_time'] = date('Y-m-d H:i:s',$pengyouquan[$key]['last_time']);
               $pengyouquan[$key]['avatar'] = $users['avatar'];
               $pengyouquan[$key]['user_nicename'] = $users['user_nicename'];
               $pengyouquan[$key]['uid'] = $users['id'];
-              $pengyouquan[$key]['post_id'] = str_replace("posts","",$vl);
+              $pengyouquan[$key]['post_id'] = str_replace("posts","",$vl['object']);
               $posts = M('Posts')->find($pengyouquan[$key]['post_id']);
               if (empty($posts['post_title'])) {
-                $author = D('users')->find($user['id']);
+                $author = D('users')->find($posts['post_author']);
                 $pengyouquan[$key]['title'] = $author['user_nicename'].'的话题';
               }else{
                 $pengyouquan[$key]['title'] = $posts['post_title'];
@@ -487,6 +488,7 @@ class IndexController extends HomebaseController
         $map['post_status'] = array('neq', 3);
         $users = D('users')->find($uid);
         $user = session('user');
+        // $user['id'] = 1;
         $atten = M('Attention')->where(array('uid'=>$user['id'],'follow_uid'=>$uid))->find();
         if ($atten) {
           $status = 1;
@@ -512,7 +514,7 @@ class IndexController extends HomebaseController
           foreach ($pengyouquan as $key => &$vl) {
               $posts = M('Posts')->find($vl['post_id']);
               if (empty($posts['post_title'])) {
-                $author = D('users')->find($user['id']);
+                $author = D('users')->find($posts['post_author']);
                 $pengyouquan[$key]['title'] = $author['user_nicename'].'的话题';
               }else{
                 $pengyouquan[$key]['title'] = $posts['post_title'];
@@ -526,13 +528,14 @@ class IndexController extends HomebaseController
           $where=array("user"=>$uid,"action"=>'Portal-Article-do_like');
           $pengyouquan=M("CommonActionLog")->where($where)->limit(30)->select();
           foreach ($pengyouquan as $key => &$vl) {
+              $pengyouquan[$key]['last_time'] = date('Y-m-d H:i:s',$pengyouquan[$key]['last_time']);
               $pengyouquan[$key]['avatar'] = $users['avatar'];
               $pengyouquan[$key]['user_nicename'] = $users['user_nicename'];
               $pengyouquan[$key]['uid'] = $users['id'];
-              $pengyouquan[$key]['post_id'] = str_replace("posts","",$vl);
+              $pengyouquan[$key]['post_id'] = str_replace("posts","",$vl['object']);
               $posts = M('Posts')->find($pengyouquan[$key]['post_id']);
               if (empty($posts['post_title'])) {
-                $author = D('users')->find($user['id']);
+                $author = D('users')->find($posts['post_author']);
                 $pengyouquan[$key]['title'] = $author['user_nicename'].'的话题';
               }else{
                 $pengyouquan[$key]['title'] = $posts['post_title'];
