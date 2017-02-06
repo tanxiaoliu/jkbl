@@ -763,8 +763,8 @@ class IndexController extends HomebaseController
                 $map['add_time'] = array('between', array($startTime, $endTime));
             }
             if ($type == 1) {//昨天
-                $startYesterday = mktime(0, 0, 0, date('m'), date('d') - 1, date('Y'));
-                $endYesterday = mktime(0, 0, 0, date('m'), date('d'), date('Y')) - 1;
+                $startYesterday = mktime(0, 0, 0, date('m'), date('d') - 2, date('Y'));
+                $endYesterday = mktime(0, 0, 0, date('m'), date('d'), date('Y')) - 2;
                 $map['add_time'] = array('between', array($startYesterday, $endYesterday));
             } elseif ($type == 2) {//上周
                 $beginLastweek = mktime(0, 0, 0, date('m'), date('d') - date('w') + 1 - 7, date('Y'));
@@ -774,6 +774,10 @@ class IndexController extends HomebaseController
                 $beginThismonth = mktime(0, 0, 0, date('m'), 1, date('Y'));
                 $endThismonth = mktime(23, 59, 59, date('m'), date('t'), date('Y'));
                 $map['add_time'] = array('between', array($beginThismonth, $endThismonth));
+            } else {
+                $startYesterday = mktime(0, 0, 0, date('m'), date('d') - 1, date('Y'));
+                $endYesterday = mktime(0, 0, 0, date('m'), date('d'), date('Y')) - 1;
+                $map['add_time'] = array('between', array($startYesterday, $endYesterday));
             }
             $data = D('sport_record')->where($map)->field('openid,sum(step_nums) as num')->group('openid')->order('num DESC')->select();
             $usersModel = D('users');
@@ -795,12 +799,12 @@ class IndexController extends HomebaseController
                             $groups[$users['groupid']]['num'] = 0;
                             $group = M('Group')->find($users['groupid']);
                             $groups[$users['groupid']]['id'] = $group['id'];
-                            $count = $usersModel->where(array('groupid'=>$users['groupid']))->count();
-                            $groups[$users['groupid']]['nick_name'] = $group['name'].'['.$count.']';
+                            $groups[$users['groupid']]['nick_name'] = $group['name'];
                             $groups[$users['groupid']]['avatar'] = '/data/upload/' . $group['logo'];
-                            $groups[$users['groupid']]['avgNum'] = $groups[$users['groupid']]['sortByNum']/$count;
                         }
+                        $count = $usersModel->where(array('groupid'=>$users['groupid']))->count();
                         $groups[$users['groupid']]['num'] += $vl['num'];
+                        $groups[$users['groupid']]['avgNum'] =  $groups[$users['groupid']]['num']/$count;
                     }
                 }
                 unset($groups[0]);
