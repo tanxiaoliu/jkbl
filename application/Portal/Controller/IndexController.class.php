@@ -467,7 +467,7 @@ class IndexController extends HomebaseController
           }
         }
         $this->assign("uid", $user['id']);
-        $this->assign("uid", 1);
+        // $this->assign("uid", 1);
         $this->assign("type", $type);
         $this->assign("pengyouquan", $pengyouquan);
         $this->assign("footer", "shequ");
@@ -542,7 +542,7 @@ class IndexController extends HomebaseController
               }
           }
         }
-        $this->assign("uid", $uid);
+        $this->assign("uid", $user['id']);
         $this->assign("type", $type);
         $this->assign("status", $status);
         $this->assign("pengyouquan", $pengyouquan);
