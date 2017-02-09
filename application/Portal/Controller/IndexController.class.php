@@ -97,6 +97,7 @@ class IndexController extends HomebaseController
     }
     
     public function checkInvite(){
+        return true;
       $this->checkLogin();
       $user = session('user');
       $where = array(
@@ -114,8 +115,8 @@ class IndexController extends HomebaseController
      */
     public function checkLogin()
     {
-//        $userInfo->openid = 'admin';
-//        return $userInfo;
+        $userInfo->openid = 'admin';
+        return $userInfo;
         if (sp_is_weixin()) {
             $userInfo = json_decode($_COOKIE['userInfo']);
             $user = session('user');
@@ -821,14 +822,14 @@ class IndexController extends HomebaseController
         }
 
         if (!empty($_POST) && $type == 4) {//时间段
-            $typeName = date('Y-m-d', $startTime) . ' ~ ' . date('Y-m-d', $endTime);
+            $typeName = date('Y-m-d', $startTime) . ' ~ ' . date('Y-m-d', $endTime).' 累计';
         }
         if ($type == 1) {//昨天
-            $typeName = '昨天排行';
+            $typeName = '昨天排行 累计';
         } elseif ($type == 2) {//上周
-            $typeName = '上周排行';
+            $typeName = '上周排行 累计';
         } elseif ($type == 3) {//上月
-            $typeName = '上月排行';
+            $typeName = '上月排行 累计';
         }
         if(empty($data)){
             $typeName = $typeName.'无记录';
