@@ -97,7 +97,7 @@ class IndexController extends HomebaseController
     }
     
     public function checkInvite(){
-        return true;
+//        return true;
       $this->checkLogin();
       $user = session('user');
       $where = array(
@@ -115,8 +115,8 @@ class IndexController extends HomebaseController
      */
     public function checkLogin()
     {
-        $userInfo->openid = 'admin';
-        return $userInfo;
+//        $userInfo->openid = 'admin';
+//        return $userInfo;
         if (sp_is_weixin()) {
             $userInfo = json_decode($_COOKIE['userInfo']);
             $user = session('user');
@@ -185,7 +185,7 @@ class IndexController extends HomebaseController
      * 达人堂 小强是(爸爸&&最帅的男人)了
      * @author tanhuaxin
      */
-    public function index()
+    public function daren()
     {
         $userInfo = $this->checkLogin();
         $this->checkInvite();
@@ -203,7 +203,7 @@ class IndexController extends HomebaseController
                 }
             }
         } elseif ($type == 2) {//爱心
-            $data = D('good_order')->join('cmf_users ON cmf_good_order.openid = cmf_users.user_login')
+            $data = M('good_order')->join('cmf_users ON cmf_good_order.openid = cmf_users.user_login')
                 ->field('cmf_users.user_login as openid,cmf_users.user_nicename as nick_name,cmf_users.avatar,sum(cmf_good_order.price) as num')
                 ->where('cmf_good_order.type = 2')->order('num DESC')->select();
             foreach ($data as $key => $vl) {
@@ -215,7 +215,9 @@ class IndexController extends HomebaseController
                 }
             }
         } else {//毅力
-            $data = D('sport_record')->field('openid,count(id) as num')->group('openid')->order('num DESC')->select();
+            $map['step_nums'] = array('gt', 10000);
+//            $data = D('sport_record')->field('openid,count(id) as num')->group('openid')->order('num DESC')->select();
+            $data = M('sport_record')->where($map)->field('openid,count(id) as num')->group('openid')->order('num DESC, id DESC')->select();
             foreach ($data as $key => $vl) {
                 $map['user_login'] = $vl['openid'];
                 $users = $usersModel->where($map)->find();
@@ -256,25 +258,25 @@ class IndexController extends HomebaseController
         $sum = 0;
         $status = empty($users['groupid']) ? 0 : 1;
         if ($status == 1 && (empty($data) || $type == 4 || $data['data'] == '[]')) {
-            $typeName = date('Y-m-d', time()-3600*24);//默认时间
+            $typeName = date('Y-m-d', time()-3600*24).'  累计';//默认时间
             if (!empty($_POST) && $type == 4) {//时间段
                 $startTime = strtotime(I('startTime'));
                 $endTime = strtotime(I('endTime'));
-                $typeName = date('Y-m-d', $startTime) . ' ~ ' . date('Y-m-d', $endTime);
+                $typeName = date('Y-m-d', $startTime) . ' ~ ' . date('Y-m-d', $endTime).' 累计';
                 $map['add_time'] = array('between', array($startTime, $endTime));
             }
             if ($type == 1) {//昨天
-                $typeName = '昨天统计';
+                $typeName = '昨天统计 累计';
                 $startYesterday = mktime(0, 0, 0, date('m'), date('d') - 1, date('Y'));
                 $endYesterday = mktime(0, 0, 0, date('m'), date('d'), date('Y')) - 1;
                 $map['add_time'] = array('between', array($startYesterday, $endYesterday));
             } elseif ($type == 2) {//上周
-                $typeName = '上周统计';
+                $typeName = '上周统计 累计';
                 $beginLastweek = mktime(0, 0, 0, date('m'), date('d') - date('w') + 1 - 7, date('Y'));
                 $endLastweek = mktime(23, 59, 59, date('m'), date('d') - date('w') + 7 - 7, date('Y'));
                 $map['add_time'] = array('between', array($beginLastweek, $endLastweek));
             } elseif ($type == 3) {//上月
-                $typeName = '上月统计';
+                $typeName = '上月统计 累计';
                 $beginThismonth = mktime(0, 0, 0, date('m'), 1, date('Y'));
                 $endThismonth = mktime(23, 59, 59, date('m'), date('t'), date('Y'));
                 $map['add_time'] = array('between', array($beginThismonth, $endThismonth));
@@ -607,7 +609,7 @@ class IndexController extends HomebaseController
      * 个人
      * @author tanhuaxin
      */
-    public function personal()
+    public function index()
     {
         $userInfo = $this->checkLogin();
         $this->checkInvite();
@@ -735,7 +737,7 @@ class IndexController extends HomebaseController
                 setcookie('userInfo', json_encode($userInfo));
             }
         }
-        redirect(U('personal'));
+        redirect(U('index'));
     }
 
     /**
@@ -822,16 +824,18 @@ class IndexController extends HomebaseController
         }
 
         if (!empty($_POST) && $type == 4) {//时间段
-            $typeName = date('Y-m-d', $startTime) . ' ~ ' . date('Y-m-d', $endTime).' 累计';
+            $typeName = date('Y-m-d', $startTime) . '~' . date('Y-m-d', $endTime);
         }
         if ($type == 1) {//昨天
-            $typeName = '昨天排行 累计';
+            $typeName = '昨天排行';
         } elseif ($type == 2) {//上周
-            $typeName = '上周排行 累计';
+            $typeName = '上周排行';
         } elseif ($type == 3) {//上月
-            $typeName = '上月排行 累计';
+            $typeName = '上月排行';
         }
         if(empty($data)){
+            $status = 1;
+            $this->assign("status", $status);
             $typeName = $typeName.'无记录';
         }
         $this->assign("grouptype", $grouptype);
@@ -1139,12 +1143,21 @@ class IndexController extends HomebaseController
      */
     public function rankdetail()
     {
+
+
         $userInfo = $this->checkLogin();
         $this->checkInvite();
         $map['user_login'] = $userInfo->openid;
         $groupid = I('groupid', 0 , 'int');
         $group = M('Group')->find($groupid);
-        $users = M('Users')->field('user_nicename,avatar,score,school')->where(array('groupid' => $groupid))->order('score DESC')->select();
+        $users = M('Users')->field('user_nicename,avatar,school,user_login')->where(array('groupid' => $groupid))->order('score DESC')->select();
+        $startYesterday = mktime(0, 0, 0, date('m'), date('d') - 1, date('Y'));
+        $endYesterday = mktime(0, 0, 0, date('m'), date('d'), date('Y')) - 1;
+        $mapRec['add_time'] = array('between', array($startYesterday, $endYesterday));
+        foreach ($users as $key=>$value){
+            $mapRec['openid'] = $value['user_login'];
+            $users[$key]['score'] = M('sport_record')->where($mapRec)->getField('step_nums');
+        }
         $this->assign("userInfo", $userInfo);
         $this->assign("data", $users);
         $this->assign("group", $group);

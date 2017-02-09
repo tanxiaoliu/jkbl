@@ -33,8 +33,8 @@
                 <li><a href="{:U('personal', array('type'=>'2'))}">月</a></li>
             </ul>
         </div>
-        <p style="text-align: center; color: #18abe1; line-height: 1rem; height: 1rem; margin-top: 0.2rem;">点击可看记录</p>
         <div class="p-bu">
+            <p style="text-align: center; color: #18abe1; line-height: 1rem; height: 1rem;">点击可看记录</p>
             <ul>
                 <li>
                     <a href="{:U('personallist', array('type'=>'0', 'date'=>'0'))}">
@@ -84,7 +84,8 @@
                 <p class="center" style="color: red;">注：只能修改一次，请填写真实院校和姓名！</p>
                 <div class="center" style="margin: 0.5rem 0;"><span style="color: #18abe1;">院&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp校：</span><span><input type="text" name="school" id="school" style="height: 1rem;" placeholder="院校简称"></span></div>
                 <div class="center" style="margin: 0.5rem 0;"><span style="color: #18abe1;">真实姓名：</span><span><input type="text" name="user_nicename" id="user_nicename" style="height: 1rem;"></span></div>
-                <div class="center" style="margin: 0.5rem 0;"><input type="submit" class="flatbtn-blu hidemodal" value="确定">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<input type="button" name="close" value="取消" onclick="window.close();" /></div>
+                <div class="center" style="margin: 0.5rem 0;"><input type="submit" class="flatbtn-blu hidemodal" value="确定">
+                    &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<input type="button" class="flatbtn-blu close" value="取消"/></div>
             </form>
         </div>
         <div id="sportmodal" class="modal" style="display:none;">
@@ -92,7 +93,8 @@
                 <p class="center" style="color: red;">注：运动记录“以微信运动的”为准！</p>
                 <div class="center" style="margin: 0.5rem 0;"><span style="color: #18abe1;">图片：</span><span><input type="file" name="image" id="image" style="height: 1rem; width: 6.9rem;"></span></div>
                 <div class="center" style="margin: 0.5rem 0;"><span style="color: #18abe1;">步数：</span><span><input type="text" name="num" id="num" style="height: 1rem;"></span></div>
-                <div class="center" style="margin: 0.5rem 0;"><input type="submit" class="flatbtn-blu hidemodal" value="确定">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<input type="button" name="close" value="取消" onclick="window.close();" /></div>
+                <div class="center" style="margin: 0.5rem 0;"><input type="submit" class="flatbtn-blu hidemodal" value="确定">
+                    &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<input type="button" class="flatbtn-blu close" value="取消"/></div>
             </form>
         </div>
     <!--</div>-->
@@ -106,6 +108,11 @@
         $('.modaltrigger').leanModal({ top: 110, overlay: 0.45});
         $(".rank-top ul li").click(function(){
             $(this).addClass("blue").siblings().removeClass("blue");
+        });
+        $('.close').click(function(){
+            $(this).parents("#sportmodal").hide();
+            $(this).parents("#loginmodal").hide();
+            $("#lean_overlay").css('display','none');
         });
     });
     function check(form) {
