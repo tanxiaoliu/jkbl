@@ -16,10 +16,15 @@
         </ul>
     </div>
     <br/>
-    <p class="type-title">{$type}</p>
-    <div class="content" style="margin-top:0.5rem;">
+    <div class="content" style="margin-top:1.5rem;">
+        <if condition="$status != 1">
         <span style="text-align: center; color: #18abe1;position: relative;top: 0.5rem;left: 3.6rem;">点击组头像可查看组成员</span><a class="detail-btn flatbtn modaltrigger" href="#loginmodal" style="position: relative;top: 0.5rem;left: 4.6rem;">详情</a>
-        <div class="rank1">
+            <p class="type-title">{$type}</p>
+            <else />
+        <a class="detail-btn flatbtn modaltrigger" href="#loginmodal" style="position: relative;top: 0.5rem;left: 10.6rem;">详情</a>
+            <p class="type-title" style="top: -0.3rem;">{$type}</p>
+        </if>
+            <div class="rank1" style="margin-top: 0.5rem;">
             <div style="width:100%; height:14rem; overflow-x: hidden; overflow-y: auto; font-size: 0.45rem;">
                 <volist name="data" id="vo" offset="0" length='500'>
                     <ul>
@@ -27,12 +32,12 @@
                         <li style="text-align: center;"><a href="{:U('rankdetail', array('groupid'=>$vo['id']))}"><span class="rank_head1" style="background-image: url('{$vo.avatar|default='__TMPL__Public/assets/images/0.png'}');"></span></a></li>
                         <li style="width: 5rem; padding-left: 0.3rem;">
                             <if condition="$grouptype eq 0">
-                                <div style="height: 1rem;">{$vo.nick_name}</div>
+                                <div style="height: 1rem;line-height: 1rem;">{$vo.nick_name}</div>
                             </if>
                             <if condition="$grouptype eq 1">
-                                <div style="height: 1rem;">{$vo.nick_name}[{$vo.num}]</div>
+                                <div style="height: 1rem;line-height: 1rem;">{$vo.nick_name}[{$vo.num}]</div>
                             </if>
-                            <div style="height: 1rem;">{$vo.school|default='暂无'|msubstr=0,7,'utf-8'}</div>
+                            <div style="height: 1rem;line-height: 1rem;">{$vo.school|default='暂无'|msubstr=0,7,'utf-8'}</div>
                         </li>
                         <if condition="$grouptype eq 0">
                         <li class="count1">步数:{$vo.num}</li>
@@ -71,9 +76,10 @@
             <input type="hidden" name="type" id="type" value="4">
             <input type="hidden" name="grouptype" id="grouptype" value="{$grouptype}">
             <div class="center" style="color: #18abe1;">选择时间段</div>
-            <div class="center" style="margin: 0.5rem 0;padding-right: 2rem;"><span style="color: #18abe1;">结束时间：</span><span><input type="date" name="startTime" id="startTime" style="height: 1rem;"></span></div>
-            <div class="center" style="margin: 0.5rem 0;padding-right: 2rem;"><span style="color: #18abe1;">开始时间：</span><span><input type="date" name="endTime" id="endTime" style="height: 1rem;"></span></div>
-            <div class="center" style="margin: 0.5rem 0;"><input type="submit" class="flatbtn-blu hidemodal" value="搜索"></a></div>
+            <div class="center" style="margin: 0.5rem 0;padding-right: 2rem;width: 13rem;"><span style="color: #18abe1;">结束时间：</span><span><input type="date" name="startTime" id="startTime" style="height: 1rem;"></span></div>
+            <div class="center" style="margin: 0.5rem 0;padding-right: 2rem;width: 13rem;"><span style="color: #18abe1;">开始时间：</span><span><input type="date" name="endTime" id="endTime" style="height: 1rem;"></span></div>
+            <div class="center" style="margin: 0.5rem 0;"><input type="submit" class="flatbtn-blu hidemodal" value="搜索">
+                &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<input type="button" class="flatbtn-blu close" value="取消"/></div>
         </form>
     </div>
 </div>
@@ -87,6 +93,10 @@
         });
         $(".rank-content-nav ul li").click(function(){
             $(this).addClass("gray_rank").siblings().removeClass("gray_rank");
+        });
+        $('.close').click(function(){
+            $(this).parents("#loginmodal").hide();
+            $("#lean_overlay").css('display','none');
         });
     });
     function check(form) {

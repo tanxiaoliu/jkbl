@@ -10,9 +10,9 @@
     <tc_include file="Public:nav" />
     <div class="content-nav">
         <ul>
-            <li <eq name="{type}" value="0">class="gray"</eq>><a href="{:U('Index/index', array('type'=>0))}">毅力达人堂</a></li>
-            <li <eq name="{type}" value="1">class="gray"</eq>><a href="{:U('Index/index', array('type'=>1))}">腾币达人堂</a></li>
-            <li <eq name="{type}" value="2">class="gray"</eq>><a href="{:U('Index/index', array('type'=>2))}">爱心达人堂</a></li>
+            <li <eq name="{type}" value="0">class="gray"</eq>><a href="{:U('Index/daren', array('type'=>0))}">毅力达人堂</a></li>
+            <li <eq name="{type}" value="1">class="gray"</eq>><a href="{:U('Index/daren', array('type'=>1))}">腾币达人堂</a></li>
+            <li <eq name="{type}" value="2">class="gray"</eq>><a href="{:U('Index/daren', array('type'=>2))}">爱心达人堂</a></li>
         </ul>
     </div>
     <div class="content">
@@ -28,10 +28,14 @@
                         <li class="rank-num1">NO.{$i}</li>
                         <li style="text-align: center;"><span class="rank_head1" style="background-image: url('{$vo.avatar|default='__TMPL__Public/assets/images/0.png'}');"></span></li>
                         <li style="width: 5rem; padding-left: 0.3rem;">
-                            <div style="height: 1rem;">{$vo.nick_name}</div>
-                            <div style="height: 1rem;">{$vo.school|default='暂无'|msubstr=0,7,'utf-8'}</div>
+                            <div style="height: 1rem;line-height: 1rem;">{$vo.nick_name}</div>
+                            <div style="height: 1rem;line-height: 1rem;">{$vo.school|default='暂无'|msubstr=0,7,'utf-8'}</div>
                         </li>
-                        <li class="count1">步数:{$vo.num}</li>
+                        <if condition="$type ==0 ">
+                            <li class="count1">连续天数:{$vo.num}</li>
+                            <else />
+                            <li class="count1">步数:{$vo.num}</li>
+                        </if>
                         <eq name="i" value="1">
                             <li class="pai"><img src="__TMPL__Public/assets/images/1.png"></li>
                         </eq>

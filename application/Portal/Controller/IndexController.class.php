@@ -62,52 +62,55 @@ class IndexController extends HomebaseController
         $this->weObj->valid();
     }
 
-    public function invite(){
-      if (!empty($_POST)) {
-        $code = $_POST['code'];
+    public function invite()
+    {
+        if (!empty($_POST)) {
+            $code = $_POST['code'];
+            $user = session('user');
+            $where = array(
+                'code' => $code
+            );
+            $invite = M('InviteCode')->where($where)->find();
+            if (!empty($invite)) {
+                if ($invite['status'] == 0) {
+                    $this->error("邀请码已过期", U('Index/invite'), true);
+                }
+                $invite['status'] = 0;
+                $invite['userid'] = $user['id'];
+                $invite['update_time'] = time();
+                // $users = D('users')->find($invite['userid']);
+                // $users['code'] = $code;
+                // D('users')->save($users);
+                if (M('InviteCode')->create($invite) !== false) {
+                    if (M('InviteCode')->save() !== false) {
+                        // $users['code'] = $code;
+                        // session('user',$users);
+                        $this->success("欢迎来到健康部落", U('Index/index'), true);
+                    }
+                } else {
+                    $this->error("网络异常，请重新输入", U('Index/invite'), true);
+                }
+            } else {
+                $this->error("邀请码错误", U('Index/invite'), true);
+            }
+        }
+        $this->display(":invite");
+    }
+
+    public function checkInvite()
+    {
+//        return true;
+//        $this->checkLogin();
         $user = session('user');
         $where = array(
-          'code'=>$code
-          );
+            'userid' => $user['id']
+        );
         $invite = M('InviteCode')->where($where)->find();
-        if (!empty($invite)) {
-          if ($invite['status']==0) {
-            $this->error("邀请码已过期", U('Index/invite'), true);
-          }
-          $invite['status'] = 0;
-          $invite['userid'] = $user['id'];
-          $invite['update_time'] = time();
-          // $users = D('users')->find($invite['userid']);
-          // $users['code'] = $code;
-          // D('users')->save($users);
-          if (M('InviteCode')->create($invite)!==false) {
-            if (M('InviteCode')->save()!==false) {
-                // $users['code'] = $code;
-                // session('user',$users);
-                $this->success("欢迎来到健康部落", U('Index/index'), true);
-            }
-          }else{
-            $this->error("网络异常，请重新输入", U('Index/invite'), true);
-          }
-        }else{
-            $this->error("邀请码错误", U('Index/invite'), true);
+        if (empty($invite)) {
+            redirect(U('invite'));
         }
-      }
-      $this->display(":invite");
     }
-    
-    public function checkInvite(){
-      $this->checkLogin();
-      $user = session('user');
-      $where = array(
-          'userid'=>$user['id']
-          );
-      $invite = M('InviteCode')->where($where)->find();      
-      if (empty($invite)) {
-          redirect(U('invite'));
-      }      
-    }
-    
+
     /**
      * 检查登录
      * @return mixed
@@ -184,7 +187,7 @@ class IndexController extends HomebaseController
      * 达人堂 小强是(爸爸&&最帅的男人)了
      * @author tanhuaxin
      */
-    public function index()
+    public function daren()
     {
         $userInfo = $this->checkLogin();
         $this->checkInvite();
@@ -202,7 +205,7 @@ class IndexController extends HomebaseController
                 }
             }
         } elseif ($type == 2) {//爱心
-            $data = D('good_order')->join('cmf_users ON cmf_good_order.openid = cmf_users.user_login')
+            $data = M('good_order')->join('cmf_users ON cmf_good_order.openid = cmf_users.user_login')
                 ->field('cmf_users.user_login as openid,cmf_users.user_nicename as nick_name,cmf_users.avatar,sum(cmf_good_order.price) as num')
                 ->where('cmf_good_order.type = 2')->order('num DESC')->select();
             foreach ($data as $key => $vl) {
@@ -214,16 +217,21 @@ class IndexController extends HomebaseController
                 }
             }
         } else {//毅力
-            $data = D('sport_record')->field('openid,count(id) as num')->group('openid')->order('num DESC')->select();
+            $map['step_nums'] = array('gt', 10000);
+            $startYesterday = mktime(0, 0, 0, date('m'), date('d') - 1, date('Y'));
+            $endYesterday = $startYesterday + 3600 * 24;
+            $map['add_time'] = array('between', array($startYesterday, $endYesterday));
+            $data = M('sport_record')->where($map)->field('openid')->group('openid')->order('add_time DESC')->select();
             foreach ($data as $key => $vl) {
-                $map['user_login'] = $vl['openid'];
-                $users = $usersModel->where($map)->find();
+                $data[$key]['num'] = $this->getDayCount($vl['openid']);
+                $mapUser['user_login'] = $vl['openid'];
+                $users = $usersModel->where($mapUser)->find();
                 $data[$key]['avatar'] = $users['avatar'];
                 $data[$key]['nick_name'] = $users['user_nicename'];
                 if ($userInfo->openid == $vl['openid']) {
                     $user['rank'] = $key + 1;
                     $user['nick_name'] = $users['user_nicename'];
-                    $user['num'] = $vl['num'];
+                    $user['num'] = $this->getDayCount($vl['openid']);
                     $user['avatar'] = $userInfo->headimgurl;
                 }
             }
@@ -234,6 +242,30 @@ class IndexController extends HomebaseController
         $this->assign("footer", "fuli");
         $this->assign("userInfo", $userInfo);
         $this->display(":index");
+    }
+
+    /**
+     * 获取连续天数
+     * @author tanhuaxin
+     * @param $openid
+     * @param int $num
+     * @param int $count
+     * @return int
+     */
+    public function getDayCount($openid, $num = 1, $count = 2)
+    {
+        $map['step_nums'] = array('gt', 10000);
+        $startYesterday = strtotime(date('Y-m-d' . '00:00:00', time())) - 3600 * 24 * $count;
+        $endYesterday = $startYesterday + 3600 * 24;
+        $map['add_time'] = array('between', array($startYesterday, $endYesterday));
+        $map['openid'] = $openid;
+        $id = M('sport_record')->where($map)->getField('id');
+        if ($id) {
+            $num = $num + 1;
+            $num = $this->testsad($openid, $num, $num + 1);
+        }
+        return $num;
+
     }
 
     /**
@@ -255,25 +287,25 @@ class IndexController extends HomebaseController
         $sum = 0;
         $status = empty($users['groupid']) ? 0 : 1;
         if ($status == 1 && (empty($data) || $type == 4 || $data['data'] == '[]')) {
-            $typeName = date('Y-m-d', time()-3600*24);//默认时间
+            $typeName = date('Y-m-d', time() - 3600 * 24) . '  累计';//默认时间
             if (!empty($_POST) && $type == 4) {//时间段
                 $startTime = strtotime(I('startTime'));
                 $endTime = strtotime(I('endTime'));
-                $typeName = date('Y-m-d', $startTime) . ' ~ ' . date('Y-m-d', $endTime);
+                $typeName = date('Y-m-d', $startTime) . ' ~ ' . date('Y-m-d', $endTime) . ' 累计';
                 $map['add_time'] = array('between', array($startTime, $endTime));
             }
             if ($type == 1) {//昨天
-                $typeName = '昨天统计';
+                $typeName = '昨天统计 累计';
                 $startYesterday = mktime(0, 0, 0, date('m'), date('d') - 1, date('Y'));
-                $endYesterday = mktime(0, 0, 0, date('m'), date('d'), date('Y')) - 1;
+                $endYesterday = $startYesterday + 3600 * 24;
                 $map['add_time'] = array('between', array($startYesterday, $endYesterday));
             } elseif ($type == 2) {//上周
-                $typeName = '上周统计';
+                $typeName = '上周统计 累计';
                 $beginLastweek = mktime(0, 0, 0, date('m'), date('d') - date('w') + 1 - 7, date('Y'));
                 $endLastweek = mktime(23, 59, 59, date('m'), date('d') - date('w') + 7 - 7, date('Y'));
                 $map['add_time'] = array('between', array($beginLastweek, $endLastweek));
             } elseif ($type == 3) {//上月
-                $typeName = '上月统计';
+                $typeName = '上月统计 累计';
                 $beginThismonth = mktime(0, 0, 0, date('m'), 1, date('Y'));
                 $endThismonth = mktime(23, 59, 59, date('m'), date('t'), date('Y'));
                 $map['add_time'] = array('between', array($beginThismonth, $endThismonth));
@@ -292,10 +324,10 @@ class IndexController extends HomebaseController
                     $map['user_login'] = $value['openid'];
                     $users = M('Users')->where($map)->find();
                     $sum += $value['num'];
-                    if(empty($users['school'])){
-                        $name = $users['school'].$users['user_nicename'];
+                    if (empty($users['school'])) {
+                        $name = $users['school'] . $users['user_nicename'];
                     } else {
-                        $name = $users['school'].'-'.$users['user_nicename'];
+                        $name = $users['school'] . '-' . $users['user_nicename'];
                     }
                     $data .= "{value:{$value['num']}, name:'{$name}'},";
                 }
@@ -303,10 +335,10 @@ class IndexController extends HomebaseController
                 $users = M('Users')->field('user_nicename,groupid,score,school')->where(array('groupid' => $users['groupid']))->order('score DESC')->select();
                 foreach ($users as $value) {
                     $sum += $value['score'];
-                    if(empty($value['school'])){
-                        $name = $value['school'].$value['user_nicename'];
+                    if (empty($value['school'])) {
+                        $name = $value['school'] . $value['user_nicename'];
                     } else {
-                        $name = $value['school'].'-'.$value['user_nicename'];
+                        $name = $value['school'] . '-' . $value['user_nicename'];
                     }
                     $data .= "{value:{$value['score']}, name:'{$name}'},";
                 }
@@ -335,26 +367,27 @@ class IndexController extends HomebaseController
         $this->assign("footer", "zhishu");
         $this->display(":member");
     }
-    
-    public function attention(){
-        $uid = intval(I('uid',0,'intval'));
+
+    public function attention()
+    {
+        $uid = intval(I('uid', 0, 'intval'));
         $this->checkLogin();
         $user = session('user');
         $map = array(
-          'uid'=>$user['id'],
-          'follow_uid'=>$uid,
-          );
+            'uid' => $user['id'],
+            'follow_uid' => $uid,
+        );
         if (M('Attention')->where($map)->find()) {
-          M('Attention')->where($map)->delete();
-        }else{
-          $data = array(
-            'uid'=>$user['id'],
-            'follow_uid'=>$uid,
-            'add_time'=>time(),
+            M('Attention')->where($map)->delete();
+        } else {
+            $data = array(
+                'uid' => $user['id'],
+                'follow_uid' => $uid,
+                'add_time' => time(),
             );
-          M('Attention')->add($data);
+            M('Attention')->add($data);
         }
-        redirect(U('Index/huati',array('type'=>1,'uid'=>$uid)));
+        redirect(U('Index/huati', array('type' => 1, 'uid' => $uid)));
     }
 
     /**
@@ -373,19 +406,19 @@ class IndexController extends HomebaseController
         $userscount = M('Users')->count();
         $map['istop'] = 0;
         $map['recommended'] = 0;
-        $type = intval(I('type','0','intval'));
+        $type = intval(I('type', '0', 'intval'));
         $pengyouquan = array();
         if ($type == 1) {
-          $attenUids = '';
-          $attens = M('Attention')->where(array('uid'=>$user['id']))->select();
-          foreach ($attens as $key => $value) {
-            $attenUids.=$value['follow_uid'].',';
-          }
-          $attenUids = rtrim($attenUids,',');
-          $map['post_author'] = array('IN',$attenUids);
-          $pengyouquan = M('Posts')->field('id,post_content,post_date,post_image,post_author,post_like,comment_count')->where($map)->order('id DESC')->limit(30)->select();
-        }else{
-          $pengyouquan = M('Posts')->field('id,post_content,post_date,post_image,post_author,post_like,comment_count')->where($map)->order('id DESC')->limit(30)->select();
+            $attenUids = '';
+            $attens = M('Attention')->where(array('uid' => $user['id']))->select();
+            foreach ($attens as $key => $value) {
+                $attenUids .= $value['follow_uid'] . ',';
+            }
+            $attenUids = rtrim($attenUids, ',');
+            $map['post_author'] = array('IN', $attenUids);
+            $pengyouquan = M('Posts')->field('id,post_content,post_date,post_image,post_author,post_like,comment_count')->where($map)->order('id DESC')->limit(30)->select();
+        } else {
+            $pengyouquan = M('Posts')->field('id,post_content,post_date,post_image,post_author,post_like,comment_count')->where($map)->order('id DESC')->limit(30)->select();
         }
         foreach ($pengyouquan as $key => $vl) {
             $users = D('users')->find($vl['post_author']);
@@ -419,52 +452,52 @@ class IndexController extends HomebaseController
         $map['recommended'] = 0;
         $map['post_status'] = array('neq', 3);
         $users = D('users')->find($user['id']);
-        $type = intval(I('type','1','intval'));
+        $type = intval(I('type', '1', 'intval'));
         $pengyouquan = array();
-        if ($type==1) {
-          $pengyouquan = M('Posts')->field('id,post_content,post_date,post_image,post_author,post_like')
-          ->where($map)
-          ->order('id DESC')
-          ->limit(30)->select();
-          foreach ($pengyouquan as $key => &$vl) {
-              $pengyouquan[$key]['avatar'] = $users['avatar'];
-              $pengyouquan[$key]['user_nicename'] = $users['user_nicename'];
-              $pengyouquan[$key]['uid'] = $users['id'];
-          }
+        if ($type == 1) {
+            $pengyouquan = M('Posts')->field('id,post_content,post_date,post_image,post_author,post_like')
+                ->where($map)
+                ->order('id DESC')
+                ->limit(30)->select();
+            foreach ($pengyouquan as $key => &$vl) {
+                $pengyouquan[$key]['avatar'] = $users['avatar'];
+                $pengyouquan[$key]['user_nicename'] = $users['user_nicename'];
+                $pengyouquan[$key]['uid'] = $users['id'];
+            }
         }
-        if ($type==2) {
-          $where=array("uid"=>$user['id'],"status"=>1);
-          $pengyouquan = M('Comments')->where($where)->select();
-          foreach ($pengyouquan as $key => &$vl) {
-              $posts = M('Posts')->find($vl['post_id']);
-              if (empty($posts['post_title'])) {
-                $author = D('users')->find($posts['post_author']);
-                $pengyouquan[$key]['title'] = $author['user_nicename'].'的话题';
-              }else{
-                $pengyouquan[$key]['title'] = $posts['post_title'];
-              }
-              $pengyouquan[$key]['avatar'] = $users['avatar'];
-              $pengyouquan[$key]['user_nicename'] = $users['user_nicename'];
-              $pengyouquan[$key]['uid'] = $users['id'];
-          }
+        if ($type == 2) {
+            $where = array("uid" => $user['id'], "status" => 1);
+            $pengyouquan = M('Comments')->where($where)->select();
+            foreach ($pengyouquan as $key => &$vl) {
+                $posts = M('Posts')->find($vl['post_id']);
+                if (empty($posts['post_title'])) {
+                    $author = D('users')->find($posts['post_author']);
+                    $pengyouquan[$key]['title'] = $author['user_nicename'] . '的话题';
+                } else {
+                    $pengyouquan[$key]['title'] = $posts['post_title'];
+                }
+                $pengyouquan[$key]['avatar'] = $users['avatar'];
+                $pengyouquan[$key]['user_nicename'] = $users['user_nicename'];
+                $pengyouquan[$key]['uid'] = $users['id'];
+            }
         }
-        if ($type==3) {
-          $where=array("user"=>$user['id'],"action"=>'Portal-Article-do_like');
-          $pengyouquan=M("CommonActionLog")->where($where)->limit(30)->select();
-          foreach ($pengyouquan as $key => &$vl) {
-              $pengyouquan[$key]['last_time'] = date('Y-m-d H:i:s',$pengyouquan[$key]['last_time']);
-              $pengyouquan[$key]['avatar'] = $users['avatar'];
-              $pengyouquan[$key]['user_nicename'] = $users['user_nicename'];
-              $pengyouquan[$key]['uid'] = $users['id'];
-              $pengyouquan[$key]['post_id'] = str_replace("posts","",$vl['object']);
-              $posts = M('Posts')->find($pengyouquan[$key]['post_id']);
-              if (empty($posts['post_title'])) {
-                $author = D('users')->find($posts['post_author']);
-                $pengyouquan[$key]['title'] = $author['user_nicename'].'的话题';
-              }else{
-                $pengyouquan[$key]['title'] = $posts['post_title'];
-              }
-          }
+        if ($type == 3) {
+            $where = array("user" => $user['id'], "action" => 'Portal-Article-do_like');
+            $pengyouquan = M("CommonActionLog")->where($where)->limit(30)->select();
+            foreach ($pengyouquan as $key => &$vl) {
+                $pengyouquan[$key]['last_time'] = date('Y-m-d H:i:s', $pengyouquan[$key]['last_time']);
+                $pengyouquan[$key]['avatar'] = $users['avatar'];
+                $pengyouquan[$key]['user_nicename'] = $users['user_nicename'];
+                $pengyouquan[$key]['uid'] = $users['id'];
+                $pengyouquan[$key]['post_id'] = str_replace("posts", "", $vl['object']);
+                $posts = M('Posts')->find($pengyouquan[$key]['post_id']);
+                if (empty($posts['post_title'])) {
+                    $author = D('users')->find($posts['post_author']);
+                    $pengyouquan[$key]['title'] = $author['user_nicename'] . '的话题';
+                } else {
+                    $pengyouquan[$key]['title'] = $posts['post_title'];
+                }
+            }
         }
         $this->assign("uid", $user['id']);
         // $this->assign("uid", 1);
@@ -473,6 +506,7 @@ class IndexController extends HomebaseController
         $this->assign("footer", "shequ");
         $this->display(":myhuati");
     }
+
     /**
      * 我的话题
      * @author tanhuaxin
@@ -480,7 +514,7 @@ class IndexController extends HomebaseController
     public function huati()
     {
         $this->checkLogin();
-        $uid = intval(I('uid','0','intval'));
+        $uid = intval(I('uid', '0', 'intval'));
         $map['post_author'] = $uid;
         $map['post_type'] = 1;
         $map['istop'] = 0;
@@ -488,59 +522,58 @@ class IndexController extends HomebaseController
         $map['post_status'] = array('neq', 3);
         $users = D('users')->find($uid);
         $user = session('user');
-        // $user['id'] = 1;
-        $atten = M('Attention')->where(array('uid'=>$user['id'],'follow_uid'=>$uid))->find();
+        $atten = M('Attention')->where(array('uid' => $user['id'], 'follow_uid' => $uid))->find();
         if ($atten) {
-          $status = 1;
-        }else{
-          $status = 0;
+            $status = 1;
+        } else {
+            $status = 0;
         }
-        $type = intval(I('type','1','intval'));
+        $type = intval(I('type', '1', 'intval'));
         $pengyouquan = array();
-        if ($type==1) {
-          $pengyouquan = M('Posts')->field('id,post_content,post_date,post_image,post_author,post_like')
-          ->where($map)
-          ->order('id DESC')
-          ->limit(30)->select();
-          foreach ($pengyouquan as $key => &$vl) {
-              $pengyouquan[$key]['avatar'] = $users['avatar'];
-              $pengyouquan[$key]['user_nicename'] = $users['user_nicename'];
-              $pengyouquan[$key]['uid'] = $users['id'];
-          }
+        if ($type == 1) {
+            $pengyouquan = M('Posts')->field('id,post_content,post_date,post_image,post_author,post_like')
+                ->where($map)
+                ->order('id DESC')
+                ->limit(30)->select();
+            foreach ($pengyouquan as $key => &$vl) {
+                $pengyouquan[$key]['avatar'] = $users['avatar'];
+                $pengyouquan[$key]['user_nicename'] = $users['user_nicename'];
+                $pengyouquan[$key]['uid'] = $users['id'];
+            }
         }
-        if ($type==2) {
-          $where=array("uid"=>$uid,"status"=>1);
-          $pengyouquan = M('Comments')->where($where)->select();
-          foreach ($pengyouquan as $key => &$vl) {
-              $posts = M('Posts')->find($vl['post_id']);
-              if (empty($posts['post_title'])) {
-                $author = D('users')->find($posts['post_author']);
-                $pengyouquan[$key]['title'] = $author['user_nicename'].'的话题';
-              }else{
-                $pengyouquan[$key]['title'] = $posts['post_title'];
-              }
-              $pengyouquan[$key]['avatar'] = $users['avatar'];
-              $pengyouquan[$key]['user_nicename'] = $users['user_nicename'];
-              $pengyouquan[$key]['uid'] = $users['id'];
-          }
+        if ($type == 2) {
+            $where = array("uid" => $uid, "status" => 1);
+            $pengyouquan = M('Comments')->where($where)->select();
+            foreach ($pengyouquan as $key => &$vl) {
+                $posts = M('Posts')->find($vl['post_id']);
+                if (empty($posts['post_title'])) {
+                    $author = D('users')->find($posts['post_author']);
+                    $pengyouquan[$key]['title'] = $author['user_nicename'] . '的话题';
+                } else {
+                    $pengyouquan[$key]['title'] = $posts['post_title'];
+                }
+                $pengyouquan[$key]['avatar'] = $users['avatar'];
+                $pengyouquan[$key]['user_nicename'] = $users['user_nicename'];
+                $pengyouquan[$key]['uid'] = $users['id'];
+            }
         }
-        if ($type==3) {
-          $where=array("user"=>$uid,"action"=>'Portal-Article-do_like');
-          $pengyouquan=M("CommonActionLog")->where($where)->limit(30)->select();
-          foreach ($pengyouquan as $key => &$vl) {
-              $pengyouquan[$key]['last_time'] = date('Y-m-d H:i:s',$pengyouquan[$key]['last_time']);
-              $pengyouquan[$key]['avatar'] = $users['avatar'];
-              $pengyouquan[$key]['user_nicename'] = $users['user_nicename'];
-              $pengyouquan[$key]['uid'] = $users['id'];
-              $pengyouquan[$key]['post_id'] = str_replace("posts","",$vl['object']);
-              $posts = M('Posts')->find($pengyouquan[$key]['post_id']);
-              if (empty($posts['post_title'])) {
-                $author = D('users')->find($posts['post_author']);
-                $pengyouquan[$key]['title'] = $author['user_nicename'].'的话题';
-              }else{
-                $pengyouquan[$key]['title'] = $posts['post_title'];
-              }
-          }
+        if ($type == 3) {
+            $where = array("user" => $uid, "action" => 'Portal-Article-do_like');
+            $pengyouquan = M("CommonActionLog")->where($where)->limit(30)->select();
+            foreach ($pengyouquan as $key => &$vl) {
+                $pengyouquan[$key]['last_time'] = date('Y-m-d H:i:s', $pengyouquan[$key]['last_time']);
+                $pengyouquan[$key]['avatar'] = $users['avatar'];
+                $pengyouquan[$key]['user_nicename'] = $users['user_nicename'];
+                $pengyouquan[$key]['uid'] = $users['id'];
+                $pengyouquan[$key]['post_id'] = str_replace("posts", "", $vl['object']);
+                $posts = M('Posts')->find($pengyouquan[$key]['post_id']);
+                if (empty($posts['post_title'])) {
+                    $author = D('users')->find($posts['post_author']);
+                    $pengyouquan[$key]['title'] = $author['user_nicename'] . '的话题';
+                } else {
+                    $pengyouquan[$key]['title'] = $posts['post_title'];
+                }
+            }
         }
         $this->assign("uid", $user['id']);
         $this->assign("attenuid", $uid);
@@ -607,7 +640,7 @@ class IndexController extends HomebaseController
      * 个人
      * @author tanhuaxin
      */
-    public function personal()
+    public function index()
     {
         $userInfo = $this->checkLogin();
         $this->checkInvite();
@@ -735,7 +768,7 @@ class IndexController extends HomebaseController
                 setcookie('userInfo', json_encode($userInfo));
             }
         }
-        redirect(U('personal'));
+        redirect(U('index'));
     }
 
     /**
@@ -765,7 +798,7 @@ class IndexController extends HomebaseController
             }
             if ($type == 1) {//昨天
                 $startYesterday = mktime(0, 0, 0, date('m'), date('d') - 2, date('Y'));
-                $endYesterday = mktime(0, 0, 0, date('m'), date('d'), date('Y')) - 2;
+                $endYesterday = $startYesterday + 3600 * 24;
                 $map['add_time'] = array('between', array($startYesterday, $endYesterday));
             } elseif ($type == 2) {//上周
                 $beginLastweek = mktime(0, 0, 0, date('m'), date('d') - date('w') + 1 - 7, date('Y'));
@@ -777,7 +810,7 @@ class IndexController extends HomebaseController
                 $map['add_time'] = array('between', array($beginThismonth, $endThismonth));
             } else {
                 $startYesterday = mktime(0, 0, 0, date('m'), date('d') - 1, date('Y'));
-                $endYesterday = mktime(0, 0, 0, date('m'), date('d'), date('Y')) - 1;
+                $endYesterday = $startYesterday + 3600 * 24;
                 $map['add_time'] = array('between', array($startYesterday, $endYesterday));
             }
             $data = D('sport_record')->where($map)->field('openid,sum(step_nums) as num')->group('openid')->order('num DESC')->select();
@@ -803,9 +836,9 @@ class IndexController extends HomebaseController
                             $groups[$users['groupid']]['nick_name'] = $group['name'];
                             $groups[$users['groupid']]['avatar'] = '/data/upload/' . $group['logo'];
                         }
-                        $count = $usersModel->where(array('groupid'=>$users['groupid']))->count();
+                        $count = $usersModel->where(array('groupid' => $users['groupid']))->count();
                         $groups[$users['groupid']]['num'] += $vl['num'];
-                        $groups[$users['groupid']]['avgNum'] =  $groups[$users['groupid']]['num']/$count;
+                        $groups[$users['groupid']]['avgNum'] = $groups[$users['groupid']]['num'] / $count;
                     }
                 }
                 unset($groups[0]);
@@ -822,7 +855,7 @@ class IndexController extends HomebaseController
         }
 
         if (!empty($_POST) && $type == 4) {//时间段
-            $typeName = date('Y-m-d', $startTime) . ' ~ ' . date('Y-m-d', $endTime);
+            $typeName = date('Y-m-d', $startTime) . '~' . date('Y-m-d', $endTime);
         }
         if ($type == 1) {//昨天
             $typeName = '昨天排行';
@@ -831,8 +864,10 @@ class IndexController extends HomebaseController
         } elseif ($type == 3) {//上月
             $typeName = '上月排行';
         }
-        if(empty($data)){
-            $typeName = $typeName.'无记录';
+        if (empty($data)) {
+            $status = 1;
+            $this->assign("status", $status);
+            $typeName = $typeName . '无记录';
         }
         $this->assign("grouptype", $grouptype);
         $this->assign("data", $data);
@@ -1085,11 +1120,11 @@ class IndexController extends HomebaseController
         $type = I('type', 0, 'int');
         $map['openid'] = $userInfo->openid;
         $record = array();
-        if($date == 1){//周
+        if ($date == 1) {//周
             for ($i = 1; $i <= 52; $i++) {
                 $timeStart = mktime(0, 0, 0, date('m'), date('d') - date('w') - 6 - (7 * ($i - 1)), date('Y'));
                 $timeEnd = mktime(23, 59, 59, date('m'), date('d') - date('w') - (7 * ($i - 1)), date('Y'));
-                if($timeStart > '1483056000') {
+                if ($timeStart > '1483056000') {
                     $map['add_time'] = array('between', array($timeStart, $timeEnd));
                     $data['add_time'] = date('Y年W周', $timeStart);
                     $step_nums = D('sport_record')->where($map)->sum('step_nums');
@@ -1101,11 +1136,11 @@ class IndexController extends HomebaseController
                     $record[] = $data;
                 }
             }
-        } elseif($date == 2){
+        } elseif ($date == 2) {
             for ($i = 1; $i <= 25; $i++) {
                 $timeStart = mktime(0, 0, 0, date('m') - ($i - 1), 1, date('Y'));
                 $timeEnd = mktime(23, 59, 59, date('m') - ($i - 1), date('t'), date('Y'));
-                if($timeStart > '1483056000') {
+                if ($timeStart > '1483056000') {
                     $map['add_time'] = array('between', array($timeStart, $timeEnd));
                     $data['add_time'] = date('Y年m月', $timeStart);
                     $step_nums = D('sport_record')->where($map)->sum('step_nums');
@@ -1120,8 +1155,8 @@ class IndexController extends HomebaseController
         } else {
             $map['openid'] = $userInfo->openid;
             $record = D('sport_record')->where($map)->order('add_time DESC')->select();
-            if($type == 1){//卡
-                foreach ($record as $key=>$value){
+            if ($type == 1) {//卡
+                foreach ($record as $key => $value) {
                     $record[$key]['step_ka'] = $this->getKa($value['step_nums']);
                 }
             }
@@ -1142,9 +1177,16 @@ class IndexController extends HomebaseController
         $userInfo = $this->checkLogin();
         $this->checkInvite();
         $map['user_login'] = $userInfo->openid;
-        $groupid = I('groupid', 0 , 'int');
+        $groupid = I('groupid', 0, 'int');
         $group = M('Group')->find($groupid);
-        $users = M('Users')->field('user_nicename,avatar,score,school')->where(array('groupid' => $groupid))->order('score DESC')->select();
+        $users = M('Users')->field('user_nicename,avatar,school,user_login')->where(array('groupid' => $groupid))->order('score DESC')->select();
+        $startYesterday = mktime(0, 0, 0, date('m'), date('d') - 1, date('Y'));
+        $endYesterday = $startYesterday + 3600 * 24;;
+        $mapRec['add_time'] = array('between', array($startYesterday, $endYesterday));
+        foreach ($users as $key => $value) {
+            $mapRec['openid'] = $value['user_login'];
+            $users[$key]['score'] = M('sport_record')->where($mapRec)->getField('step_nums');
+        }
         $this->assign("userInfo", $userInfo);
         $this->assign("data", $users);
         $this->assign("group", $group);
