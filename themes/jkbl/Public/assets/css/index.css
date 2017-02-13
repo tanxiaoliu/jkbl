@@ -4,7 +4,7 @@
   background-color: rgba(240,240,240,0)
 }
 .content {
-    margin: 0.75rem 1rem 0 1rem;
+    margin: 0 1rem;
     height: 100%;
     font-size: 0.55rem;
     background: #b7eafd;
@@ -44,12 +44,14 @@
 }
 .rank1 {
     margin-top: 1.2rem;
+    /*width:13rem;*/
 }
 .rank1 ul{
     float: left;
     height: 2rem;
     border-bottom: 0.02rem solid #ffffff;
-    width:13rem;
+    /*width:13rem;*/
+    width: 100%;
 }
 .rank1 ul li{
     float: left;
@@ -61,20 +63,26 @@
 .rank-num1 {
     padding-left: 0.5rem;
     line-height: 2rem;
-    width: 2.2rem;
+    /*width: 2.2rem;*/
+    width: 16%;
 }
 .rank-my {
     background-color: #2372ad;
     color: #ffffff;
     font-size: 0.45rem;
     font-weight: normal;
-    position:fixed;
-    bottom: 2.6rem;
-    width:13rem;
+    /*position:fixed;*/
+    /*bottom: 2.6rem;*/
+
+    /*margin: 0 1rem 0 1rem;*/
+    /*height: 100%;*/
+    /*width:13rem;*/
+    width: 100%;
 }
 .count1 {
     line-height: 2rem;
-    width: 3.2rem;
+    /*width: 3.2rem;*/
+    width: 24%;
 }
 .txt1{
     padding: 0.4rem 0 0 0.5rem;
