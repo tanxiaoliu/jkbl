@@ -416,9 +416,9 @@ class IndexController extends HomebaseController
             }
             $attenUids = rtrim($attenUids, ',');
             $map['post_author'] = array('IN', $attenUids);
-            $pengyouquan = M('Posts')->field('id,post_content,post_date,post_image,post_author,post_like,comment_count')->where($map)->order('id DESC')->limit(30)->select();
+            $pengyouquan = M('Posts')->field('id,post_content,post_date,post_image,post_author,post_like,comment_count')->where($map)->order('id DESC')->limit(50)->select();
         } else {
-            $pengyouquan = M('Posts')->field('id,post_content,post_date,post_image,post_author,post_like,comment_count')->where($map)->order('id DESC')->limit(30)->select();
+            $pengyouquan = M('Posts')->field('id,post_content,post_date,post_image,post_author,post_like,comment_count')->where($map)->order('id DESC')->limit(50)->select();
         }
         foreach ($pengyouquan as $key => $vl) {
             $users = D('users')->find($vl['post_author']);
@@ -428,6 +428,7 @@ class IndexController extends HomebaseController
             $pengyouquan[$key]['uid'] = $vl['post_author'];
         }
         $this->assign("uid", $user['id']);
+        // $this->assign("uid", 1);
         $this->assign("type", $type);
         $this->assign("postscount", $postscount);
         $this->assign("userscount", $userscount);
@@ -458,7 +459,7 @@ class IndexController extends HomebaseController
             $pengyouquan = M('Posts')->field('id,post_content,post_date,post_image,post_author,post_like')
                 ->where($map)
                 ->order('id DESC')
-                ->limit(30)->select();
+                ->limit(50)->select();
             foreach ($pengyouquan as $key => &$vl) {
                 $pengyouquan[$key]['avatar'] = $users['avatar'];
                 $pengyouquan[$key]['user_nicename'] = $users['user_nicename'];
@@ -483,7 +484,7 @@ class IndexController extends HomebaseController
         }
         if ($type == 3) {
             $where = array("user" => $user['id'], "action" => 'Portal-Article-do_like');
-            $pengyouquan = M("CommonActionLog")->where($where)->limit(30)->select();
+            $pengyouquan = M("CommonActionLog")->where($where)->limit(50)->select();
             foreach ($pengyouquan as $key => &$vl) {
                 $pengyouquan[$key]['last_time'] = date('Y-m-d H:i:s', $pengyouquan[$key]['last_time']);
                 $pengyouquan[$key]['avatar'] = $users['avatar'];
@@ -534,7 +535,7 @@ class IndexController extends HomebaseController
             $pengyouquan = M('Posts')->field('id,post_content,post_date,post_image,post_author,post_like')
                 ->where($map)
                 ->order('id DESC')
-                ->limit(30)->select();
+                ->limit(50)->select();
             foreach ($pengyouquan as $key => &$vl) {
                 $pengyouquan[$key]['avatar'] = $users['avatar'];
                 $pengyouquan[$key]['user_nicename'] = $users['user_nicename'];
@@ -559,7 +560,7 @@ class IndexController extends HomebaseController
         }
         if ($type == 3) {
             $where = array("user" => $uid, "action" => 'Portal-Article-do_like');
-            $pengyouquan = M("CommonActionLog")->where($where)->limit(30)->select();
+            $pengyouquan = M("CommonActionLog")->where($where)->limit(50)->select();
             foreach ($pengyouquan as $key => &$vl) {
                 $pengyouquan[$key]['last_time'] = date('Y-m-d H:i:s', $pengyouquan[$key]['last_time']);
                 $pengyouquan[$key]['avatar'] = $users['avatar'];

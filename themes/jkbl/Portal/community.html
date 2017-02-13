@@ -179,7 +179,7 @@
                                     </p>
                                     <if condition="$vo.post_image neq ''">
                                         <p class="groupbrief feed-two-line tupian">
-                                            <img src="{$vo.post_image}">
+                                            <img class="pengyouquan_img" src="{$vo.avatar}">
                                         </p>
                                     </if>
                                 </div>
@@ -326,6 +326,17 @@
     $(function(){
         $(".publish-btn").click(function(){
             $("#publish-panel").css('display','block');
+        });
+        $(".pengyouquan_img").each(function(){
+            var $this=$(this);
+            $this.click(function(){
+                var width = $this.prop('width');
+                if (width<=150) {
+                    $this.css('width','20rem');
+                }else{
+                    $this.css('width','8rem');
+                }
+            });
         });
         $("#close").click(function(){
             $("#publish-panel").css('display','none');

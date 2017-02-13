@@ -67,10 +67,10 @@
         <a style=" margin-left:3%;;"  href="{:U('Index/community')}">返回</a>
         <if condition="$status eq 1"><a style=" margin-left:1%;;"  href="{:U('Index/attention',array('uid'=>$attenuid))}">取消关注</a><else /><a style=" margin-left:1%;;"  href="{:U('Index/attention',array('uid'=>$attenuid))}">关注他</a></if>
         <!-- <a style=" margin-left:3%;;"  href="javascript:history.back(-1);">返回</a> -->
-        <select id="select_type" style="margin-left: 10rem;color: #428bca;border-radius: 5px;width: 5rem;" >
-            <option <if condition="$type eq 1">selected</if> value="{:U('Index/huati',array('type'=>1,'uid'=>$uid))}">话题</option>
-            <option <if condition="$type eq 2">selected</if> value="{:U('Index/huati',array('type'=>2,'uid'=>$uid))}">评论</option>
-            <option <if condition="$type eq 3">selected</if> value="{:U('Index/huati',array('type'=>3,'uid'=>$uid))}">点赞</option>
+        <select id="select_type" style="margin-left: 10rem;color: #428bca;border-radius: 5px;width: 5rem;" onchange="window.location=this.value;" >
+            <option <if condition="$type eq 1">selected</if> value="{:U('Index/huati',array('type'=>1,'uid'=>$attenuid))}">话题</option>
+            <option <if condition="$type eq 2">selected</if> value="{:U('Index/huati',array('type'=>2,'uid'=>$attenuid))}">评论</option>
+            <option <if condition="$type eq 3">selected</if> value="{:U('Index/huati',array('type'=>3,'uid'=>$attenuid))}">点赞</option>
         </select>
             <!-- react-empty: 4 -->
             <!-- react-empty: 5 -->
@@ -226,10 +226,10 @@
             });
             // $this.parent().next(".comment-area").toggle()  
         });
-        $("#select_type").change(function(){
+        /*$("#select_type").change(function(){
             var url = $(this).val()
             window.location.href = url;
-        });
+        });*/
     });
     
        
