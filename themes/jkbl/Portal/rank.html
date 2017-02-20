@@ -35,7 +35,7 @@
                                 <div style="height: 1rem;line-height: 1rem;">{$vo.nick_name}</div>
                             </if>
                             <if condition="$grouptype eq 1">
-                                <div style="height: 1rem;line-height: 1rem;">{$vo.nick_name}[{$vo.num}]</div>
+                                <div style="height: 1rem;line-height: 1rem;">{$vo.nick_name}[{$vo.num|default=0}步]</div>
                             </if>
                             <div style="height: 1rem;line-height: 1rem;">{$vo.school|default='暂无'|msubstr=0,7,'utf-8'}</div>
                         </li>
@@ -43,7 +43,7 @@
                         <li class="count1">步数:{$vo.num}</li>
                         </if>
                         <if condition="$grouptype eq 1">
-                            <li class="count1">步数:{$vo.avgNum}</li>
+                            <li class="count1">平均:{$vo.avgNum}</li>
                         </if>
                         <eq name="i" value="1">
                             <li class="pai"><img src="__TMPL__Public/assets/images/1.png"></li>

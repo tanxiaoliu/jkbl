@@ -100,7 +100,7 @@ class IndexController extends HomebaseController
     public function checkInvite()
     {
 //        return true;
-//        $this->checkLogin();
+        $this->checkLogin();
         $user = session('user');
         $where = array(
             'userid' => $user['id']
@@ -852,7 +852,7 @@ class IndexController extends HomebaseController
                 S($rankUserCachKey, serialize($user), 60);
             }
         }
-
+        $typeName = '昨天排行';
         if (!empty($_POST) && $type == 4) {//时间段
             $typeName = date('Y-m-d', $startTime) . '~' . date('Y-m-d', $endTime);
         }
@@ -866,7 +866,7 @@ class IndexController extends HomebaseController
         if (empty($data)) {
             $status = 1;
             $this->assign("status", $status);
-            $typeName = $typeName . '无记录';
+            $typeName = $typeName. ' 无记录';
         }
         $this->assign("grouptype", $grouptype);
         $this->assign("data", $data);
