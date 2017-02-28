@@ -4,15 +4,15 @@
     <tc_include file="Public:head" />
     <link rel="stylesheet" href="__TMPL__Public/assets/css/index.css">
 </head>
-<body>
+<body style="overflow: hidden;">
 
 <div>
     <tc_include file="Public:nav1" />
-    <p class="ggz" style="padding-top: 2.3rem;"><img src="__TMPL__Public/assets/images/gg.png"></p>
+    <!--<p class="ggz" style="padding-top: 2.3rem;"><img src="__TMPL__Public/assets/images/gg.png"></p>-->
     <div class="rank-content-nav">
         <ul>
-            <li <if condition="$grouptype eq 0">class="gray_rank"</if>><a style="color:white;" href="{:U('Index/rank')}">个人排名</a></li>
-            <li <if condition="$grouptype eq 1">class="gray_rank"</if>><a style="color:white;" href="{:U('Index/rank', array('grouptype'=>1))}">联盟排名</a></li>
+            <li class="<if condition="$grouptype eq 0">gray_rank</if>"><a href="{:U('Index/rank')}">个人排名</a></li>
+            <li class="<if condition="$grouptype eq 1">gray_rank</if>"><a href="{:U('Index/rank', array('grouptype'=>1))}">联盟排名</a></li>
         </ul>
     </div>
     <br/>
@@ -23,9 +23,9 @@
                     <ul>
                         <li class="rank-num1">NO.{$i}</li>
                         <li style="text-align: center; width: 13%;"><span class="rank_head1" style="background-image: url('{$vo.avatar|default='__TMPL__Public/assets/images/0.png'}');"></span></li>
-                        <li style="width: 38%; padding-left: 0.3rem;">
-                            <div style="height: 1rem;line-height: 1rem;">{$vo.user_nicename}</div>
-                            <div style="height: 1rem;line-height: 1rem;">{$vo.school|default='暂无'}</div>
+                        <li class="ming">
+                            <div class="ming-n">{$vo.user_nicename}</div>
+                            <div class="ming-s">{$vo.school|default='暂无'}</div>
                         </li>
                         <li class="count1">步数:{$vo.score|default=0}</li>
                         <eq name="i" value="1">
@@ -39,7 +39,7 @@
                         </eq>
                     </ul>
                 </volist>
-                <p style="color: #01374c; font-size: 0.8rem; text-align: center; line-height: 3rem;">{$group['name']}成员</p>
+                <p style="color: #323232; font-size: 0.8rem; text-align: center; line-height: 3rem;">{$group['name']}成员</p>
             </div>
         </div>
     </div>

@@ -4,7 +4,7 @@
     <tc_include file="Public:head" />
     <link rel="stylesheet" href="__TMPL__Public/assets/css/index.css">
 </head>
-<body>
+<body style="overflow: hidden;">
 
 <div>
     <tc_include file="Public:nav" />
@@ -27,9 +27,9 @@
                     <ul>
                         <li class="rank-num1">NO.{$i}</li>
                         <li style="text-align: center; width: 13%;"><span class="rank_head1" style="background-image: url('{$vo.avatar|default='__TMPL__Public/assets/images/0.png'}');"></span></li>
-                        <li style="width: 38%; padding-left: 0.3rem;">
-                            <div style="height: 1rem;line-height: 1rem;">{$vo.nick_name}</div>
-                            <div style="height: 1rem;line-height: 1rem;">{$vo.school|default='暂无'}</div>
+                        <li class="ming">
+                            <div class="ming-n">{$vo.nick_name}</div>
+                            <div class="ming-s">{$vo.school|default='暂无'}</div>
                         </li>
                         <if condition="$type ==0 ">
                             <li class="count1">连续天数:{$vo.num}</li>
@@ -51,7 +51,7 @@
             <ul class="rank-my">
                 <li class="rank-num1">NO.{$user['rank']|default='无'}</li>
                 <li style="text-align: center; width: 13%;"><span class="rank_head1" style="background-image: url('{$user.avatar|default='__TMPL__Public/assets/images/0.png'}');"></span></li>
-                <li style="width: 38%; padding-left: 0.3rem;line-height: 2rem;">
+                <li class="ming" style="line-height: 2rem; font-size: 0.3rem;">
                     <if condition="$grouptype eq 0">当前自己排名<else/>当前联盟排名</if>
                 </li>
                 <li class="count1">步数：{$user['num']|default='0'}</li>

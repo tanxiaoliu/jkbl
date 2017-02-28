@@ -1,108 +1,109 @@
 ::-webkit-scrollbar {
-  width: 0;
-  height: 0;
-  background-color: rgba(240,240,240,0)
+    width: 0;
+    height: 0;
+    background-color: hsla(0,0%,94%,0)
 }
+
 .content {
     margin: 0 1rem;
     height: 100%;
-    font-size: 0.55rem;
-    background: #b7eafd;
-    color: #666;
-    font-weight: bold;
+    background: #fff;
+    color: #646464
 }
-.head {
-    display:block;
-    width:1.5rem;
-    height:1.5rem;
-    border-radius:50%;
-    border: 0.1rem solid #e6de40;
-    background-image: url('./../images/timg.jpg');
-    background-size: 1.5rem 1.5rem;
-    position: relative;
-    bottom: 0.5rem;
-    left: 0.8rem;
-}
-.rank_head {
-    display:block;
-    width:1.5rem;
-    height:1.5rem;
-    border-radius:50%;
-    border: 0.1rem solid #e6de40;
-    background-size: 1.5rem 1.5rem;
-    margin-left: 1.4rem;
-}
-.rank_head1 {
-    display:block;
-    width:1.5rem;
-    height:1.5rem;
-    line-height: 2rem;
-    border-radius:50%;
-    margin-top: 0.25rem;
-    border: 0.1rem solid #e6de40;
-    background-size: 1.5rem 1.5rem;
-}
-.rank1 {
-    margin-top: 1.2rem;
-    /*width:13rem;*/
-}
-.rank1 ul{
-    float: left;
-    height: 2rem;
-    border-bottom: 0.02rem solid #ffffff;
-    /*width:13rem;*/
-    width: 100%;
-}
-.rank1 ul li{
-    float: left;
-    text-align: left;
-}
-.rank1 ul li img{
-    line-height: 2rem;
-}
-.rank-num1 {
-    padding-left: 0.5rem;
-    line-height: 2rem;
-    /*width: 2.2rem;*/
-    width: 16%;
-}
-.rank-my {
-    background-color: #2372ad;
-    color: #ffffff;
-    font-size: 0.45rem;
-    font-weight: normal;
-    /*position:fixed;*/
-    /*bottom: 2.6rem;*/
 
-    /*margin: 0 1rem 0 1rem;*/
-    /*height: 100%;*/
-    /*width:13rem;*/
+.head {
+    position: relative;
+    bottom: .5rem;
+    left: .8rem;
+    background-image: url(../images/timg.jpg)
+}
+
+.head,.rank_head {
+    display: block;
+    width: 1.5rem;
+    height: 1.5rem;
+    border: .1rem solid #e6de40;
+    border-radius: 50%;
+    background-size: 1.5rem 1.5rem
+}
+
+.rank_head {
+    margin-left: 1.4rem
+}
+
+.rank_head1 {
+    display: block;
+    margin-top: .25rem;
+    width: 1.5rem;
+    height: 1.5rem;
+    border: .05rem solid #323232;
+    border-radius: 50%;
+    background-size: 1.5rem 1.5rem;
+    line-height: 2rem
+}
+
+.rank1 {
+    margin-top: 1.2rem
+}
+
+.rank1 ul {
+    float: left;
     width: 100%;
+    height: 2rem;
+    border-bottom: .02rem solid #fff
 }
+
+.rank1 ul li {
+    float: left;
+    text-align: left
+}
+
+.rank1 ul li img,.rank-num1 {
+    line-height: 2rem
+}
+
+.rank-num1 {
+    padding-left: .5rem;
+    width: 16%;
+    font-size: .3rem
+}
+
+.rank-my {
+    width: 100%;
+    background-color: #2e92bf;
+    color: #fff;
+    font-weight: 400;
+    font-size: .45rem
+}
+
 .count1 {
-    line-height: 2rem;
-    /*width: 3.2rem;*/
-    width: 24%;
+    width: 27%;
+    font-size: .3rem;
+    line-height: 2rem
 }
-.txt1{
-    padding: 0.4rem 0 0 0.5rem;
-    color: #39bbd8;
-    font-weight: bold;
-    text-align:center; 
+
+.txt1 {
+    padding: .4rem 0 0 .5rem;
+    color: #909090;
+    text-align: center;
+    font-weight: 700
 }
+
 .pai {
-    line-height: 2rem;
     z-index: 3;
     height: 2rem;
+    line-height: 2rem
 }
-.pai img{
+
+.pai img {
+    width: .85rem;
+    height: 1.3rem
+}
+
+.img1 {
+    display: block;
     width: 1rem;
-    height: 1.3rem;
-}
-.img1{
-    display:block;
-    width:1rem;
-    height:1rem;
-    border-radius:50%;
-    border: 0.1rem solid #e6de40;
+    height: 1rem;
+    border: .1rem solid #e6de40;
+    border-radius: 50%
 }

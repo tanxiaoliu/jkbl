@@ -1,32 +1,31 @@
 .personal {
-    margin-top:2.1rem;
+    margin-top:2.3rem;
     height: 4.5rem;
 }
 .name {
-    height: 4.5rem;
     width: 4rem;
     float: left;
-    padding: 1rem 0 0 1rem;
+    padding: 0.8rem 0 0 1rem;
     text-align: center;
-    color: #18abe1;
+    color: #646464;
+    font-size: 0.6rem;
 }
 .img1{
     display:block;
-    width:2rem;
-    height:2rem;
+    width:1.8rem;
+    height:1.8rem;
     border-radius:50%;
     margin-left: 0.9em;
-    border: 0.1rem solid #18abe1;
 }
 .bi {
     width: 46%;
     float: left;
-    font-size: 0.60rem;
+    font-size: 0.6rem;
     color: #18abe1;
 }
 .bi li{
     line-height: 0.1rem;
-    padding: 1.2rem 0 0 0.3rem;
+    margin: 1.5rem 0 0 0.3rem;
 }
 .btn {
     float: left;

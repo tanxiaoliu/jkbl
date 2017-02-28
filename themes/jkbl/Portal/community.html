@@ -23,29 +23,27 @@
             width: 8rem;
         }
         .bottom {
-            width: 100%;
-            line-height: 3.15rem;
-            height: 4.1rem;
-            font-size: 1rem;
-            text-align: center;
-            background: #5bd9ef;
-            bottom: 0;
             position: fixed;
+            bottom: 0;
+            width: 100%;
+            background: #dfe0e6;
+            text-align: center;
+            font-size: 1rem;;
+            line-height: 3.15rem;
+            height: 3.15rem;
             font-weight: bold;
         }
-        .bottom ul li{
-            width: 30%;
-            float: left;
-            margin: 0.5rem 0 0 0.6rem;
-            -moz-border-radius: 0.4rem;
-            -webkit-border-radius: 0.4rem;
-            border-radius:0.4rem;
-            background:#FFFFFF;
-            color: #17acdf;
+        .bottom a{
+            color: #323232;
         }
-        .bottom .blue,.blue:hover{
-            background:#17acdf;
-            color: #FFFFFF;
+        .bottom ul li {
+            float: left;
+            width: 33%;
+        }
+
+        .bottom .blue:hover,.bottom .blue {
+            background: #00a0e9;
+            color: #fff;
         }
         a{color:#428bca;}
 
@@ -65,8 +63,7 @@
     <div data-reactroot="">
         <div class="Header">
             <div class="NormalHeader">
-                <div class="header-cover-img" style="background-color: #39bbd8;
-                ">
+                <div class="header-cover-img" style="background-color: #57c2f3;">
                 </div>
                 <div class="header-wrap">
                     <div class="cover mask-gray">
@@ -85,11 +82,11 @@
                         </div> -->
                         <div class="name-info">
                             <div class="labels">
-                                        <span class="name" style="font-size: 1.2rem;font-weight: bold;">
+                                        <span class="name" style="font-size: 1.2rem;font-weight: bold;margin-left: 1rem;">
                                             健康部落
                                         </span>
                             </div>
-                            <div class="info-num" style="font-size: 0.9rem;line-height: 1.5rem;">
+                            <div class="info-num" style="font-size: 0.8rem;line-height: 1.5rem;margin-left: 1rem;">
                                         <span>
                                             <label>
                                                 话题
@@ -117,18 +114,18 @@
                                         <!--<span class="info-name">-->
                                         <!--</span>-->
                                         <!--</div>-->
-                                        <span style="font-size: 0.9rem;line-height: 1;color: #fff;">
+                                        <span style="font-size: 0.8rem;line-height: 1;color: #fff;margin-left: 1rem;">
                                             <!--<span class="l-inner-bar" style="width: 83.3333%;">-->
                                                 乐享健康生活，有你有我
                                             <!--</span>-->
                                         </span>
                                     </span>
                         </div>
-                        <a style="position: absolute;right: 2rem;top: 0.3rem;color:white;font-weight: bold; " href="{:U('Index/myhuati')}">我的话题</a>
+                        <a style="position: absolute;right: 1.5rem;top: 0.3rem;color:white;background: #7ba5dc;font-size: 0.8rem;padding: 0.4rem 0.7rem;border-radius: 0.2rem;" href="{:U('Index/myhuati')}">我的话题</a>
                         <if condition="$type eq 1">
-                        <a style="position: absolute;right: 2rem;top: 2.3rem;color:white;font-weight: bold; " href="{:U('Index/community',array('type'=>0))}">全部话题</a>
+                        <a style="position: absolute;right: 1.5rem;top: 2.6rem;color:white;background: #7ba5dc;font-size: 0.8rem;padding: 0.4rem 0.7rem;border-radius: 0.2rem;" href="{:U('Index/community',array('type'=>0))}">全部话题</a>
                         <else />
-                        <a style="position: absolute;right: 2rem;top: 2.3rem;color:white;font-weight: bold; " href="{:U('Index/community',array('type'=>1))}">我的关注</a>
+                        <a style="position: absolute;right: 1.5rem;top: 2.6rem;color:white;background: #f8b551;font-size: 0.8rem;padding: 0.4rem 0.7rem;border-radius: 0.2rem;" href="{:U('Index/community',array('type'=>1))}">我的关注</a>
                         </if>
                     </div>
                 </div>
@@ -139,14 +136,15 @@
                 <div class="new-tab-list">
                     <div>
                         <foreach name="posts" item="vo">
-                            <label><a href="{:U('Article/index',array('id'=>$vo['id'],'cid'=>1))}" style="border-bottom: 1px solid #e5e5e5;padding-left:1rem;text-align:left;font-size: 0.9rem;color: #39bbd8;">【{$vo.post_title}】<if condition="$vo['istop'] eq 1"><span style="color:red;">置顶</span></if></a></label>
+                            <label><a href="{:U('Article/index',array('id'=>$vo['id'],'cid'=>1))}" style="border-bottom: 1px solid #e5e5e5;padding-left:1rem;text-align:left;font-size: 0.9rem;color: #323232;">
+                                <if condition="$vo['istop'] eq 1"><span style="color:#bb0505;">[置顶]</span> <span style="color:#7ba5dc;">[ {$vo.post_title} ]</span><else />[ {$vo.post_title} ]</if></a></label>
                         </foreach>
                     </div>
                 </div>
             </div>
             <!-- react-empty: 4 -->
             <!-- react-empty: 5 -->
-            <div class="PostList" style="margin-bottom:4rem;">
+            <div class="PostList" style="margin-bottom:4rem;margin-top: 0.5rem;">
                 <ul class="scroll-view post-list">
                     <foreach name="pengyouquan" item="vo">
                     <if condition="!empty($vo['user_nicename'])">
@@ -159,7 +157,7 @@
                                         </div>
                                             <span class="item-user-text">
                                                 <span class="item-user-name">
-                                                   <neq name="vo.school" value="">【{$vo.school}】</neq><a href="{:U('Index/huati',array('type'=>1,'uid'=>$vo['uid']))}" >{$vo.user_nicename}</a>
+                                                   <neq name="vo.school" value="">【{$vo.school}】 </neq><a href="{:U('Index/huati',array('type'=>1,'uid'=>$vo['uid']))}" > {$vo.user_nicename}</a>
                                                 </span>
                                                 <!-- react-empty: 52 -->
                                                 <!--<span class="honour admin" data-lcontent="首席酋长">-->

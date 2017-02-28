@@ -4,14 +4,14 @@
     <tc_include file="Public:head" />
     <link rel="stylesheet" href="__TMPL__Public/assets/css/index.css">
 </head>
-<body>
+<body style="overflow: hidden;">
 
 <div>
     <tc_include file="Public:nav1" />
     <div class="rank-content-nav">
         <ul>
-            <li <if condition="$grouptype eq 0">class="gray_rank"</if>><a style="color:white;" href="{:U('Index/rank')}">个人排名</a></li>
-            <li <if condition="$grouptype eq 1">class="gray_rank"</if>><a style="color:white;" href="{:U('Index/rank', array('grouptype'=>1))}">联盟排名</a></li>
+            <li class="<if condition="$grouptype eq 0">gray_rank</if>"><a href="{:U('Index/rank')}">个人排名</a></li>
+            <li class="<if condition="$grouptype eq 1">gray_rank</if>"><a href="{:U('Index/rank', array('grouptype'=>1))}">联盟排名</a></li>
         </ul>
     </div>
     <br/>
@@ -24,19 +24,19 @@
             <p class="type-title" style="top: -0.3rem;">{$type}</p>
         </if>
             <div class="rank1" style="margin-top: 0.5rem;">
-            <div style="width:100%; height:13.1rem;  overflow-x: hidden; overflow-y: auto; font-size: 0.45rem;">
+            <div style="width:100%; height:12.2rem;  overflow-x: hidden; overflow-y: auto; font-size: 0.45rem;">
                 <volist name="data" id="vo" offset="0" length='500'>
                     <ul>
                         <li class="rank-num1">NO.{$i}</li>
                         <li style="text-align: center; width: 13%;"><a href="{:U('rankdetail', array('groupid'=>$vo['id']))}"><span class="rank_head1" style="background-image: url('{$vo.avatar|default='__TMPL__Public/assets/images/0.png'}');"></span></a></li>
-                        <li style="width: 38%; padding-left: 0.3rem;">
+                        <li class="ming">
                             <if condition="$grouptype eq 0">
-                                <div style="height: 1rem;line-height: 1rem;">{$vo.nick_name}</div>
+                                <div class="ming-n">{$vo.nick_name}</div>
                             </if>
                             <if condition="$grouptype eq 1">
                                 <div style="height: 1rem;line-height: 1rem;">{$vo.nick_name}[{$vo.num|default=0}步]</div>
                             </if>
-                            <div style="height: 1rem;line-height: 1rem;">{$vo.school|default='暂无'}</div>
+                            <div class="ming-s">{$vo.school|default='暂无'}</div>
                         </li>
                         <if condition="$grouptype eq 0">
                         <li class="count1">步数:{$vo.num}</li>
@@ -59,7 +59,7 @@
             <ul class="rank-my">
                 <li class="rank-num1">NO.{$user['rank']|default='无'}</li>
                 <li style="text-align: center; width: 13%;"><span class="rank_head1" style="background-image: url('{$user.avatar|default='__TMPL__Public/assets/images/0.png'}');"></span></li>
-                <li style="width: 38%; padding-left: 0.3rem;line-height: 2rem;">
+                <li class="ming" style="line-height: 2rem; font-size: 0.3rem;">
                     <if condition="$grouptype eq 0">当前自己排名<else/>当前联盟排名</if>
                 </li>
                 <li class="count1">步数：{$user['num']|default='0'}</li>
