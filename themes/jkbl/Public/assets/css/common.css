@@ -210,7 +210,7 @@ body,html {
 .p-name {
     position: relative;
     bottom: 1.1rem;
-    left: 10.1rem;
+    left: 10.8rem;
     color: #646464;
     text-align: center;
     width: 4rem;
@@ -325,11 +325,11 @@ body,html {
 
 .detail-btn {
     z-index: 3;
-    padding: .1rem .3rem;
+    padding: .15rem .35rem;
     border-radius: .2rem;
     background: #18abe1;
     color: #fff;
-    font-size: .4rem;
+    font-size: .5rem;
 }
 
 .ming {
