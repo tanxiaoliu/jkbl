@@ -169,7 +169,6 @@ body,html {
 .m-type {
     bottom: 2.8rem;
     text-align: center;
-    font-size: .7rem;
 }
 
 .hg,.m-type {
@@ -211,8 +210,10 @@ body,html {
 .p-name {
     position: relative;
     bottom: 1.1rem;
-    left: 11.9rem;
+    left: 10.1rem;
     color: #646464;
+    text-align: center;
+    width: 4rem;
 }
 
 .detail-btn1 {
@@ -308,7 +309,7 @@ body,html {
 }
 
 .p-bu-p {
-    font-size: .3rem;
+    font-size: .4rem;
 }
 
 .p-jl {
@@ -328,7 +329,7 @@ body,html {
     border-radius: .2rem;
     background: #18abe1;
     color: #fff;
-    font-size: .3rem;
+    font-size: .4rem;
 }
 
 .ming {
@@ -346,5 +347,5 @@ body,html {
 }
 
 .ming-s {
-    font-size: .3rem;
+    font-size: .4rem;
 }
