@@ -43,10 +43,11 @@
     border-radius:0.2rem;
 }
 .health-title{
-    margin: 0 1rem;
+    margin: 0 0.5rem;
     height: 1.3rem;
     line-height: 1.3rem;
-    background: #18abe1;
+    background: #00a0e9;
+    color: #ffffff;
     -moz-border-radius: 2rem;
     -webkit-border-radius: 2rem;
     border-radius:2rem;
@@ -55,23 +56,25 @@
     margin-left: 0.3rem;
 }
 .health-shop {
-    margin: 0.25rem 1rem;
+    margin: 0.25rem 0.5rem;
 }
 .health-shop ul{
     overflow:hidden
 }
 .health-shop ul li{
-    height:7rem;
+    height:8.5rem;
     text-align: center;
     padding:0.35rem;
-    width: 6rem;
+    width: 6.5rem;
     float: left;
     margin: 0.25rem;
     background-color: #FFFFFF;
+    border-radius:0.2rem;
+    border: 0.05rem solid #cbccd1;
 }
 .health-shop ul li img{
-    width: 5rem;
-    height: 4.3rem;
+    width: 5.5rem;
+    height: 5.5rem;
 }
 .health-shop ul li span{
     line-height: 1rem;
@@ -85,38 +88,42 @@
     margin-bottom: 2.3rem;
 }
 .commonweal-title{
-    margin: 0 1rem;
+    margin: 0 0.5rem;
     height: 1.3rem;
     line-height: 1.3rem;
-    background: #81c269;
+    background: #81c268;
+    color: #ffffff;
     -moz-border-radius: 2rem;
     -webkit-border-radius: 2rem;
     border-radius:2rem;
 }
-.commonweal-title ul li{
+.commonweal-title-li{
     margin-left: 0.3rem;
 }
 .commonweal-shop {
-    margin: 0.25rem 1rem;
+    margin: 0.25rem 0.5rem;
 }
 .commonweal-shop ul{
     overflow:hidden
 }
 .commonweal-shop ul li{
+    height:8.5rem;
     text-align: center;
     padding:0.35rem;
-    width: 6rem;
+    width: 6.5rem;
     float: left;
     margin: 0.25rem;
     background-color: #FFFFFF;
+    border-radius:0.2rem;
+    border: 0.05rem solid #cbccd1;
 }
 .commonweal-shop ul li img{
-    width: 5rem;
-    height: 4.3rem;
+    width: 5.5rem;
+    height: 5.5rem;
 }
 .commonweal-shop ul li span{
     line-height: 1rem;
-    color: #3CC3F5;
+    color: #18abe1;
 }
 .briefing{
     color: #3CC3F5;

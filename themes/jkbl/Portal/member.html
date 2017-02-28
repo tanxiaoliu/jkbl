@@ -7,15 +7,15 @@
 
 <div>
     <tc_include file="Public:nav1" />
+    <div class="m-title"></div>
     <div class="m-content">
-        <p class="ggz"><img src="__TMPL__Public/assets/images/gg.png"></p>
+        <!--<p class="ggz"><img src="__TMPL__Public/assets/images/gg.png"></p>-->
         <div class="m-content-nav">
-            <div class="m-title"><img src="__TMPL__Public/assets/images/caidai.png"></div>
-            <div class="m-count">成员总计：{$sum} 步<a class="detail-btn flatbtn modaltrigger" href="#loginmodal"  style="position: relative;left: 2rem;bottom: 0.2rem;">详情</a></div>
+            <div class="m-count">成员总计：<span style="font-size: 0.7rem;">{$sum}</span> 步<a class="detail-btn flatbtn modaltrigger" href="#loginmodal"  style="position: relative;left: 2rem;bottom: 0.2rem;">详情</a></div>
         </div>
         <input id="data" type="hidden" value="{$data}">
         <input id="status" type="hidden" value="{$status}">
-        <div id="main" style="height:12rem; margin-top: -2.5rem;"></div>
+        <div id="main" style="height:250px; margin-top: -1.2rem;"></div>
         <div class="m-type" style="margin-top: 4rem;">{$type}</div>
     </div>
     <tc_include file="Public:footer" />

@@ -44,10 +44,10 @@
                 <ul>      
                     <foreach name="selfgood" item="vo">
                         <li>
-                            <span>{$vo.name}</span>
                             <img src="/data/upload/{$vo.url}">
                             <input type="hidden" value="{$vo.id}">
-                            <span>￥{$vo.price}腾币 <a href="#loginmodal" class="flatbtn modaltrigger"> 兑换</a></span>
+                            <span style="font-size: 0.6rem; color: #323232;">{$vo.name}</span>
+                            <span>￥{$vo.price}腾币 <a href="#loginmodal" class="flatbtn modaltrigger" style="color: #81c268;"> 兑换</a></span>
                         </li>
                     </foreach> 
                 </ul>
