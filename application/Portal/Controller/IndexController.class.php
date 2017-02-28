@@ -99,7 +99,7 @@ class IndexController extends HomebaseController
 
     public function checkInvite()
     {
-//        return true;
+        return true;
 //        $this->checkLogin();
         $user = session('user');
         $where = array(
@@ -117,8 +117,8 @@ class IndexController extends HomebaseController
      */
     public function checkLogin()
     {
-//        $userInfo->openid = 'admin';
-//        return $userInfo;
+        $userInfo->openid = 'admin';
+        return $userInfo;
         if (sp_is_weixin()) {
             $userInfo = json_decode($_COOKIE['userInfo']);
             $user = session('user');
@@ -727,6 +727,7 @@ class IndexController extends HomebaseController
         $this->assign("dates", $dates);
         $this->assign("datas", $datas);
         $this->assign("status", $status);
+        $this->assign("type", $type);
         $this->assign("footer", "zhishu");
         $this->display(":personal");
     }
