@@ -99,7 +99,7 @@ class IndexController extends HomebaseController
 
     public function checkInvite()
     {
-//        return true;
+        return true;
 //        $this->checkLogin();
         $user = session('user');
         $where = array(
@@ -117,8 +117,8 @@ class IndexController extends HomebaseController
      */
     public function checkLogin()
     {
-//        $userInfo->openid = 'admin';
-//        return $userInfo;
+        $userInfo->openid = 'admin';
+        return $userInfo;
         if (sp_is_weixin()) {
             $userInfo = json_decode($_COOKIE['userInfo']);
             $user = session('user');
@@ -361,7 +361,7 @@ class IndexController extends HomebaseController
         }
         $this->assign("userInfo", $userInfo);
         $this->assign("status", $status);
-        $this->assign("sum", $sum);
+        $this->assign("sum", number_format($sum));
         $this->assign("data", $data);
         $this->assign("type", $typeName);
         $this->assign("footer", "zhishu");
@@ -717,7 +717,7 @@ class IndexController extends HomebaseController
         $nowNum1 = $nowNum1 ? $nowNum1 / 7 : 0;
         $nowNum2 = $nowNum2 ? $nowNum2 / 7 : 0;
         $this->assign("userInfo", $userInfo);
-        $this->assign("num", $num);
+        $this->assign("num", number_format($num));
         $this->assign("nowNum", sprintf("%.2f", $nowNum));
         $this->assign("nowKa", $this->getKa($nowNum));
         $this->assign("nowNum1", sprintf("%.2f", $nowNum1));
@@ -798,8 +798,7 @@ class IndexController extends HomebaseController
                 $startTime = strtotime(I('startTime'));
                 $endTime = strtotime(I('endTime'));
                 $map['add_time'] = array('between', array($startTime, $endTime));
-            }
-            if ($type == 1) {//昨天
+            } elseif ($type == 1) {//昨天
                 $startYesterday = mktime(0, 0, 0, date('m'), date('d') - 2, date('Y'));
                 $endYesterday = $startYesterday + 3600 * 24;
                 $map['add_time'] = array('between', array($startYesterday, $endYesterday));
@@ -859,13 +858,12 @@ class IndexController extends HomebaseController
 
         if (!empty($_POST) && $type == 4) {//时间段
             $typeName = date('Y-m-d', $startTime) . '~' . date('Y-m-d', $endTime);
-        }
-        if ($type == 1) {//昨天
-            $typeName = '昨天排行';
         } elseif ($type == 2) {//上周
             $typeName = '上周排行';
         } elseif ($type == 3) {//上月
             $typeName = '上月排行';
+        } else {
+            $typeName = '昨天排行';
         }
         if (empty($data)) {
             $status = 1;
@@ -923,8 +921,8 @@ class IndexController extends HomebaseController
         $score = current(M('Users')->where($map)->getField('user_login,score,coin', 1));
         $selfgood = M("Good")->where(array('type' => 1))->order('add_time desc')->select();
         $othergood = M("Good")->where(array('type' => 2))->order('add_time desc')->select();
-        $this->assign("nowscore", $score['score'] - $score['coin']);
-        $this->assign("allscore", $score['score']);
+        $this->assign("nowscore", number_format($score['score'] - $score['coin']));
+        $this->assign("allscore", number_format($score['score']));
         $this->assign("selfgood", $selfgood);
         $this->assign("selfgood", $selfgood);
         $this->assign("othergood", $othergood);
@@ -1183,8 +1181,16 @@ class IndexController extends HomebaseController
         $groupid = I('groupid', 0, 'int');
         $group = M('Group')->find($groupid);
         $users = M('Users')->field('user_nicename,avatar,school,user_login')->where(array('groupid' => $groupid))->order('score DESC')->select();
-        $startYesterday = mktime(0, 0, 0, date('m'), date('d') - 1, date('Y'));
-        $endYesterday = $startYesterday + 3600 * 24;;
+
+        $startYesterday = I('startTime');
+        $endYesterday = I('endTime');
+        if(empty($startYesterday) || empty($endYesterday)) {
+            $startYesterday = mktime(0, 0, 0, date('m'), date('d') - 1, date('Y'));
+            $endYesterday = $startYesterday + 3600 * 24;
+        } else {
+            $startYesterday = strtotime($startYesterday);
+            $endYesterday = strtotime($endYesterday);
+        }
         $mapRec['add_time'] = array('between', array($startYesterday, $endYesterday));
         foreach ($users as $key => $value) {
             $mapRec['openid'] = $value['user_login'];

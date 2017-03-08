@@ -7,8 +7,10 @@
 .content {
     margin: 0 1rem;
     height: 100%;
-    background: #fff;
-    color: #646464
+    /*background: #fff;*/
+    color: #646464;
+    border-radius: .2rem .2rem 0 0;
+    background: #c4ebe6;
 }
 
 .head {
@@ -65,7 +67,7 @@
 .rank-num1 {
     padding-left: .5rem;
     width: 16%;
-    font-size: .4rem
+    font-size: .5rem
 }
 
 .rank-my {
@@ -78,7 +80,7 @@
 
 .count1 {
     width: 27%;
-    font-size: .4rem;
+    font-size: .5rem;
     line-height: 2rem
 }
 

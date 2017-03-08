@@ -28,13 +28,13 @@
                 <volist name="data" id="vo" offset="0" length='500'>
                     <ul>
                         <li class="rank-num1">NO.{$i}</li>
-                        <li style="text-align: center; width: 13%;"><a href="{:U('rankdetail', array('groupid'=>$vo['id']))}"><span class="rank_head1" style="background-image: url('{$vo.avatar|default='__TMPL__Public/assets/images/0.png'}');"></span></a></li>
+                        <li style="text-align: center; width: 13%;"><a href="{:U('rankdetail', array('groupid'=>$vo['id'], 'startTime'=>I('startTime'), 'endTime'=>I('endTime')))}"><span class="rank_head1" style="background-image: url('{$vo.avatar|default='__TMPL__Public/assets/images/0.png'}');"></span></a></li>
                         <li class="ming">
                             <if condition="$grouptype eq 0">
                                 <div class="ming-n">{$vo.nick_name}</div>
                             </if>
                             <if condition="$grouptype eq 1">
-                                <div style="height: 1rem;line-height: 1rem;">{$vo.nick_name}[{$vo.num|default=0}步]</div>
+                                <div class="ming-s" style="height: 1rem;line-height: 1rem;">{$vo.nick_name}[{$vo.num|default=0}步]</div>
                             </if>
                             <div class="ming-s">{$vo.school|default='暂无'}</div>
                         </li>
@@ -75,8 +75,8 @@
             <input type="hidden" name="type" id="type" value="4">
             <input type="hidden" name="grouptype" id="grouptype" value="{$grouptype}">
             <div class="center" style="color: #18abe1;">选择时间段</div>
-            <div class="center" style="margin: 0.5rem 0;padding-right: 2rem;width: 13rem;"><span style="color: #18abe1;">结束时间：</span><span><input type="date" name="startTime" id="startTime" style="height: 1rem;"></span></div>
-            <div class="center" style="margin: 0.5rem 0;padding-right: 2rem;width: 13rem;"><span style="color: #18abe1;">开始时间：</span><span><input type="date" name="endTime" id="endTime" style="height: 1rem;"></span></div>
+            <div class="center" style="margin: 0.5rem 0;padding-right: 2rem;width: 13rem;"><span style="color: #18abe1;">开始时间：</span><span><input type="date" name="startTime" id="startTime" style="height: 1rem;"></span></div>
+            <div class="center" style="margin: 0.5rem 0;padding-right: 2rem;width: 13rem;"><span style="color: #18abe1;">结束时间：</span><span><input type="date" name="endTime" id="endTime" style="height: 1rem;"></span></div>
             <div class="center" style="margin: 0.5rem 0;"><input type="submit" class="flatbtn-blu hidemodal" value="搜索">
                 &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<input type="button" class="flatbtn-blu close" value="取消"/></div>
         </form>
@@ -110,7 +110,7 @@
             return false;
         }
         if(form.startTime.value > form.endTime.value){
-            alert("开始时间不能结束时间!");
+            alert("开始时间不能早于结束时间!");
             form.endTime.focus();
             return false;
         }
