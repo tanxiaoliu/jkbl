@@ -34,24 +34,24 @@
             点击可看记录
         </span>
             <ul>
-                <li>
-                    <a href="{:U('personallist', array('type'=>'0', 'date'=>'0'))}">
+                <a href="{:U('personallist', array('type'=>'0', 'date'=>'1'))}">
+                <li style="background: #00a0e9;">
                     <p class="p-bu-p">日步数</p>
                     {$nowNum} 步
-                    </a>
                 </li>
+                </a>
+                <a href="{:U('personallist', array('type'=>'0', 'date'=>'1'))}">
                 <li>
-                    <a href="{:U('personallist', array('type'=>'0', 'date'=>'1'))}">
                     <p class="p-bu-p">周平均</p>
                     {$nowNum1} 步
-                    </a>
                 </li>
+                </a>
+                <a href="{:U('personallist', array('type'=>'0', 'date'=>'2'))}">
                 <li>
-                    <a href="{:U('personallist', array('type'=>'0', 'date'=>'2'))}">
                     <p class="p-bu-p">月平均</p>
                     {$nowNum2} 步
-                    </a>
                 </li>
+                </a>
             </ul>
             <ul>
                 <li>

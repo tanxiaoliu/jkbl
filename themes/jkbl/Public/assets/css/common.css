@@ -307,7 +307,9 @@ body,html {
     text-align: center;
     line-height: .8rem;
 }
-
+.p-bu a :hover{
+    background: #00a0e9;
+}
 .p-bu-p {
     font-size: .4rem;
 }
