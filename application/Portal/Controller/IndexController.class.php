@@ -117,7 +117,7 @@ class IndexController extends HomebaseController
      */
     public function checkLogin()
     {
-        $userInfo->openid = 'admin';
+        $userInfo->openid = 'oexX2s8gsy5m30xRtXOel97_UBfE';
         return $userInfo;
         if (sp_is_weixin()) {
             $userInfo = json_decode($_COOKIE['userInfo']);

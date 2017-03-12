@@ -47,7 +47,12 @@
         }
         a{color:#428bca;}
 
-        .btn{display:inline-block;*display:inline;padding:4px 12px;margin-bottom:0;*margin-left:.3em;font-size:14px;line-height:20px;color:#999;text-align:center;text-shadow:0 1px 1px rgba(255,255,255,0.75);vertical-align:middle;cursor:pointer;background-color:#e1e1e1;*background-color:#cacaca;background-image:-moz-linear-gradient(top,#f0f0f0,#cacaca);background-image:-webkit-gradient(linear,0 0,0 100%,from(#f0f0f0),to(#cacaca));background-image:-webkit-linear-gradient(top,#f0f0f0,#cacaca);background-image:-o-linear-gradient(top,#f0f0f0,#cacaca);background-image:linear-gradient(to bottom,#f0f0f0,#cacaca);background-repeat:repeat-x;border:1px solid #bbb;*border:0;border-color:#cacaca #cacaca #a3a3a3;border-color:rgba(0,0,0,0.1) rgba(0,0,0,0.1) rgba(0,0,0,0.25);border-bottom-color:#a2a2a2;-webkit-border-radius:0;-moz-border-radius:0;border-radius:0;filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#fff0f0f0',endColorstr='#ffcacaca',GradientType=0);filter:progid:DXImageTransform.Microsoft.gradient(enabled=false);*zoom:1;-webkit-box-shadow:inset 0 1px 0 rgba(255,255,255,0.2),0 1px 2px rgba(0,0,0,0.05);-moz-box-shadow:inset 0 1px 0 rgba(255,255,255,0.2),0 1px 2px rgba(0,0,0,0.05);}
+        .btn{
+            padding: 4px 12px;
+            font-size: 14px;
+            background: #00a0e9;
+            color: #ffffff;
+        }
 
     </style>
     <link rel="stylesheet" href="__TMPL__Public/assets/css/common.min.css">
@@ -153,7 +158,7 @@
                                 <div class="item-user">
                                     <div class="item-user-wrap">
                                         <div class="item-user-avator">
-                                            <img class="avator-img img-ph" src="{$vo.avatar|default='__TMPL__Public/assets/images/0.png'}">
+                                            <a href="{:U('Index/huati',array('type'=>1,'uid'=>$vo['uid']))}" ><img class="avator-img img-ph" src="{$vo.avatar|default='__TMPL__Public/assets/images/0.png'}"></a>
                                         </div>
                                             <span class="item-user-text">
                                                 <span class="item-user-name">
@@ -171,7 +176,7 @@
                                 </div>
                             </div>
                             <div  class="detail-bottom">
-                                <div class="report-content">
+                                <div class="report-content" style="margin-left: 45px;">
                                     <p class="groupbrief feed-two-line">
                                         {$vo.post_content}
                                     </p>
@@ -202,59 +207,17 @@
                         </li>
                     </if>
                     </foreach>
-                    <!-- <li class="feeds-li feeds-li-normal">
-                        <div class="detail-top">
-                            <div class="item-user">
-                                <div class="item-user-wrap">
-                                    <div class="item-user-avator">
-                                        <img class="avator-img img-ph" src="__TMPL__Public/assets/images/timg.jpg">
-                                    </div>
-                                        <span class="item-user-text">
-                                            <span class="item-user-name">
-                                                小六
-                                            </span>
-                                      
-                                            <span>
-                                            </span>
-                                        </span>
-                                        <span class="item-user-time">
-                                            更早
-                                        </span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="detail-bottom">
-                            <div class="report-content">
-                                <p class="grouptitle feed-two-line">
-                                        <span>
-                                            再远也要在一起
-                                        </span>
-                                </p>
-                                <p class="groupbrief feed-two-line">
-                                    再远也要在一起！
-                                </p>
-                            </div>
-                            <div class="img-wrap clearfix">
-                            </div>
-                            <div class="post-bottom-v3">
-                                <div class="reply-btn-v3 post-btn-v3">
-                                </div>
-                                <div class="like-btn-v3 post-btn-v3">
-                                    3
-                                </div>
-                                <div class="more-btn-v3 post-btn-v3">
-                                </div>
-                            </div>
-                        </div>
-                    </li> -->
-                    <!-- react-text: 9 -->
-                    <!-- /react-text -->
+                    <input type="text" />
                 </ul>
             </div>
             <!-- react-empty: 10 -->
-            <div class="publish-btn"></div>
+            <span id="fabiao_anniu">
+                <div class="publish-btn"></div>
+            </span>
             <!-- react-empty: 12 -->
+            <span id="dibu_caidan">
             <tc_include file="Public:footer" />
+            </span>
         </div>
     </div>
 </div>
@@ -321,6 +284,24 @@
 </div>
 
 <script>
+    $(document).ready(function(){
+        $("textarea").focus(function(){
+            $("#dibu_caidan").hide();
+            $("#fabiao_anniu").hide();
+        });
+        $("textarea").blur(function(){
+            $("#dibu_caidan").show();
+            $("#fabiao_anniu").show();
+        });
+        $("input").focus(function(){
+            $("#dibu_caidan").hide();
+            $("#fabiao_anniu").hide();
+        });
+        $("input").blur(function(){
+            $("#dibu_caidan").show();
+            $("#fabiao_anniu").show();
+        });
+    });
     $(function(){
         $(".publish-btn").click(function(){
             $("#publish-panel").css('display','block');
@@ -342,7 +323,7 @@
         $(".reply-btn-v3").each(function(){
             var $this=$(this);
             $this.click(function(){
-            $this.parent().next(".comment-area").toggle()  
+            $this.parent().next(".comment-area").toggle();
                 // $this.parent().next(".comment-area").css('display','block'); 
             });
             // $this.parent().next(".comment-area").toggle()  

@@ -10,18 +10,16 @@
         <ul>
             <li>
                 <div class="p-img1"><img src="{$userInfo->headimgurl|default='__TMPL__Public/assets/images/0.png'}" alt=""></div>
-                <div>
-                    <div class="p-name">{$userInfo->school}{$userInfo->nickname}213</div>
-                    <eq name="status" value="0"><a class="modaltrigger" href="#loginmodal"><div class="detail-btn1"></div></a></eq>
-                </div>
+                    <div class="p-name">{$userInfo->school}{$userInfo->nickname}</div>
+                    <eq name="status" value="0"><a class="modaltrigger" href="#loginmodal"><div class="detail-btn1">修改名字</div></a></eq>
             </li>
            <li>
-               <div><a class="modaltrigger" href="#sportmodal"><div class="p-sc"></div></a></div>
+               <a class="modaltrigger" href="#sportmodal"><div class="p-sc"></div></a>
                <div class="p-kilometer">累计：<span style="font-size: 0.7rem;">{$num|default=0}</span> 步</div>
            </li>
         </ul>
     </div>
-    <div id="main" style="width: 360px;height:230px; margin: -5px 0 -30px -25px;"></div>
+    <div id="main" style="width: 360px;height:230px; margin: -5px 0 -10px -25px;"></div>
     <div class="p-zq">
         <ul>
             <li><a href="{:U('index', array('type'=>'0'))}" <if condition="$type eq 0">style="background: #00a0e9;color: #ffffff;"</if>>日</a></li>
@@ -53,7 +51,7 @@
                 </li>
                 </a>
             </ul>
-            <ul>
+            <ul style="margin-top: 0.2rem;">
                 <li>
                     <a href="{:U('personallist', array('type'=>'1', 'date'=>'0'))}">
                     <p class="p-bu-p">消耗</p>
@@ -155,16 +153,9 @@
             function (ec) {
                 var myChart = ec.init(document.getElementById('main'), theme);
                 var option = {
-//                    title: {
-//                        text: '未来一周气温变化',
-//                        subtext: '纯属虚构'
-//                    },
                     tooltip: {
                         trigger: 'axis'
                     },
-//                    legend: {
-//                        data:['最高气温']
-//                    },
                     toolbox: {
                         show: true,
                         feature: {
@@ -190,20 +181,13 @@
                     },
                     series: [
                         {
-//                            name:'最高记录',
                             type:'line',
                             data: {$datas},
                             markPoint: {
                                 data: [
                                     {type: 'max', name: '步数'}
-//                                    {type: 'min', name: '最少步数'}
                                 ]
                             }
-//                            markLine: {
-//                                data: [
-//                                    {type: 'average', name: '平均步数'}
-//                                ]
-//                            }
                         }
                     ]
                 };

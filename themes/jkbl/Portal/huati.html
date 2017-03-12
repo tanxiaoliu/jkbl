@@ -20,36 +20,19 @@
             border-radius:0.2rem;
         }
         .tupian img{
-            width: 5rem;
-        }
-        .bottom {
-            width: 100%;
-            line-height: 3.15rem;
-            height: 4.1rem;
-            font-size: 1rem;
-            text-align: center;
-            background: #5bd9ef;
-            bottom: 0;
-            position: fixed;
-            font-weight: bold;
-        }
-        .bottom ul li{
-            width: 6.9rem;
-            float: left;
-            margin: 0.45rem;
-            -moz-border-radius: 0.4rem;
-            -webkit-border-radius: 0.4rem;
-            border-radius:0.4rem;
-            background:#FFFFFF;
-            color: #17acdf;
-        }
-        .bottom .blue,.blue:hover{
-            background:#17acdf;
-            color: #FFFFFF;
+            width: 8rem;
         }
         a{color:#428bca;}
 
-        .btn{display:inline-block;*display:inline;padding:4px 12px;margin-bottom:0;*margin-left:.3em;font-size:14px;line-height:20px;color:#999;text-align:center;text-shadow:0 1px 1px rgba(255,255,255,0.75);vertical-align:middle;cursor:pointer;background-color:#e1e1e1;*background-color:#cacaca;background-image:-moz-linear-gradient(top,#f0f0f0,#cacaca);background-image:-webkit-gradient(linear,0 0,0 100%,from(#f0f0f0),to(#cacaca));background-image:-webkit-linear-gradient(top,#f0f0f0,#cacaca);background-image:-o-linear-gradient(top,#f0f0f0,#cacaca);background-image:linear-gradient(to bottom,#f0f0f0,#cacaca);background-repeat:repeat-x;border:1px solid #bbb;*border:0;border-color:#cacaca #cacaca #a3a3a3;border-color:rgba(0,0,0,0.1) rgba(0,0,0,0.1) rgba(0,0,0,0.25);border-bottom-color:#a2a2a2;-webkit-border-radius:0;-moz-border-radius:0;border-radius:0;filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#fff0f0f0',endColorstr='#ffcacaca',GradientType=0);filter:progid:DXImageTransform.Microsoft.gradient(enabled=false);*zoom:1;-webkit-box-shadow:inset 0 1px 0 rgba(255,255,255,0.2),0 1px 2px rgba(0,0,0,0.05);-moz-box-shadow:inset 0 1px 0 rgba(255,255,255,0.2),0 1px 2px rgba(0,0,0,0.05);}
+       .btn{
+           display: inline-block;
+           padding: 4px 12px;
+           margin-bottom: 0;
+           font-size: 14px;
+           line-height: 20px;
+           background: #00a0e9;
+           color: #ffffff;
+       }
 
     </style>
     <link rel="stylesheet" href="__TMPL__Public/assets/css/common.min.css">
@@ -63,7 +46,7 @@
     <div data-reactroot="">
         <div class="NavBar" style="padding-top:1rem;">
         <a style=" margin-left:3%;;"  href="{:U('Index/community')}">返回</a>
-        <if condition="$status eq 1"><a style=" margin-left:1%;;"  href="{:U('Index/attention',array('uid'=>$attenuid))}">取消关注</a><else /><a style=" margin-left:1%;;"  href="{:U('Index/attention',array('uid'=>$attenuid))}">关注他</a></if>
+        <if condition="$status eq 1"><a style=" margin-left:1%;;"  href="{:U('Index/attention',array('uid'=>$attenuid))}">取消关注</a><else /><a style=" margin-left:1%;;"  href="{:U('Index/attention',array('uid'=>$attenuid))}">添加关注</a></if>
         <!-- <a style=" margin-left:3%;;"  href="javascript:history.back(-1);">返回</a> -->
         <select id="select_type" style="margin-left: 10rem;color: #428bca;border-radius: 5px;width: 5rem;" onchange="window.location=this.value;" >
             <option <if condition="$type eq 1">selected</if> value="{:U('Index/huati',array('type'=>1,'uid'=>$attenuid))}">话题</option>
@@ -99,13 +82,13 @@
                             </div>
                         </div>
                         <div  class="detail-bottom">
-                            <div class="report-content">
+                            <div class="report-content" style="margin-left: 45px;">
                                 <p class="groupbrief feed-two-line">
                                     {$vo.post_content}
                                 </p>
                                 <if condition="$vo.post_image neq ''">
                                     <p class="groupbrief feed-two-line tupian">
-                                        <img src="{$vo.post_image}">
+                                        <img class="pengyouquan_img" src="{$vo.post_image}">
                                     </p>
                                 </if>
                             </div>
@@ -156,7 +139,7 @@
                     <div  class="detail-bottom">
                         <div class="report-content">
                             <p class="groupbrief feed-two-line">
-                            你评论了<a href="{:U('Article/index',array('id'=>$vo['post_id'],'cid'=>1))}" >{$vo.title}</a>
+                            评论了<a href="{:U('Article/index',array('id'=>$vo['post_id'],'cid'=>1))}" >{$vo.title}</a>
                             </p>
                         </div>
                         <div class="img-wrap clearfix">
@@ -220,7 +203,7 @@
             var $this=$(this);
             $this.click(function(){
                 $this.parent().next(".comment-area").toggle()  
-                // $this.parent().next(".comment-area").css('display','block'); 
+//                 $this.parent().next(".comment-area").css('display','block');
             });
             // $this.parent().next(".comment-area").toggle()  
         });
@@ -228,6 +211,17 @@
             var url = $(this).val()
             window.location.href = url;
         });*/
+        $(".pengyouquan_img").each(function(){
+            var $this=$(this);
+            $this.click(function(){
+                var width = $this.prop('width');
+                if (width<=150) {
+                    $this.css('width','20rem');
+                }else{
+                    $this.css('width','8rem');
+                }
+            });
+        });
     });
     
        
