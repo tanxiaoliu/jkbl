@@ -27,10 +27,15 @@
             <li><a href="{:U('index', array('type'=>'2'))}" <if condition="$type eq 2">style="background: #00a0e9;color: #ffffff;"</if>>月</a></li>
         </ul>
     </div>
+    <!--<div>-->
+        <!--<div style="background-color: red; width: 10%"></div>-->
+        <!--<div style="background-color: #00a0e9; width: 90%;"></div>-->
+    <!--</div>-->
     <div class="p-bu">
-        <span class="p-jl">
+        <div class="p-jl">
             点击可看记录
-        </span>
+        </div>
+        <div>
             <ul>
                 <a href="{:U('personallist', array('type'=>'0', 'date'=>'1'))}">
                 <li style="background: #00a0e9;">
@@ -71,6 +76,7 @@
                     </a>
                 </li>
             </ul>
+        </div>
         </div>
     <tc_include file="Public:footer" />
     <div id="loginmodal" class="modal" style="display:none;">
