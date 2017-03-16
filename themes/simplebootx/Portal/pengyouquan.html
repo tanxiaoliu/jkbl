@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 	<html>
 	<head>
-		<title>{$post_title}</title>
+	    <title>THIFF - 腾科健康关爱</title>
 		<meta name="keywords" content="{$post_keywords}" />
 		<meta name="description" content="{$post_excerpt}">
 		<tc_include file="Public:head" />
@@ -28,6 +28,9 @@
 		    	<hr>
 		    	<div id="article_content">
 		    	{$post_content}
+		    	<if condition="$post_image neq ''">
+                    <img class="pengyouquan_img" src="{$post_image}">
+                </if>
 		    	</div>
 		    	{:Comments("posts",$article_id)}
 		    </div>

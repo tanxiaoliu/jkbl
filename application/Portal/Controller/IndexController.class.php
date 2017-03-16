@@ -402,7 +402,10 @@ class IndexController extends HomebaseController
     public function community()
     {
         $this->checkLogin();
+        // $data = D('users')->find(1);
+        // session('user', $data);
         $user = session('user');
+        // $user['id'] = 1;
         $map['recommended'] = 1;
         $map['post_type'] = 1;
         $map['post_status'] = array('neq', 3);
@@ -473,7 +476,7 @@ class IndexController extends HomebaseController
         }
         if ($type == 2) {
             $where = array("uid" => $user['id'], "status" => 1);
-            $pengyouquan = M('Comments')->where($where)->select();
+            $pengyouquan = M('Comments')->where($where)->order('id DESC')->select();
             foreach ($pengyouquan as $key => &$vl) {
                 $posts = M('Posts')->find($vl['post_id']);
                 if (empty($posts['post_title'])) {
@@ -537,7 +540,7 @@ class IndexController extends HomebaseController
         $type = intval(I('type', '1', 'intval'));
         $pengyouquan = array();
         if ($type == 1) {
-            $pengyouquan = M('Posts')->field('id,post_content,post_date,post_image,post_author,post_like')
+            $pengyouquan = M('Posts')->field('id,comment_count,post_content,post_date,post_image,post_author,post_like')
                 ->where($map)
                 ->order('id DESC')
                 ->limit(50)->select();
@@ -549,7 +552,7 @@ class IndexController extends HomebaseController
         }
         if ($type == 2) {
             $where = array("uid" => $uid, "status" => 1);
-            $pengyouquan = M('Comments')->where($where)->select();
+            $pengyouquan = M('Comments')->where($where)->order('id DESC')->select();
             foreach ($pengyouquan as $key => &$vl) {
                 $posts = M('Posts')->find($vl['post_id']);
                 if (empty($posts['post_title'])) {
@@ -922,6 +925,7 @@ class IndexController extends HomebaseController
         $userInfo = $this->checkLogin();
         $this->checkInvite();
         $data['openid'] = $userInfo->openid;
+        // $data['openid'] = 'admin';
         $map['user_login'] = $data['openid'];
         $score = current(M('Users')->where($map)->getField('user_login,score,coin', 1));
         $selfgood = M("Good")->where(array('type' => 1))->order('add_time desc')->select();
