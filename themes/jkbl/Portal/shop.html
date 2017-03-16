@@ -97,7 +97,8 @@
           <input type="text" name="address" id="address" class="txtfield" tabindex="2">
 
           
-          <div class="center"><input type="submit" name="loginbtn" id="loginbtn" class="flatbtn-blu hidemodal" value="提交" tabindex="3"></div>
+          <div class="center"><input type="submit" name="loginbtn" id="loginbtn" class="flatbtn-blu" value="提交" tabindex="3">
+          <input type="reset" name="loginbtn" id="loginbtn" class="flatbtn-blu hidemodal" value="取消" tabindex="3"></div>
 
         </form>
 
@@ -105,11 +106,11 @@
 </div>
 <script>
     $(function(){
-        // $('#modaltrigger').leanModal({ top: 110, overlay: 0.45, closeButton: ".hidemodal" });
-        $('.modaltrigger').leanModal({ top: 110, overlay: 0.45});
+        $('.modaltrigger').leanModal({ top: 110, overlay: 0.45, closeButton: ".hidemodal" });
+        // $('.modaltrigger').leanModal({ top: 110, overlay: 0.45});
         $(".flatbtn").each(function(i){
              $(this).click(function(){
-                $("#goodid").val($(this).parent().prev().val())
+                $("#goodid").val($(this).parent().prev().prev().val())
               })
           });
         $(".gongyi").each(function(i){
@@ -154,7 +155,7 @@
             var reg = /^1[3|4|5|7|8][0-9]{9}$/; //验证规则
             var phoneNum = form.phone.value;//手机号码
             if (!reg.test(phoneNum)){
-                alert("手机号格式不对!");
+                alert("手机格式不对!");
                 form.phone.focus();
                 return false;
             }
