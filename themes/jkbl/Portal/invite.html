@@ -13,7 +13,7 @@
       <!-- <div id="loginmodal" style="display:none;"> -->
 
         <form id="loginform" name="loginform" method="post" action="{:U('Invite')}" onsubmit="return check(this)">
-          <input type="hidden" name="url" id="url" value="{:U('Invite')}">
+          <input type="text" name="url" id="url" value="{:U('Invite')}" style="display: none;">
           <label for="code">请输入邀请码:</label>
           <input type="text" name="code" id="code" class="txtfield" tabindex="1">
           <div class="center"><input type="submit" name="loginbtn" id="loginbtn" class="flatbtn-blu hidemodal" value="提交" tabindex="3"></div>
