@@ -99,8 +99,8 @@ class IndexController extends HomebaseController
 
     public function checkInvite()
     {
-        return true;
-//        $this->checkLogin();
+//        return true;
+        $this->checkLogin();
         $user = session('user');
         $where = array(
             'userid' => $user['id']
@@ -117,8 +117,8 @@ class IndexController extends HomebaseController
      */
     public function checkLogin()
     {
-        $userInfo->openid = 'oexX2s8gsy5m30xRtXOel97_UBfE';
-        return $userInfo;
+//        $userInfo->openid = 'admin';
+//        return $userInfo;
         if (sp_is_weixin()) {
             $userInfo = json_decode($_COOKIE['userInfo']);
             $user = session('user');
@@ -329,6 +329,8 @@ class IndexController extends HomebaseController
                     } else {
                         $name = $users['school'] . '-' . $users['user_nicename'];
                     }
+//                    $name = $users['user_nicename'];
+
                     $data .= "{value:{$value['num']}, name:'{$name}'},";
                 }
             } else {
@@ -340,6 +342,8 @@ class IndexController extends HomebaseController
                     } else {
                         $name = $value['school'] . '-' . $value['user_nicename'];
                     }
+//                    $name = $value['user_nicename'];
+
                     $data .= "{value:{$value['score']}, name:'{$name}'},";
                 }
             }
@@ -359,6 +363,7 @@ class IndexController extends HomebaseController
                 $status = $data['status'];
             }
         }
+//        var_dump($data1);exit;
         $this->assign("userInfo", $userInfo);
         $this->assign("status", $status);
         $this->assign("sum", number_format($sum));
@@ -1099,12 +1104,12 @@ class IndexController extends HomebaseController
                 if ($result) {
                     header("Content-type:text/html;charset=utf-8");
                     echo "<script> alert('上传成功'); </script>";
-                    echo "<meta http-equiv='Refresh' content='0;URL=" . U('personal') . "'>";
+                    echo "<meta http-equiv='Refresh' content='0;URL=" . U('index') . "'>";
                 } else {
-                    $this->error('上传数据出错', U('personal'));
+                    $this->error('上传数据出错', U('index'));
                 }
             } else {
-                $this->error('上传文件出错', U('personal'));
+                $this->error('上传文件出错', U('index'));
             }
         }
     }
