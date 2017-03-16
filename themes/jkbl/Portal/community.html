@@ -326,7 +326,7 @@
                     var realHight = parseInt($this.height())*parseInt($(window).width())/parseInt($this.width());
                     var windowHight = parseInt($(window).width());
                     if (realHight<windowHight) {
-                        var margin = (windowHight-realHight)/2;
+                        var margin = (windowHight-realHight);
                         $this.css('margin-top',margin);   
                     };                    
 
