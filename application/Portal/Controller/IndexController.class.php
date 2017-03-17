@@ -324,12 +324,12 @@ class IndexController extends HomebaseController
                     $map['user_login'] = $value['openid'];
                     $users = M('Users')->where($map)->find();
                     $sum += $value['num'];
-                    if (empty($users['school'])) {
-                        $name = $users['school'] . $users['user_nicename'];
-                    } else {
-                        $name = $users['school'] . '-' . $users['user_nicename'];
-                    }
-//                    $name = $users['user_nicename'];
+//                    if (empty($users['school'])) {
+//                        $name = $users['school'] . $users['user_nicename'];
+//                    } else {
+//                        $name = $users['school'] . '-' . $users['user_nicename'];
+//                    }
+                    $name = $users['user_nicename'];
 
                     $data .= "{value:{$value['num']}, name:'{$name}'},";
                 }
@@ -337,12 +337,12 @@ class IndexController extends HomebaseController
                 $users = M('Users')->field('user_nicename,groupid,score,school')->where(array('groupid' => $users['groupid']))->order('score DESC')->select();
                 foreach ($users as $value) {
                     $sum += $value['score'];
-                    if (empty($value['school'])) {
-                        $name = $value['school'] . $value['user_nicename'];
-                    } else {
-                        $name = $value['school'] . '-' . $value['user_nicename'];
-                    }
-//                    $name = $value['user_nicename'];
+//                    if (empty($value['school'])) {
+//                        $name = $value['school'] . $value['user_nicename'];
+//                    } else {
+//                        $name = $value['school'] . '-' . $value['user_nicename'];
+//                    }
+                    $name = $value['user_nicename'];
 
                     $data .= "{value:{$value['score']}, name:'{$name}'},";
                 }
