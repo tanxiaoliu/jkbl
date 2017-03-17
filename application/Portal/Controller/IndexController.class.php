@@ -99,8 +99,8 @@ class IndexController extends HomebaseController
 
     public function checkInvite()
     {
-        return true;
-//        $this->checkLogin();
+//        return true;
+        $this->checkLogin();
         $user = session('user');
         $where = array(
             'userid' => $user['id']
@@ -117,8 +117,8 @@ class IndexController extends HomebaseController
      */
     public function checkLogin()
     {
-        $userInfo->openid = 'oexX2s8gsy5m30xRtXOel97_UBfE';
-        return $userInfo;
+//        $userInfo->openid = 'admin';
+//        return $userInfo;
         if (sp_is_weixin()) {
             $userInfo = json_decode($_COOKIE['userInfo']);
             $user = session('user');
@@ -329,6 +329,8 @@ class IndexController extends HomebaseController
                     } else {
                         $name = $users['school'] . '-' . $users['user_nicename'];
                     }
+//                    $name = $users['user_nicename'];
+
                     $data .= "{value:{$value['num']}, name:'{$name}'},";
                 }
             } else {
@@ -340,6 +342,8 @@ class IndexController extends HomebaseController
                     } else {
                         $name = $value['school'] . '-' . $value['user_nicename'];
                     }
+//                    $name = $value['user_nicename'];
+
                     $data .= "{value:{$value['score']}, name:'{$name}'},";
                 }
             }
@@ -359,6 +363,7 @@ class IndexController extends HomebaseController
                 $status = $data['status'];
             }
         }
+//        var_dump($data1);exit;
         $this->assign("userInfo", $userInfo);
         $this->assign("status", $status);
         $this->assign("sum", number_format($sum));
@@ -397,7 +402,10 @@ class IndexController extends HomebaseController
     public function community()
     {
         $this->checkLogin();
+        // $data = D('users')->find(1);
+        // session('user', $data);
         $user = session('user');
+        // $user['id'] = 1;
         $map['recommended'] = 1;
         $map['post_type'] = 1;
         $map['post_status'] = array('neq', 3);
@@ -468,7 +476,7 @@ class IndexController extends HomebaseController
         }
         if ($type == 2) {
             $where = array("uid" => $user['id'], "status" => 1);
-            $pengyouquan = M('Comments')->where($where)->select();
+            $pengyouquan = M('Comments')->where($where)->order('id DESC')->select();
             foreach ($pengyouquan as $key => &$vl) {
                 $posts = M('Posts')->find($vl['post_id']);
                 if (empty($posts['post_title'])) {
@@ -532,7 +540,7 @@ class IndexController extends HomebaseController
         $type = intval(I('type', '1', 'intval'));
         $pengyouquan = array();
         if ($type == 1) {
-            $pengyouquan = M('Posts')->field('id,post_content,post_date,post_image,post_author,post_like')
+            $pengyouquan = M('Posts')->field('id,comment_count,post_content,post_date,post_image,post_author,post_like')
                 ->where($map)
                 ->order('id DESC')
                 ->limit(50)->select();
@@ -544,7 +552,7 @@ class IndexController extends HomebaseController
         }
         if ($type == 2) {
             $where = array("uid" => $uid, "status" => 1);
-            $pengyouquan = M('Comments')->where($where)->select();
+            $pengyouquan = M('Comments')->where($where)->order('id DESC')->select();
             foreach ($pengyouquan as $key => &$vl) {
                 $posts = M('Posts')->find($vl['post_id']);
                 if (empty($posts['post_title'])) {
@@ -917,6 +925,7 @@ class IndexController extends HomebaseController
         $userInfo = $this->checkLogin();
         $this->checkInvite();
         $data['openid'] = $userInfo->openid;
+        // $data['openid'] = 'admin';
         $map['user_login'] = $data['openid'];
         $score = current(M('Users')->where($map)->getField('user_login,score,coin', 1));
         $selfgood = M("Good")->where(array('type' => 1))->order('add_time desc')->select();
@@ -1099,12 +1108,12 @@ class IndexController extends HomebaseController
                 if ($result) {
                     header("Content-type:text/html;charset=utf-8");
                     echo "<script> alert('上传成功'); </script>";
-                    echo "<meta http-equiv='Refresh' content='0;URL=" . U('personal') . "'>";
+                    echo "<meta http-equiv='Refresh' content='0;URL=" . U('index') . "'>";
                 } else {
-                    $this->error('上传数据出错', U('personal'));
+                    $this->error('上传数据出错', U('index'));
                 }
             } else {
-                $this->error('上传文件出错', U('personal'));
+                $this->error('上传文件出错', U('index'));
             }
         }
     }
