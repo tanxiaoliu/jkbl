@@ -291,8 +291,6 @@
             </ul>
         </div>
     </div>
-    <div class="zhezhao">sdsdsdss</div>
-
     <!--</form>-->
 </div>
 <script>
@@ -302,14 +300,6 @@
             $("#fabiao_anniu").hide();
         });
         $("textarea").blur(function(){
-            $("#dibu_caidan").show();
-            $("#fabiao_anniu").show();
-        });
-        $("input").focus(function(){
-            $("#dibu_caidan").hide();
-            $("#fabiao_anniu").hide();
-        });
-        $("input").blur(function(){
             $("#dibu_caidan").show();
             $("#fabiao_anniu").show();
         });
@@ -381,6 +371,14 @@
             }
         });
     });
+    function yincang(){
+        $("#dibu_caidan").hide();
+        $("#fabiao_anniu").hide();
+    }
+    function xianshi(){
+        $("#dibu_caidan").show();
+        $("#fabiao_anniu").show();
+    }
 </script>
 <script src="__TMPL__Public/assets/js/jquery-1.9.1.min.js"></script>
 <script src="__TMPL__Public/assets/js/jquery.form.js"></script>

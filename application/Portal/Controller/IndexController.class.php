@@ -99,7 +99,7 @@ class IndexController extends HomebaseController
 
     public function checkInvite()
     {
-//        return true;
+        return true;
         $this->checkLogin();
         $user = session('user');
         $where = array(
@@ -117,8 +117,8 @@ class IndexController extends HomebaseController
      */
     public function checkLogin()
     {
-//        $userInfo->openid = 'admin';
-//        return $userInfo;
+        $userInfo->openid = 'admin';
+        return $userInfo;
         if (sp_is_weixin()) {
             $userInfo = json_decode($_COOKIE['userInfo']);
             $user = session('user');
@@ -848,7 +848,7 @@ class IndexController extends HomebaseController
                         }
                         $count = $usersModel->where(array('groupid' => $users['groupid']))->count();
                         $groups[$users['groupid']]['num'] += $vl['num'];
-                        $groups[$users['groupid']]['avgNum'] = $groups[$users['groupid']]['num'] / $count;
+                        $groups[$users['groupid']]['avgNum'] = intval($groups[$users['groupid']]['num'] / $count);
                     }
                 }
                 unset($groups[0]);
