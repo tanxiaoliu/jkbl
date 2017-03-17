@@ -4,7 +4,6 @@
     <tc_include file="Public:head" />
     <link rel="stylesheet" href="__TMPL__Public/assets/css/shop.css">
     <link rel="stylesheet" href="__TMPL__Public/assets/css/style.css">
-
 </head>
 <body style="overflow: auto">
 
@@ -97,7 +96,8 @@
           <input type="text" name="address" id="address" class="txtfield" tabindex="2">
 
           
-          <div class="center"><input type="submit" name="loginbtn" id="loginbtn" class="flatbtn-blu hidemodal" value="提交" tabindex="3"></div>
+          <div class="center"><input type="submit" name="loginbtn" id="loginbtn" class="flatbtn-blu" value="提交" tabindex="3">
+          <input type="reset" name="loginbtn" id="loginbtn" class="flatbtn-blu hidemodal" value="取消" tabindex="3"></div>
 
         </form>
 
@@ -105,11 +105,11 @@
 </div>
 <script>
     $(function(){
-        // $('#modaltrigger').leanModal({ top: 110, overlay: 0.45, closeButton: ".hidemodal" });
-        $('.modaltrigger').leanModal({ top: 110, overlay: 0.45});
+        $('.modaltrigger').leanModal({ top: 110, overlay: 0.45, closeButton: ".hidemodal" });
+        // $('.modaltrigger').leanModal({ top: 110, overlay: 0.45});
         $(".flatbtn").each(function(i){
              $(this).click(function(){
-                $("#goodid").val($(this).parent().prev().val())
+                $("#goodid").val($(this).parent().prev().prev().val())
               })
           });
         $(".gongyi").each(function(i){
@@ -121,10 +121,10 @@
       /*                    console.log($("#loginform").serialize())
                           console.log(data)*/
                           if (data.status==1&&data.state=='success') {
-                              alert(data.info)
+                              alert(data.custom)
                               window.location.href=data.url; 
                           }else{
-                              alert(data.info)
+                              alert(data.custom)
                           }
                         },
                         "json");//这里返回的类型有：json,html,xml,text
@@ -140,27 +140,39 @@
 
 
     });
+    function tishi(content,url) {
+      var html = '<div class="xiaoxi none" id="msg" style="z-index:11001;left: 5%;width: 90%;position: fixed;background:none;top:50%;"> <p class="msg" style="background: none repeat scroll 0 0 #000; border-radius: 30px;color: #fff; margin: 0 auto;padding: 1.5em;text-align: center;width: 70%;opacity: 0.8;"></p></div>';
+      $(document.body).append(html); 
+      $("#msg").show();
+      $(".msg").html(content);
+      if(url){
+      window.setTimeout("location.href='"+url+"'", 1500);
+      }else{
+      setTimeout('$(".msg").fadeOut()', 1500);
+      }
+    } 
      function check(form) {
           if(form.username.value=='') {
-                alert("请输入收件人!");
+                // var txt=  "请输入收件人";
+                tishi('请输入收件人');
                 form.username.focus();
                 return false;
            }
            if(form.phone.value=='') {
-                alert("请输入联系电话!");
+                tishi('请输入联系电话');
                 form.phone.focus();
                 return false;
            }else{
             var reg = /^1[3|4|5|7|8][0-9]{9}$/; //验证规则
             var phoneNum = form.phone.value;//手机号码
             if (!reg.test(phoneNum)){
-                alert("手机号格式不对!");
+                tishi('手机格式不对');
                 form.phone.focus();
                 return false;
             }
            }
            if(form.address.value=='') {
-                alert("请输入地址!");
+                tishi('请输入地址');
                 form.address.focus();
                 return false;
            }
@@ -170,10 +182,14 @@
 /*                    console.log($("#loginform").serialize())
                     console.log(data)*/
                     if (data.status==1&&data.state=='success') {
+<<<<<<< HEAD
                         alert(data.info);
                         window.location.href=data.url;
+=======
+                        tishi(data.info,data.url);
+>>>>>>> a6bad98aea6fe899fc73d122f500761563654bc2
                     }else{
-                        alert(data.info);
+                        tishi(data.info);
                     }
                   },
                   "json");//这里返回的类型有：json,html,xml,text
@@ -185,6 +201,5 @@
 </script>
 <script src="__TMPL__Public/assets/js/jquery-1.9.1.min.js"></script>
 <script src="__TMPL__Public/assets/js/jquery.leanModal.min.js"></script>
-
 </body>
 </html>
