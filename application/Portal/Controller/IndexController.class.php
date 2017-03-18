@@ -99,7 +99,7 @@ class IndexController extends HomebaseController
 
     public function checkInvite()
     {
-        return true;
+//        return true;
         $this->checkLogin();
         $user = session('user');
         $where = array(
@@ -117,8 +117,8 @@ class IndexController extends HomebaseController
      */
     public function checkLogin()
     {
-        $userInfo->openid = 'admin';
-        return $userInfo;
+//        $userInfo->openid = 'admin';
+//        return $userInfo;
         if (sp_is_weixin()) {
             $userInfo = json_decode($_COOKIE['userInfo']);
             $user = session('user');
@@ -204,6 +204,7 @@ class IndexController extends HomebaseController
                     $user['avatar'] = $userInfo->headimgurl;
                 }
             }
+//            $data = $this->multi_array_sort($data, $user['num']);
         } elseif ($type == 2) {//爱心
             $data = M('good_order')->join('cmf_users ON cmf_good_order.openid = cmf_users.user_login')
                 ->field('cmf_users.user_login as openid,cmf_users.user_nicename as nick_name,cmf_users.avatar,sum(cmf_good_order.price) as num')
@@ -236,12 +237,38 @@ class IndexController extends HomebaseController
                 }
             }
         }
-        $this->assign("data", $data);
+        $this->assign("data", $this->multi_array_sort($data, 'num'));
+//        $this->assign("data", $data);
         $this->assign("user", $user);
         $this->assign("type", $type);
         $this->assign("footer", "fuli");
         $this->assign("userInfo", $userInfo);
         $this->display(":index");
+    }
+
+    /**
+     * 多维数组排序
+     * @param $multi_array
+     * @param $sort_key
+     * @param int $sort
+     * @return array|bool
+     */
+    function multi_array_sort(&$multi_array, $sort_key, $sort=SORT_DESC)
+    {
+        if (is_array($multi_array)) {
+            foreach ($multi_array as $row_array) {
+                if (is_array($row_array)) {
+                    $key_array[] = $row_array[$sort_key];
+                } else {
+                    return false;
+                }
+            }
+        } else {
+            return false;
+        }
+
+        array_multisort($key_array, $sort, $multi_array);
+        return $multi_array;
     }
 
     /**
@@ -262,7 +289,7 @@ class IndexController extends HomebaseController
         $id = M('sport_record')->where($map)->getField('id');
         if ($id) {
             $num = $num + 1;
-            $num = $this->testsad($openid, $num, $num + 1);
+            $num = $this->getDayCount($openid, $num, $num + 1);
         }
         return $num;
 
