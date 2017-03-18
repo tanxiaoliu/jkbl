@@ -10,6 +10,18 @@
         html{font-family:sans-serif;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%}body{margin:0}article,aside,details,figcaption,figure,footer,header,main,menu,nav,section,summary{display:block}audio,canvas,progress,video{display:inline-block}audio:not([controls]){display:none;height:0}progress{vertical-align:baseline}[hidden],template{display:none}a{background-color:transparent;-webkit-text-decoration-skip:objects}a:active,a:hover{outline-width:0}abbr[title]{border-bottom:none;text-decoration:underline;text-decoration:underline dotted}b,strong{font-weight:inherit}b,strong{font-weight:bolder}dfn{font-style:italic}h1{font-size:2em;margin:.67em 0}mark{background-color:#ff0;color:#000}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}img{border-style:none}svg:not(:root){overflow:hidden}code,kbd,pre,samp{font-family:monospace,monospace;font-size:1em}figure{margin:1em 40px}hr{box-sizing:content-box;height:0;overflow:visible}button,input,select,textarea{font:inherit;margin:0}optgroup{font-weight:700}button,input{overflow:visible}button,select{text-transform:none}[type=reset],[type=submit],button,button::-moz-focus-inner{border-style:none;padding:0}[type=button]:-moz-focusring,[type=reset]:-moz-focusring,[type=submit]:-moz-focusring,button:-moz-focusring{outline:1px dotted ButtonText}fieldset{border:1px solid silver;margin:0 2px;padding:.35em.625em.75em}legend{box-sizing:border-box;color:inherit;display:table;max-width:100%;padding:0;white-space:normal}textarea{overflow:auto}div,dl,form,h1,h2,h3,h4,h5,h6,ol,p,span,table,ul{margin:0;padding:0}ul{list-style:none}img{border:none;vertical-align:middle}a{text-decoration:none}.clearfix::after{display:block;visibility:hidden;clear:both;height:0;content:"."}html{font-family:"Helvetica Neue",Helvetica,STHeiTi,sans-serif}
     </style>
     <style>
+            .zhezhao 
+                { 
+                 filter:alpha(opacity=50); 
+                 background-color:white; 
+                 position:fixed; 
+                 left:0px; 
+                 top:0px; 
+                 display:block; 
+                 z-index:1001;
+                 height: 100%; 
+                 width: 100%; 
+                } 
         .ding {
             background: #de387b;
             padding: 0.2rem;
@@ -217,9 +229,20 @@
             $this.click(function(){
                 var width = $this.prop('width');
                 if (width<=150) {
-                    $this.css('width','20rem');
+                    var realHight = parseInt($this.height())*parseInt($(window).width())/parseInt($this.width());
+                    var windowHight = parseInt($(window).width());
+                    if (realHight<windowHight) {
+                        var margin = (windowHight-realHight);
+                        $this.css('margin-top',margin);   
+                    }; 
+                    $("body").css('overflow-y','hidden');                   
+                    $this.parent().addClass('zhezhao');
+                    $this.css('width','100%');
                 }else{
+                    $("body").css('overflow-y','auto');                   
+                    $this.parent().removeClass('zhezhao');
                     $this.css('width','8rem');
+                    $this.css('margin-top','');
                 }
             });
         });

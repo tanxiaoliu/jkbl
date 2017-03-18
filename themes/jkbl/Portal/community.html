@@ -318,11 +318,12 @@
                     if (realHight<windowHight) {
                         var margin = (windowHight-realHight);
                         $this.css('margin-top',margin);   
-                    };                    
-
+                    }; 
+                    $("body").css('overflow-y','hidden');                   
                     $this.parent().addClass('zhezhao');
                     $this.css('width','100%');
                 }else{
+                    $("body").css('overflow-y','auto');                   
                     $this.parent().removeClass('zhezhao');
                     $this.css('width','8rem');
                     $this.css('margin-top','');

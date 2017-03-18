@@ -7,6 +7,25 @@
 </div>
 <script src="__PUBLIC__/js/jquery.js"></script>
 <script>
+	//去掉移动端alert和confirm弹出框携带url链接
+	window.alert = function(name){
+	    var iframe = document.createElement("IFRAME");
+	    iframe.style.display="none";
+	    iframe.setAttribute("src", 'data:text/plain,');
+	    document.documentElement.appendChild(iframe);
+	    window.frames[0].window.alert(name);
+	    iframe.parentNode.removeChild(iframe);
+	};
+	window.confirm = function (message) {
+	    var iframe = document.createElement("IFRAME");
+	    iframe.style.display = "none";
+	    iframe.setAttribute("src", 'data:text/plain,');
+	    document.documentElement.appendChild(iframe);
+	    var alertFrame = window.frames[0];
+	    var result = alertFrame.window.confirm(message);
+	    iframe.parentNode.removeChild(iframe);
+	    return result;
+	};
 	$(function(){
 		$(".bottom ul li").click(function(){
 			$(this).addClass("blue").siblings().removeClass("blue");

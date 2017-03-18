@@ -116,17 +116,15 @@ class SportController extends AdminbaseController
 
     }
 
-    // 审核记录
+    // 删除
     public function delete()
-    {
+    {   
         $id = I("get.id", 0, 'intval');
-        $status = I("get.status", 0, 'intval');
-        $data['status'] = $status==1?0:1;
-        if (M('sport')->where(array('id' => $id))->save($data) !== false) {
+        if ($this->sport_model->where(array('id' => $id))->delete() !== false) {
             $this->_cleanFileCache();
-            $this->success("审核成功！");
+            $this->success("删除成功！");
         } else {
-            $this->error("审核失败！");
+            $this->error("删除失败！");
         }
     }
 

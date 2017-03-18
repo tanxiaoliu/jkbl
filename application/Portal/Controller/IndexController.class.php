@@ -401,6 +401,7 @@ class IndexController extends HomebaseController
      */
     public function community()
     {
+        
         $this->checkLogin();
         // $data = D('users')->find(1);
         // session('user', $data);
