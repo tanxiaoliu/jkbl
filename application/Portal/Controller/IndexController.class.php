@@ -195,7 +195,7 @@ class IndexController extends HomebaseController
         $usersModel = D('users');
         $user = array();
         if ($type == 1) {//腾币
-            $data = M('Users')->field('user_login as openid,user_nicename as nick_name,score as num,avatar')->order('score desc,last_login_time desc')->select();
+            $data = M('Users')->field('user_login as openid,user_nicename as nick_name,score as num,school,avatar')->order('score desc,last_login_time desc')->select();
             foreach ($data as $key => $vl) {
                 if ($userInfo->openid == $vl['openid']) {
                     $user['rank'] = $key + 1;
@@ -207,7 +207,7 @@ class IndexController extends HomebaseController
 //            $data = $this->multi_array_sort($data, $user['num']);
         } elseif ($type == 2) {//爱心
             $data = M('good_order')->join('cmf_users ON cmf_good_order.openid = cmf_users.user_login')
-                ->field('cmf_users.user_login as openid,cmf_users.user_nicename as nick_name,cmf_users.avatar,sum(cmf_good_order.price) as num')
+                ->field('cmf_users.user_login as openid,cmf_users.school as school,cmf_users.user_nicename as nick_name,cmf_users.avatar,sum(cmf_good_order.price) as num')
                 ->where('cmf_good_order.type = 2')->order('num DESC')->select();
             foreach ($data as $key => $vl) {
                 if ($userInfo->openid == $vl['openid']) {
@@ -229,6 +229,7 @@ class IndexController extends HomebaseController
                 $users = $usersModel->where($mapUser)->find();
                 $data[$key]['avatar'] = $users['avatar'];
                 $data[$key]['nick_name'] = $users['user_nicename'];
+                $data[$key]['school'] = $users['school'];
                 if ($userInfo->openid == $vl['openid']) {
                     $user['rank'] = $key + 1;
                     $user['nick_name'] = $users['user_nicename'];
