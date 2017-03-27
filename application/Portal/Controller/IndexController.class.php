@@ -456,6 +456,7 @@ class IndexController extends HomebaseController
             $pengyouquan[$key]['user_nicename'] = $users['user_nicename'];
             $pengyouquan[$key]['school'] = $users['school'];
             $pengyouquan[$key]['uid'] = $vl['post_author'];
+            $pengyouquan[$key]['comment_count'] = D("Common/Comments")->where(array("post_table"=>'posts',"post_id"=>$vl['id'],"status"=>1))->count();
         }
         $this->assign("uid", $user['id']);
         // $this->assign("uid", 1);

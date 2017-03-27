@@ -19,6 +19,7 @@
 		<form method="post" action="{:U('sport/importData')}" enctype="multipart/form-data">
 			<h3>导入记录(Excel表)：</h3>
 			<input  type="file" name="file_stu" />
+			选择时间：<input 	type="text" class="js-datetime" name="time" value="" style="width: 120px;" autocomplete="off"> 
 			<input type="submit" class="btn" value="批量导入" />
 		</form>
 		<form class="form-horizontal js-ajax-form" method="post">

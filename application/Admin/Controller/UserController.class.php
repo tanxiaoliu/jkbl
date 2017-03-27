@@ -166,8 +166,9 @@ class UserController extends AdminbaseController{
 	public function useredit_post(){
 		if (IS_POST) {
 			$_POST['id']=I('request.id');
+			$_POST['school']=I('request.school');
 			$create_result=$this->users_model
-			->field("id,user_nicename,sex,birthday,user_url,signature")
+			->field("id,user_nicename,school")
 			->create();
 			if ($create_result!==false) {
 				if ($this->users_model->save()!==false) {
