@@ -757,7 +757,7 @@ class IndexController extends HomebaseController
         $num = D('sport_record')->where(array('openid' => $userInfo->openid))->sum('step_nums');
         $umap['user_login'] = $userInfo->openid;
         $status = D('users')->where($umap)->getField('status');
-        $nowNum = $nowNum ? $nowNum / 7 : 0;
+        $nowNum = $nowNum ? $nowNum : 0;
         $nowNum1 = $nowNum1 ? $nowNum1 / $nowCount1 : 0;
         $nowNum2 = $nowNum2 ? $nowNum2 / $nowCount2 : 0;
         $this->assign("userInfo", $userInfo);
@@ -1168,10 +1168,10 @@ class IndexController extends HomebaseController
         $record = array();
         if ($date == 1) {//周
             for ($i = 1; $i <= 52; $i++) {
-                $timeStart = mktime(0, 0, 0, date('m'), date('d') - date('w') - 6 - (7 * ($i - 1)), date('Y'));
-                $timeEnd = mktime(23, 59, 59, date('m'), date('d') - date('w') - (7 * ($i - 1)), date('Y'));
-//                var_dump(date('y-m-d',$timeStart));
-//                var_dump(date('y-m-d',$timeEnd));
+                $timeStart = mktime(0, 0, 0, date('m'), date('d') - date('w') + 1 - (7 * ($i - 1)), date('Y'));
+                $timeEnd = mktime(23, 59, 59, date('m'), date('d') - date('w') + 7 - (7 * ($i - 1)), date('Y'));
+                //var_dump(date('y-m-d',$timeStart));
+                //var_dump(date('y-m-d',$timeEnd));
                 if ($timeStart > '1483056000') {
                     $map['add_time'] = array('between', array($timeStart, $timeEnd));
                     $data['add_time'] = date('Y年W周', $timeStart);
