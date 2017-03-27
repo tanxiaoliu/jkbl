@@ -44,6 +44,9 @@
 						<td>{$user_statuses[$vo['user_status']]}</td>
 						<td align="center">
 							<neq name="vo.id" value="1">
+
+
+								<a href="{:U('Admin/user/useredit',array('id'=>$vo['id']))}">{:L('EDIT')}</a>|
 								<a href="{:U('indexadmin/ban',array('id'=>$vo['id']))}" class="js-ajax-dialog-btn" data-msg="{:L('BLOCK_USER_CONFIRM_MESSAGE')}">{:L('BLOCK_USER')}</a>|
 								<a href="{:U('indexadmin/cancelban',array('id'=>$vo['id']))}" class="js-ajax-dialog-btn" data-msg="{:L('ACTIVATE_USER_CONFIRM_MESSAGE')}">{:L('ACTIVATE_USER')}</a>
 							<else/>

@@ -35,9 +35,20 @@
 
 
     });
+    function tishi(content,url) {
+      var html = '<div class="xiaoxi none" id="msg" style="z-index:11001;left: 5%;width: 90%;position: fixed;background:none;top:50%;"> <p class="msg" style="background: none repeat scroll 0 0 #000; border-radius: 30px;color: #fff; margin: 0 auto;padding: 1.5em;text-align: center;width: 70%;opacity: 0.8;"></p></div>';
+      $(document.body).append(html); 
+      $("#msg").show();
+      $(".msg").html(content);
+      if(url){
+      window.setTimeout("location.href='"+url+"'", 1500);
+      }else{
+      setTimeout('$(".msg").fadeOut()', 1500);
+      }
+    } 
      function check(form) {
           if(form.code.value=='') {
-                alert("请输入邀请码!");
+                tishi('请输入邀请码');
                 form.username.focus();
                 return false;
            }
@@ -46,10 +57,9 @@
 /*                    console.log($("#loginform").serialize())
               console.log(data)*/
               if (data.status==1&&data.state=='success') {
-                  alert(data.info)
-                  window.location.href=data.url; 
+                  tishi(data.info,data.url);
               }else{
-                  alert(data.info)
+                  tishi(data.info);
               }
             },
             "json");//这里返回的类型有：json,html,xml,text
