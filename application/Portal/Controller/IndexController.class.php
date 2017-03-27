@@ -78,13 +78,8 @@ class IndexController extends HomebaseController
                 $invite['status'] = 0;
                 $invite['userid'] = $user['id'];
                 $invite['update_time'] = time();
-                // $users = D('users')->find($invite['userid']);
-                // $users['code'] = $code;
-                // D('users')->save($users);
                 if (M('InviteCode')->create($invite) !== false) {
                     if (M('InviteCode')->save() !== false) {
-                        // $users['code'] = $code;
-                        // session('user',$users);
                         $this->success("欢迎来到健康部落", U('Index/index'), true);
                     }
                 } else {
@@ -99,7 +94,7 @@ class IndexController extends HomebaseController
 
     public function checkInvite()
     {
-//        return true;
+        return true;
         $this->checkLogin();
         $user = session('user');
         $where = array(
@@ -117,8 +112,8 @@ class IndexController extends HomebaseController
      */
     public function checkLogin()
     {
-//        $userInfo->openid = 'admin';
-//        return $userInfo;
+        $userInfo->openid = 'admin';
+        return $userInfo;
         if (sp_is_weixin()) {
             $userInfo = json_decode($_COOKIE['userInfo']);
             $user = session('user');
@@ -204,7 +199,6 @@ class IndexController extends HomebaseController
                     $user['avatar'] = $userInfo->headimgurl;
                 }
             }
-//            $data = $this->multi_array_sort($data, $user['num']);
         } elseif ($type == 2) {//爱心
             $data = M('good_order')->join('cmf_users ON cmf_good_order.openid = cmf_users.user_login')
                 ->field('cmf_users.user_login as openid,cmf_users.school as school,cmf_users.user_nicename as nick_name,cmf_users.avatar,sum(cmf_good_order.price) as num')
@@ -239,7 +233,6 @@ class IndexController extends HomebaseController
             }
         }
         $this->assign("data", $this->multi_array_sort($data, 'num'));
-//        $this->assign("data", $data);
         $this->assign("user", $user);
         $this->assign("type", $type);
         $this->assign("footer", "fuli");
@@ -833,10 +826,10 @@ class IndexController extends HomebaseController
             $map = '';
             if (!empty($_POST) && $type == 4) {//时间段
                 $startTime = strtotime(I('startTime'));
-                $endTime = strtotime(I('endTime'));
+                $endTime = strtotime(I('endTime')) + 86399;
                 $map['add_time'] = array('between', array($startTime, $endTime));
             } elseif ($type == 1) {//昨天
-                $startYesterday = mktime(0, 0, 0, date('m'), date('d') - 2, date('Y'));
+                $startYesterday = mktime(0, 0, 0, date('m'), date('d') - 1, date('Y'));
                 $endYesterday = $startYesterday + 3600 * 24;
                 $map['add_time'] = array('between', array($startYesterday, $endYesterday));
             } elseif ($type == 2) {//上周
