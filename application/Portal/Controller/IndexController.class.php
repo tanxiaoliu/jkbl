@@ -94,7 +94,7 @@ class IndexController extends HomebaseController
 
     public function checkInvite()
     {
-        return true;
+//        return true;
         $this->checkLogin();
         $user = session('user');
         $where = array(
@@ -112,8 +112,8 @@ class IndexController extends HomebaseController
      */
     public function checkLogin()
     {
-        $userInfo->openid = 'admin';
-        return $userInfo;
+//        $userInfo->openid = 'admin';
+//        return $userInfo;
         if (sp_is_weixin()) {
             $userInfo = json_decode($_COOKIE['userInfo']);
             $user = session('user');
@@ -721,31 +721,45 @@ class IndexController extends HomebaseController
         $datas = rtrim($datas, ',') . ']';
 
         //天
-        $timeStart = mktime(0, 0, 0, date('m'), date('d') - 6, date('Y'));
-        $timeEnd = mktime(0, 0, 0, date('m'), date('d'), date('Y')) - 1;
+        $timeStart=mktime(0,0,0,date('m'),date('d')-1,date('Y'));
+        $timeEnd=mktime(0,0,0,date('m'),date('d'),date('Y'))-1;
+//        $timeStart = mktime(0, 0, 0, date('m'), date('d') - 6, date('Y'));
+//        $timeEnd = mktime(0, 0, 0, date('m'), date('d'), date('Y')) - 1;
         $map['add_time'] = array('between', array($timeStart, $timeEnd));
         $nowNum = D('sport_record')->where($map)->sum('step_nums');
-
+//        var_dump(date('y-m-d',$timeStart));
+//        var_dump(date('y-m-d',$timeEnd));
         //周
-        $timeStart1 = mktime(0, 0, 0, date('m'), date('d') - date('w') - 42, date('Y'));
-        $timeEnd1 = mktime(23, 59, 59, date('m'), date('d') - date('w') - 6, date('Y'));
+        $timeStart1=mktime(0,0,0,date('m'),date('d')-date('w')+1,date('Y'));
+        $timeEnd1=mktime(23,59,59,date('m'),date('d')-date('w')+7,date('Y'));
+//        $timeStart1 = mktime(0, 0, 0, date('m'), date('d') - date('w') - 42, date('Y'));
+//        $timeEnd1 = mktime(23, 59, 59, date('m'), date('d') - date('w') - 6, date('Y'));
         $map1['openid'] = $userInfo->openid;
         $map1['add_time'] = array('between', array($timeStart1, $timeEnd1));
         $nowNum1 = D('sport_record')->where($map1)->sum('step_nums');
+        $nowCount1 = D('sport_record')->where($map1)->count();
+//        var_dump(date('y-m-d',$timeStart1));
+//        var_dump(date('y-m-d',$timeEnd1));
 
         //月
-        $timeStart2 = mktime(0, 0, 0, date('m') - 6, 1, date('Y'));
-        $timeEnd2 = mktime(23, 59, 59, date('m'), date('t'), date('Y'));
+//        $timeStart2 = mktime(0, 0, 0, date('m') - 6, 1, date('Y'));
+//        $timeEnd2 = mktime(23, 59, 59, date('m'), date('t'), date('Y'));
+        $timeStart2=mktime(0,0,0,date('m'),1,date('Y'));
+        $timeEnd2=mktime(23,59,59,date('m'),date('t'),date('Y'));
         $map2['openid'] = $userInfo->openid;
         $map2['add_time'] = array('between', array($timeStart2, $timeEnd2));
         $nowNum2 = D('sport_record')->where($map2)->sum('step_nums');
+        $nowCount2 = D('sport_record')->where($map2)->count();
+//        var_dump(date('y-m-d',$timeStart2));
+//        var_dump(date('y-m-d',$timeEnd2));
+//        var_dump($nowCount2);
 
         $num = D('sport_record')->where(array('openid' => $userInfo->openid))->sum('step_nums');
         $umap['user_login'] = $userInfo->openid;
         $status = D('users')->where($umap)->getField('status');
         $nowNum = $nowNum ? $nowNum / 7 : 0;
-        $nowNum1 = $nowNum1 ? $nowNum1 / 7 : 0;
-        $nowNum2 = $nowNum2 ? $nowNum2 / 7 : 0;
+        $nowNum1 = $nowNum1 ? $nowNum1 / $nowCount1 : 0;
+        $nowNum2 = $nowNum2 ? $nowNum2 / $nowCount2 : 0;
         $this->assign("userInfo", $userInfo);
         $this->assign("num", number_format($num));
         $this->assign("nowNum", sprintf("%.2f", $nowNum));
@@ -1156,16 +1170,24 @@ class IndexController extends HomebaseController
             for ($i = 1; $i <= 52; $i++) {
                 $timeStart = mktime(0, 0, 0, date('m'), date('d') - date('w') - 6 - (7 * ($i - 1)), date('Y'));
                 $timeEnd = mktime(23, 59, 59, date('m'), date('d') - date('w') - (7 * ($i - 1)), date('Y'));
+//                var_dump(date('y-m-d',$timeStart));
+//                var_dump(date('y-m-d',$timeEnd));
                 if ($timeStart > '1483056000') {
                     $map['add_time'] = array('between', array($timeStart, $timeEnd));
                     $data['add_time'] = date('Y年W周', $timeStart);
                     $step_nums = D('sport_record')->where($map)->sum('step_nums');
+                    $step_count = D('sport_record')->where($map)->count();
                     if ($type == 1) {
-                        $data['step_ka'] = $step_nums ? $this->getKa($step_nums) : 0;
+                        $data['step_ka'] = $step_nums ? $this->getKa($step_nums/$step_count) : 0;
+                        if($data['step_ka'] != 0) {
+                            $record[] = $data;
+                        }
                     } else {
-                        $data['step_nums'] = $step_nums ?: 0;
+                        $data['step_nums'] = $step_nums ?$step_nums/$step_count: 0;
+                        if($data['step_nums'] != 0) {
+                            $record[] = $data;
+                        }
                     }
-                    $record[] = $data;
                 }
             }
         } elseif ($date == 2) {
@@ -1176,12 +1198,18 @@ class IndexController extends HomebaseController
                     $map['add_time'] = array('between', array($timeStart, $timeEnd));
                     $data['add_time'] = date('Y年m月', $timeStart);
                     $step_nums = D('sport_record')->where($map)->sum('step_nums');
+                    $step_count = D('sport_record')->where($map)->count();
                     if ($type == 1) {
-                        $data['step_ka'] = $step_nums ? $this->getKa($step_nums) : 0;
+                        $data['step_ka'] = $step_nums ? sprintf("%.2f", $this->getKa($step_nums/$step_count)) : 0;
+                        if($data['step_ka'] != 0) {
+                            $record[] = $data;
+                        }
                     } else {
-                        $data['step_nums'] = $step_nums ?: 0;
+                        $data['step_nums'] = $step_nums ?sprintf("%.2f", $step_nums/$step_count): 0;
+                        if($data['step_nums'] != 0) {
+                            $record[] = $data;
+                        }
                     }
-                    $record[] = $data;
                 }
             }
         } else {
