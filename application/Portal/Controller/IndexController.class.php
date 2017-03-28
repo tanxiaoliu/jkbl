@@ -384,7 +384,6 @@ class IndexController extends HomebaseController
                 $status = $data['status'];
             }
         }
-//        var_dump($data1);exit;
         $this->assign("userInfo", $userInfo);
         $this->assign("status", $status);
         $this->assign("sum", number_format($sum));
@@ -422,7 +421,6 @@ class IndexController extends HomebaseController
      */
     public function community()
     {
-        
         $this->checkLogin();
         // $data = D('users')->find(1);
         // session('user', $data);
@@ -437,7 +435,6 @@ class IndexController extends HomebaseController
         $map['istop'] = 0;
         $map['recommended'] = 0;
         $type = intval(I('type', '0', 'intval'));
-        $pengyouquan = array();
         if ($type == 1) {
             $attenUids = '';
             $attens = M('Attention')->where(array('uid' => $user['id']))->select();
@@ -833,9 +830,10 @@ class IndexController extends HomebaseController
         $rankDataCachKey = 'rankData_' . date('Y-m-d:H', time()) . '_' . $type . '_' . $grouptype;
         $rankUserCachKey = $userInfo->openid . 'rankUser_' . date('Y-m-d:H', time()) . '_' . $type . '_' . $grouptype;
         $data = unserialize(S($rankDataCachKey));
+//        $data = array();
         if (!empty($data)) {
             $user = unserialize(S($rankUserCachKey));
-            $data = array();
+//            $data = array();
         }
         if (empty($data) || $type == 4) {
             $map = '';
@@ -931,20 +929,24 @@ class IndexController extends HomebaseController
                 $map['user_login'] = $userInfo->openid;
                 $users = M('Users')->where($map)->find();
                 if ($userInfo->openid == $vl['openid']) {
-                    $user['rank'] = $key + 1;
+                    $user['rank'] = $key+1;
                     $user['nick_name'] = $users['user_nicename'];
                     $user['num'] = $vl['num'];
                     $user['avatar'] = $userInfo->headimgurl;
                 }
             }
         } elseif ($grouptype == 1) {
+            $rank = 0;
             foreach ($data as $key => $vl) {
+                $rank++;
                 $map['user_login'] = $userInfo->openid;
                 $users = M('Users')->where($map)->find();
                 if ($vl['id'] == $users['groupid']) {
-                    $user['rank'] = $key + 1;
+                    $count = M('Users')->where(array('groupid' => $users['groupid']))->count();
+                    $user['rank'] = $rank;
                     $user['nick_name'] = $vl['nick_name'];
                     $user['num'] = $vl['num'];
+                    $user['avgNum'] = intval($vl['num'] / $count);
                     $user['avatar'] = $vl['avatar'];
                 }
             }
