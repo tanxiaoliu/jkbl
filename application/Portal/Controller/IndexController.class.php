@@ -94,7 +94,7 @@ class IndexController extends HomebaseController
 
     public function checkInvite()
     {
-        return true;
+//        return true;
         $this->checkLogin();
         $user = session('user');
         $where = array(
@@ -112,8 +112,8 @@ class IndexController extends HomebaseController
      */
     public function checkLogin()
     {
-        $userInfo->openid = 'admin';
-        return $userInfo;
+//        $userInfo->openid = 'admin';
+//        return $userInfo;
         if (sp_is_weixin()) {
             $userInfo = json_decode($_COOKIE['userInfo']);
             $user = session('user');
@@ -1270,7 +1270,7 @@ class IndexController extends HomebaseController
             $users[$key]['score'] = M('sport_record')->where($mapRec)->getField('step_nums');
         }
         $this->assign("userInfo", $userInfo);
-        $this->assign("data", $users);
+        $this->assign("data", $this->multi_array_sort($users, 'score'));
         $this->assign("group", $group);
         $this->assign("footer", "zhishu");
         $this->display(":rankdetail");
