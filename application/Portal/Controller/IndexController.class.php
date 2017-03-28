@@ -681,8 +681,8 @@ class IndexController extends HomebaseController
         if ($type == 1) {//周
             for ($i = 0; $i < 7; $i++) {
                 $k = 7 - $i;
-                $timeStart = mktime(0, 0, 0, date('m'), date('d') - date('w') - 6 - (7 * ($k - 1)), date('Y'));
-                $timeEnd = mktime(23, 59, 59, date('m'), date('d') - date('w') - (7 * ($k - 1)), date('Y'));
+                $timeStart = mktime(0, 0, 0, date('m'), date('d') - date('w') + 1 - (7 * ($k - 1)), date('Y'));
+                $timeEnd = mktime(23, 59, 59, date('m'), date('d') - date('w') + 7 - (7 * ($k - 1)), date('Y'));
                 $map['add_time'] = array('between', array($timeStart, $timeEnd));
                 $date = date('W周', $timeStart);
                 $data = D('sport_record')->where($map)->sum('step_nums');
@@ -954,7 +954,6 @@ class IndexController extends HomebaseController
         return $user;
     }
 
-
     /**
      * 商城
      * @author tanhuaxin
@@ -1179,14 +1178,19 @@ class IndexController extends HomebaseController
                     $map['add_time'] = array('between', array($timeStart, $timeEnd));
                     $data['add_time'] = date('Y年W周', $timeStart);
                     $step_nums = D('sport_record')->where($map)->sum('step_nums');
-                    $step_count = D('sport_record')->where($map)->count();
+//                    $step_count = D('sport_record')->where($map)->count();
+                    if($i == 1){
+                        $count = date('w')-1;
+                    } else {
+                        $count = 7;
+                    }
                     if ($type == 1) {
-                        $data['step_ka'] = $step_nums ? $this->getKa($step_nums/$step_count) : 0;
+                        $data['step_ka'] = $step_nums ? sprintf("%.2f", $this->getKa($step_nums/$count)) : 0;
                         if($data['step_ka'] != 0) {
                             $record[] = $data;
                         }
                     } else {
-                        $data['step_nums'] = $step_nums ?$step_nums/$step_count: 0;
+                        $data['step_nums'] = $step_nums ?sprintf("%.2f", $step_nums/$count): 0;
                         if($data['step_nums'] != 0) {
                             $record[] = $data;
                         }
@@ -1201,14 +1205,19 @@ class IndexController extends HomebaseController
                     $map['add_time'] = array('between', array($timeStart, $timeEnd));
                     $data['add_time'] = date('Y年m月', $timeStart);
                     $step_nums = D('sport_record')->where($map)->sum('step_nums');
-                    $step_count = D('sport_record')->where($map)->count();
+//                    $step_count = D('sport_record')->where($map)->count();
+                    if($i == 1){
+                        $count = date('d')-1;
+                    } else {
+                        $count = date('d', $timeEnd);
+                    }
                     if ($type == 1) {
-                        $data['step_ka'] = $step_nums ? sprintf("%.2f", $this->getKa($step_nums/$step_count)) : 0;
+                        $data['step_ka'] = $step_nums ? sprintf("%.2f", $this->getKa($step_nums/$count)) : 0;
                         if($data['step_ka'] != 0) {
                             $record[] = $data;
                         }
                     } else {
-                        $data['step_nums'] = $step_nums ?sprintf("%.2f", $step_nums/$step_count): 0;
+                        $data['step_nums'] = $step_nums ?sprintf("%.2f", $step_nums/$count): 0;
                         if($data['step_nums'] != 0) {
                             $record[] = $data;
                         }
