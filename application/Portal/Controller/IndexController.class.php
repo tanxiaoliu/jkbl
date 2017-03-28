@@ -492,22 +492,27 @@ class IndexController extends HomebaseController
                 $pengyouquan[$key]['avatar'] = $users['avatar'];
                 $pengyouquan[$key]['user_nicename'] = $users['user_nicename'];
                 $pengyouquan[$key]['uid'] = $users['id'];
+                $pengyouquan[$key]['comment_count'] = D("Common/Comments")->where(array("post_table"=>'posts',"post_id"=>$vl['id'],"status"=>1))->count();
             }
         }
         if ($type == 2) {
-            $where = array("uid" => $user['id'], "status" => 1);
+            $where = array("uid" => $users['id'], "status" => 1);
             $pengyouquan = M('Comments')->where($where)->order('id DESC')->select();
             foreach ($pengyouquan as $key => &$vl) {
-                $posts = M('Posts')->find($vl['post_id']);
-                if (empty($posts['post_title'])) {
-                    $author = D('users')->find($posts['post_author']);
-                    $pengyouquan[$key]['title'] = $author['user_nicename'] . '的话题';
-                } else {
-                    $pengyouquan[$key]['title'] = $posts['post_title'];
-                }
                 $pengyouquan[$key]['avatar'] = $users['avatar'];
                 $pengyouquan[$key]['user_nicename'] = $users['user_nicename'];
                 $pengyouquan[$key]['uid'] = $users['id'];
+                $posts = M('Posts')->find($vl['post_id']);
+                if ($posts['post_status']!=3) {
+                    if (empty($posts['post_title'])) {
+                        $author = D('users')->find($posts['post_author']);
+                        $pengyouquan[$key]['title'] = $author['user_nicename'] . '的话题';
+                    } else {
+                        $pengyouquan[$key]['title'] = $posts['post_title'];
+                    }
+                }else{
+                    unset($pengyouquan[$key]);
+                }
             }
         }
         if ($type == 3) {
@@ -520,11 +525,15 @@ class IndexController extends HomebaseController
                 $pengyouquan[$key]['uid'] = $users['id'];
                 $pengyouquan[$key]['post_id'] = str_replace("posts", "", $vl['object']);
                 $posts = M('Posts')->find($pengyouquan[$key]['post_id']);
-                if (empty($posts['post_title'])) {
-                    $author = D('users')->find($posts['post_author']);
-                    $pengyouquan[$key]['title'] = $author['user_nicename'] . '的话题';
-                } else {
-                    $pengyouquan[$key]['title'] = $posts['post_title'];
+                if ($posts['post_status']!=3) {
+                    if (empty($posts['post_title'])) {
+                        $author = D('users')->find($posts['post_author']);
+                        $pengyouquan[$key]['title'] = $author['user_nicename'] . '的话题';
+                    } else {
+                        $pengyouquan[$key]['title'] = $posts['post_title'];
+                    }
+                }else{
+                    unset($pengyouquan[$key]);
                 }
             }
         }
@@ -568,22 +577,27 @@ class IndexController extends HomebaseController
                 $pengyouquan[$key]['avatar'] = $users['avatar'];
                 $pengyouquan[$key]['user_nicename'] = $users['user_nicename'];
                 $pengyouquan[$key]['uid'] = $users['id'];
+                $pengyouquan[$key]['comment_count'] = D("Common/Comments")->where(array("post_table"=>'posts',"post_id"=>$vl['id'],"status"=>1))->count();
             }
         }
         if ($type == 2) {
             $where = array("uid" => $uid, "status" => 1);
             $pengyouquan = M('Comments')->where($where)->order('id DESC')->select();
             foreach ($pengyouquan as $key => &$vl) {
-                $posts = M('Posts')->find($vl['post_id']);
-                if (empty($posts['post_title'])) {
-                    $author = D('users')->find($posts['post_author']);
-                    $pengyouquan[$key]['title'] = $author['user_nicename'] . '的话题';
-                } else {
-                    $pengyouquan[$key]['title'] = $posts['post_title'];
-                }
                 $pengyouquan[$key]['avatar'] = $users['avatar'];
                 $pengyouquan[$key]['user_nicename'] = $users['user_nicename'];
                 $pengyouquan[$key]['uid'] = $users['id'];
+                $posts = M('Posts')->find($vl['post_id']);
+                if ($posts['post_status']!=3) {
+                    if (empty($posts['post_title'])) {
+                        $author = D('users')->find($posts['post_author']);
+                        $pengyouquan[$key]['title'] = $author['user_nicename'] . '的话题';
+                    } else {
+                        $pengyouquan[$key]['title'] = $posts['post_title'];
+                    }
+                }else{
+                    unset($pengyouquan[$key]);
+                }
             }
         }
         if ($type == 3) {
@@ -596,12 +610,17 @@ class IndexController extends HomebaseController
                 $pengyouquan[$key]['uid'] = $users['id'];
                 $pengyouquan[$key]['post_id'] = str_replace("posts", "", $vl['object']);
                 $posts = M('Posts')->find($pengyouquan[$key]['post_id']);
-                if (empty($posts['post_title'])) {
-                    $author = D('users')->find($posts['post_author']);
-                    $pengyouquan[$key]['title'] = $author['user_nicename'] . '的话题';
-                } else {
-                    $pengyouquan[$key]['title'] = $posts['post_title'];
+                if ($posts['post_status']!=3) {
+                    if (empty($posts['post_title'])) {
+                        $author = D('users')->find($posts['post_author']);
+                        $pengyouquan[$key]['title'] = $author['user_nicename'] . '的话题';
+                    } else {
+                        $pengyouquan[$key]['title'] = $posts['post_title'];
+                    }
+                }else{
+                    unset($pengyouquan[$key]);
                 }
+                
             }
         }
         $this->assign("uid", $user['id']);
@@ -1147,6 +1166,14 @@ class IndexController extends HomebaseController
                 $result = M('sport')->add($data);
                 if ($result) {
                     header("Content-type:text/html;charset=utf-8");
+                    echo "<script> window.alert = function(name){
+                        var iframe = document.createElement('IFRAME');
+                        iframe.style.display='none';
+                        iframe.setAttribute('src', 'data:text/plain,');
+                        document.documentElement.appendChild(iframe);
+                        window.frames[0].window.alert(name);
+                        iframe.parentNode.removeChild(iframe);
+                    }; </script>";
                     echo "<script> alert('上传成功'); </script>";
                     echo "<meta http-equiv='Refresh' content='0;URL=" . U('index') . "'>";
                 } else {
