@@ -68,6 +68,7 @@ body,html {
     font-size: .65rem;
     line-height: 2.1rem;
     font-weight: bold;
+    z-index: 200;
 }
 
 .bottom ul li {

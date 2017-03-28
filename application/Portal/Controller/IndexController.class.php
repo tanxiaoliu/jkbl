@@ -94,7 +94,7 @@ class IndexController extends HomebaseController
 
     public function checkInvite()
     {
-//        return true;
+        return true;
         $this->checkLogin();
         $user = session('user');
         $where = array(
@@ -112,8 +112,8 @@ class IndexController extends HomebaseController
      */
     public function checkLogin()
     {
-//        $userInfo->openid = 'admin';
-//        return $userInfo;
+        $userInfo->openid = 'admin';
+        return $userInfo;
         if (sp_is_weixin()) {
             $userInfo = json_decode($_COOKIE['userInfo']);
             $user = session('user');
@@ -735,7 +735,7 @@ class IndexController extends HomebaseController
         $map1['openid'] = $userInfo->openid;
         $map1['add_time'] = array('between', array($timeStart1, $timeEnd1));
         $nowNum1 = D('sport_record')->where($map1)->sum('step_nums');
-        $nowCount1 = D('sport_record')->where($map1)->count();
+        $nowCount1 = $count = date('w')-1;
 //        var_dump(date('y-m-d',$timeStart1));
 //        var_dump(date('y-m-d',$timeEnd1));
 
@@ -747,7 +747,7 @@ class IndexController extends HomebaseController
         $map2['openid'] = $userInfo->openid;
         $map2['add_time'] = array('between', array($timeStart2, $timeEnd2));
         $nowNum2 = D('sport_record')->where($map2)->sum('step_nums');
-        $nowCount2 = D('sport_record')->where($map2)->count();
+        $nowCount2 = $count = date('d')-1;
 //        var_dump(date('y-m-d',$timeStart2));
 //        var_dump(date('y-m-d',$timeEnd2));
 //        var_dump($nowCount2);
@@ -868,6 +868,7 @@ class IndexController extends HomebaseController
                     $data[$key]['nick_name'] = $users['user_nicename'];
                     $data[$key]['school'] = $users['school'];
                 }
+                $this->multi_array_sort($data, 'num');
             } elseif ($grouptype == 1) {
                 $groups = array();
                 foreach ($data as $key => $vl) {
@@ -888,7 +889,7 @@ class IndexController extends HomebaseController
                 }
                 unset($groups[0]);
                 usort($groups, 'avgNum');
-                $data = $groups;
+                $data = $this->multi_array_sort($groups, 'avgNum');;
             }
             $user = $this->_getUserRank($grouptype, $data, $userInfo);
             S($rankDataCachKey, serialize($data), 3600);
@@ -913,6 +914,7 @@ class IndexController extends HomebaseController
             $this->assign("status", $status);
             $typeName = $typeName . '无记录';
         }
+
         $this->assign("grouptype", $grouptype);
         $this->assign("data", $data);
         $this->assign("user", $user);
@@ -1209,7 +1211,7 @@ class IndexController extends HomebaseController
                     if($i == 1){
                         $count = date('d')-1;
                     } else {
-                        $count = date('d', $timeEnd);
+                        $count = date('t', $timeStart);
                     }
                     if ($type == 1) {
                         $data['step_ka'] = $step_nums ? sprintf("%.2f", $this->getKa($step_nums/$count)) : 0;
