@@ -19,6 +19,7 @@
 		<form method="post" action="{:U('sport/importData')}" enctype="multipart/form-data">
 			<h3>导入记录(Excel表)：</h3>
 			<input  type="file" name="file_stu" />
+			选择时间：<input 	type="text" class="js-datetime" name="time" value="" style="width: 120px;" autocomplete="off"> 
 			<input type="submit" class="btn" value="批量导入" />
 		</form>
 		<form class="form-horizontal js-ajax-form" method="post">
@@ -30,7 +31,7 @@
 						<th>用户名</th>
 						<th>添加时间</th>
 						<th>步数</th>
-						<!--<th>{:L('ACTIONS')}</th>-->
+						<th>{:L('ACTIONS')}</th>
 					</tr>
 				</thead>
 				<foreach name="sport" item="vo">
@@ -40,10 +41,10 @@
 					<td>{$vo.nick_name}</td>
 					<td>{:date('Y-m-d H:i:s', $vo['add_time'])}</td>
 					<td>{$vo.step_nums}</td>
-					<!--<td>-->
+					<td>
 						<!--<a href="{:U('sport/add',array('id'=>$vo['id']))}">{:L('EDIT')}</a>|-->
-						<!--<a href="{:U('sport/delete',array('id'=>$vo['id']))}" class="js-ajax-delete">{:L('DELETE')}</a>-->
-					<!--</td>-->
+						<a href="{:U('sport/delete',array('id'=>$vo['id']))}" class="js-ajax-delete">{:L('DELETE')}</a>
+					</td>
 				</tr>
 				</foreach>
 			</table>

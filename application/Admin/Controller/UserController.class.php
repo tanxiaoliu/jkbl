@@ -154,13 +154,21 @@ class UserController extends AdminbaseController{
 		$this->assign($user);
 		$this->display();
 	}
+	// 管理员个人信息修改
+	public function useredit(){
+		$id=I('id');
+		$user=M('Users')->where(array("id"=>$id))->find();
+		$this->assign($user);
+		$this->display();
+	}
 
 	// 管理员个人信息修改提交
-	public function userinfo_post(){
+	public function useredit_post(){
 		if (IS_POST) {
-			$_POST['id']=sp_get_current_admin_id();
+			$_POST['id']=I('request.id');
+			$_POST['school']=I('request.school');
 			$create_result=$this->users_model
-			->field("id,user_nicename,sex,birthday,user_url,signature")
+			->field("id,user_nicename,school")
 			->create();
 			if ($create_result!==false) {
 				if ($this->users_model->save()!==false) {

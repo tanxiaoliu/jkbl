@@ -898,7 +898,8 @@
 })();
 
 function comment_reply(obj){
-	
+	$("#dibu_caidan").hide();
+	$("#fabiao_anniu").hide();
 	$(".comments .comment-reply-submit").hide();
 	var $this=$(obj);
 	var $comment_body=$this.parents(".comments > .comment> .comment-body");
@@ -919,7 +920,8 @@ function comment_reply(obj){
 }
 
 function comment_submit(obj){
-	
+	$("#dibu_caidan").show();
+	$("#fabiao_anniu").show();
 	Wind.use('noty', function () {
 		
 		var $this=$(obj);

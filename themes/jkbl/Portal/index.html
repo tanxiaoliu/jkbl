@@ -28,8 +28,8 @@
                         <li class="rank-num1">NO.{$i}</li>
                         <li style="text-align: center; width: 13%;"><span class="rank_head1" style="background-image: url('{$vo.avatar|default='__TMPL__Public/assets/images/0.png'}');"></span></li>
                         <li class="ming">
-                            <div class="ming-n">{$vo.nick_name}</div>
-                            <div class="ming-s">{$vo.school|default='暂无'}</div>
+                            <div class="ming-n">{$vo.nick_name|msubstr=0,6,'utf-8',false}</div>
+                            <div class="ming-s">{$vo.school|default='暂无'|msubstr=0,6,'utf-8',false}</div>
                         </li>
                         <if condition="$type ==0 ">
                             <li class="count1">连续天数:{$vo.num}</li>

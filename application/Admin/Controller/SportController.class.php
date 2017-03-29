@@ -116,17 +116,15 @@ class SportController extends AdminbaseController
 
     }
 
-    // 审核记录
+    // 删除
     public function delete()
-    {
+    {   
         $id = I("get.id", 0, 'intval');
-        $status = I("get.status", 0, 'intval');
-        $data['status'] = $status==1?0:1;
-        if (M('sport')->where(array('id' => $id))->save($data) !== false) {
+        if ($this->sport_model->where(array('id' => $id))->delete() !== false) {
             $this->_cleanFileCache();
-            $this->success("审核成功！");
+            $this->success("删除成功！");
         } else {
-            $this->error("审核失败！");
+            $this->error("删除失败！");
         }
     }
 
@@ -163,13 +161,14 @@ class SportController extends AdminbaseController
              */
             //spl_autoload_register ( array ('Think', 'autoload' ) );
             /*对生成的数组进行数据库的写入*/
+            $time = isset($_POST['time'])?strtotime($_POST['time']):time();
             foreach ($res as $k => $v) {
                 if ($k != 1) {
                     if ($v[2] != 0) {
                         //添加运动记录
                         $data ['openid'] = $v[0];
                         $data ['nick_name'] = $v[1];
-                        $data ['add_time'] = time();
+                        $data ['add_time'] = $time;
                         $data ['step_nums'] = $v[2];
                         $result = M('SportRecord')->add($data);
                         if (!$result) {
@@ -178,7 +177,7 @@ class SportController extends AdminbaseController
                         //添加腾币记录
                         $coinData ['openid'] = $v[0];
                         $coinData ['type'] = 1;
-                        $coinData ['add_time'] = time();
+                        $coinData ['add_time'] = $time;
                         $coinData ['coin'] = $v[2];
                         $coinData ['type_id'] = $result;
                         $coinResult = M('CoinRecord')->add($coinData);

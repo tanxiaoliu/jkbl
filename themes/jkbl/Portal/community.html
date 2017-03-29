@@ -44,6 +44,7 @@
             line-height: 3.3rem;
             height: 3.3rem;
             font-weight: bold;
+            z-index: 200;
         }
         .bottom a{
             color: #323232;
@@ -89,14 +90,6 @@
                         <div class="logo-container">
                             <img class="logo" src="__TMPL__Public/assets/images/comunity.jpg">
                         </div>
-                        <!-- <div class="ordinary-logo-rank">
-                        <span class="name">
-                        运动健身类
-                        </span>
-                        &lt;!&ndash;<span class="rank">&ndash;&gt;
-                        &lt;!&ndash;No.2311&ndash;&gt;
-                        &lt;!&ndash;</span>&ndash;&gt;
-                        </div> -->
                         <div class="name-info">
                             <div class="labels">
                                         <span class="name" style="font-size: 1.2rem;font-weight: bold;margin-left: 1rem;">
@@ -124,17 +117,8 @@
                         </div>
                         <div class="GradeInfo">
                                     <span class="info-num">
-                                        <!--<div class="info-level" id="info_level">-->
-                                        <!--<span data-lcontent="LV.2 " class="l-level lv2">-->
-                                        <!--LV.2-->
-                                        <!--</span>-->
-                                        <!--<span class="info-name">-->
-                                        <!--</span>-->
-                                        <!--</div>-->
                                         <span style="font-size: 0.8rem;line-height: 1;color: #fff;margin-left: 1rem;">
-                                            <!--<span class="l-inner-bar" style="width: 83.3333%;">-->
-                                                乐享健康生活，有你有我
-                                            <!--</span>-->
+                                            乐享健康生活，有你有我
                                         </span>
                                     </span>
                         </div>
@@ -159,9 +143,8 @@
                     </div>
                 </div>
             </div>
-            <!-- react-empty: 4 -->
             <!-- react-empty: 5 -->
-            <div class="PostList" style="margin-bottom:4rem;margin-top: 0.5rem;">
+            <div class="PostList" style="margin-top: 0.5rem;">
                 <ul class="scroll-view post-list">
                     <foreach name="pengyouquan" item="vo">
                     <if condition="!empty($vo['user_nicename'])">
@@ -219,6 +202,7 @@
                         </li>
                     </if>
                     </foreach>
+                    <div style="height: 4rem;"></div>
                 </ul>
             </div>
             <!-- react-empty: 10 -->
@@ -234,15 +218,11 @@
 </div>
 
 <div id="publish-panel" class="pub-float pub" style="height: 1331px;display: none;">
-    <!--<form id="loginform" name="loginform" method="post" action="{:U('post')}"  class="form-horizontal " onsubmit="return check(this)">-->
     <div id="close" class="publish-close-btn" ></div>
     <div data-reactroot="" class="pub-con">
         <div class="pub-wrap section-1px show">
             <form id="loginform" name="loginform" method="post" action="{:U('publishedpAbout')}"  class="form-horizontal" onsubmit="return check(this)">
             <input type="text" name="post_image" id="post_image" value="" style="display: none">
-            <!--<div class="pub-theme section-1px">-->
-                <!--<input type="text" class="ipt-theme" name="post_content" id="post_content" value="" placeholder="标题，4-25个字">-->
-            <!--</div>-->
             <div class="editor-outer">
         <textarea class="editor" name="post_content" id="post_content" style="border: 0.1rem solid #efeff4;" placeholder=""></textarea>
         <textarea id="cp-editor">
@@ -291,9 +271,6 @@
             </ul>
         </div>
     </div>
-    <div class="zhezhao">sdsdsdss</div>
-
-    <!--</form>-->
 </div>
 <script>
     $(document).ready(function(){
@@ -302,14 +279,6 @@
             $("#fabiao_anniu").hide();
         });
         $("textarea").blur(function(){
-            $("#dibu_caidan").show();
-            $("#fabiao_anniu").show();
-        });
-        $("input").focus(function(){
-            $("#dibu_caidan").hide();
-            $("#fabiao_anniu").hide();
-        });
-        $("input").blur(function(){
             $("#dibu_caidan").show();
             $("#fabiao_anniu").show();
         });
@@ -328,11 +297,12 @@
                     if (realHight<windowHight) {
                         var margin = (windowHight-realHight);
                         $this.css('margin-top',margin);   
-                    };                    
-
+                    }; 
+                    $("body").css('overflow-y','hidden');                   
                     $this.parent().addClass('zhezhao');
                     $this.css('width','100%');
                 }else{
+                    $("body").css('overflow-y','auto');                   
                     $this.parent().removeClass('zhezhao');
                     $this.css('width','8rem');
                     $this.css('margin-top','');
@@ -346,9 +316,7 @@
             var $this=$(this);
             $this.click(function(){
             $this.parent().next(".comment-area").toggle();
-                // $this.parent().next(".comment-area").css('display','block'); 
             });
-            // $this.parent().next(".comment-area").toggle()  
         });
         $(".btn-del").click(function(){
             $(".up-pic").hide();
@@ -381,6 +349,14 @@
             }
         });
     });
+    function yincang(){
+        $("#dibu_caidan").hide();
+        $("#fabiao_anniu").hide();
+    }
+    function xianshi(){
+        $("#dibu_caidan").show();
+        $("#fabiao_anniu").show();
+    }
 </script>
 <script src="__TMPL__Public/assets/js/jquery-1.9.1.min.js"></script>
 <script src="__TMPL__Public/assets/js/jquery.form.js"></script>

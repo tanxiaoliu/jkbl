@@ -7,19 +7,13 @@
 <div>
     <tc_include file="Public:nav1" />
     <div class="p-content">
-        <!--<ul>-->
-            <!--<li>-->
                 <div class="p-img1"><img src="{$userInfo->headimgurl|default='__TMPL__Public/assets/images/0.png'}" alt=""></div>
                     <div class="p-name">{$userInfo->nickname}</div>
                     <eq name="status" value="0"><a class="modaltrigger" href="#loginmodal"><div class="detail-btn1">修改名字</div></a></eq>
-            <!--</li>-->
-           <!--<li>-->
                <a class="modaltrigger" href="#sportmodal" style="position: relative;top: 2rem; left: 9.35rem;height: 1rem;line-height: 1rem;"><div class="p-sc"></div></a>
                <div class="p-kilometer">累计：<span style="font-size: 0.7rem;">{$num|default=0}</span> 步</div>
-           <!--</li>-->
-        <!--</ul>-->
     </div>
-    <div id="main" style="width: 330px;height:230px; margin: -5px 0 -10px -25px;"></div>
+    <div id="main" style="width: 15rem;height:9rem; margin: -20px 0 -10px -20px;"></div>
     <div class="p-zq">
         <ul>
             <li><a href="{:U('index', array('type'=>'0'))}" <if condition="$type eq 0">style="background: #00a0e9;color: #ffffff;"</if>>日</a></li>
@@ -27,17 +21,13 @@
             <li><a href="{:U('index', array('type'=>'2'))}" <if condition="$type eq 2">style="background: #00a0e9;color: #ffffff;"</if>>月</a></li>
         </ul>
     </div>
-    <!--<div>-->
-        <!--<div style="background-color: red; width: 10%"></div>-->
-        <!--<div style="background-color: #00a0e9; width: 90%;"></div>-->
-    <!--</div>-->
     <div class="p-bu">
         <div class="p-jl">
             点击可看记录
         </div>
         <div>
             <ul>
-                <a href="{:U('personallist', array('type'=>'0', 'date'=>'1'))}">
+                <a href="{:U('personallist', array('type'=>'0', 'date'=>'0'))}">
                 <li style="background: #00a0e9;">
                     <p class="p-bu-p">日步数</p>
                     {$nowNum} 步

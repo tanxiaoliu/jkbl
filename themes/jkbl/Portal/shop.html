@@ -45,7 +45,7 @@
                         <li>
                             <img src="/data/upload/{$vo.url}">
                             <input type="hidden" value="{$vo.id}">
-                            <span style="font-size: 0.6rem; color: #323232;">{$vo.name}</span>
+                            <p style="font-size: 0.6rem;color: #323232; height: 1rem;line-height: 1rem;text-align: center;">{$vo.name|msubstr=0,12,'utf-8',false}</p>
                             <span>￥{$vo.price}腾币 <a href="#loginmodal" class="flatbtn modaltrigger" style="color: #81c268;"> 兑换</a></span>
                         </li>
                     </foreach> 
@@ -65,9 +65,9 @@
                 <ul>
                    <foreach name="othergood" item="vo">
                         <li>
-                            <span>{$vo.name}</span>
                             <img src="/data/upload/{$vo.url}">
                             <input type="hidden" value="{$vo.id}">
+                            <p style="font-size: 0.6rem;color: #323232; height: 1rem;line-height: 1rem;text-align: center;">{$vo.name|msubstr=0,12,'utf-8',false}</p>
                             <span>￥{$vo.price}腾币 <a href="javascript:void(0)" class="gongyi"> 兑换</a></span>
                         </li>
                     </foreach> 
@@ -182,12 +182,7 @@
 /*                    console.log($("#loginform").serialize())
                     console.log(data)*/
                     if (data.status==1&&data.state=='success') {
-<<<<<<< HEAD
-                        alert(data.info);
-                        window.location.href=data.url;
-=======
                         tishi(data.info,data.url);
->>>>>>> a6bad98aea6fe899fc73d122f500761563654bc2
                     }else{
                         tishi(data.info);
                     }

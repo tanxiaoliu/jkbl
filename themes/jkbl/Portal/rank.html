@@ -31,12 +31,13 @@
                         <li style="text-align: center; width: 13%;"><a href="{:U('rankdetail', array('groupid'=>$vo['id'], 'startTime'=>I('startTime'), 'endTime'=>I('endTime')))}"><span class="rank_head1" style="background-image: url('{$vo.avatar|default='__TMPL__Public/assets/images/0.png'}');"></span></a></li>
                         <li class="ming">
                             <if condition="$grouptype eq 0">
-                                <div class="ming-n">{$vo.nick_name}</div>
+                                <div class="ming-n">{$vo.nick_name|msubstr=0,6,'utf-8',false}</div>
+                                <div class="ming-s">{$vo.school|default='暂无'|msubstr=0,6,'utf-8',false}</div>
                             </if>
                             <if condition="$grouptype eq 1">
-                                <div class="ming-s" style="height: 1rem;line-height: 1rem;">{$vo.nick_name}[{$vo.num|default=0}步]</div>
+                                <div class="ming-s" style="height: 1rem;line-height: 1rem;">{$vo.nick_name|msubstr=0,6,'utf-8',false}</div>
+                                <div class="ming-s">总计:{$vo.num|default=0}</div>
                             </if>
-                            <div class="ming-s">{$vo.school|default='暂无'}</div>
                         </li>
                         <if condition="$grouptype eq 0">
                         <li class="count1">步数:{$vo.num}</li>
@@ -62,7 +63,7 @@
                 <li class="ming" style="line-height: 2rem; font-size: 0.55rem;">
                     <if condition="$grouptype eq 0">当前自己排名<else/>当前联盟排名</if>
                 </li>
-                <li class="count1">步数：{$user['num']|default='0'}</li>
+                <li class="count1">步数： <if condition="$grouptype eq 0">{$user['num']|default='0'}<else/>{$user['avgNum']|default='0'}</if></li>
             </ul>
         </div>
     </div>
