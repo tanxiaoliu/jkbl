@@ -568,7 +568,7 @@ class IndexController extends HomebaseController
         }
         if ($type == 3) {
             $where = array("user" => $uid, "action" => 'Portal-Article-do_like');
-            $pengyouquan = M("CommonActionLog")->where($where)->limit(50)->select();
+            $pengyouquan = M("CommonActionLog")->where($where)->order('id DESC')->limit(50)->select();
             foreach ($pengyouquan as $key => &$vl) {
                 $pengyouquan[$key]['last_time'] = date('Y-m-d H:i:s', $pengyouquan[$key]['last_time']);
                 $pengyouquan[$key]['avatar'] = $users['avatar'];
