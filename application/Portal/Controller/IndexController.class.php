@@ -497,7 +497,7 @@ class IndexController extends HomebaseController
         }
         if ($type == 2) {
             $where = array("uid" => $users['id'], "status" => 1);
-            $pengyouquan = M('Comments')->where($where)->order('id DESC')->select();
+            $pengyouquan = M('Comments')->where($where)->order('createtime DESC')->select();
             foreach ($pengyouquan as $key => &$vl) {
                 $pengyouquan[$key]['avatar'] = $users['avatar'];
                 $pengyouquan[$key]['user_nicename'] = $users['user_nicename'];
@@ -517,7 +517,7 @@ class IndexController extends HomebaseController
         }
         if ($type == 3) {
             $where = array("user" => $user['id'], "action" => 'Portal-Article-do_like');
-            $pengyouquan = M("CommonActionLog")->where($where)->limit(50)->select();
+            $pengyouquan = M("CommonActionLog")->where($where)->order('last_time DESC')->limit(50)->select();
             foreach ($pengyouquan as $key => &$vl) {
                 $pengyouquan[$key]['last_time'] = date('Y-m-d H:i:s', $pengyouquan[$key]['last_time']);
                 $pengyouquan[$key]['avatar'] = $users['avatar'];
@@ -582,7 +582,7 @@ class IndexController extends HomebaseController
         }
         if ($type == 2) {
             $where = array("uid" => $uid, "status" => 1);
-            $pengyouquan = M('Comments')->where($where)->order('id DESC')->select();
+            $pengyouquan = M('Comments')->where($where)->order('createtime DESC')->select();
             foreach ($pengyouquan as $key => &$vl) {
                 $pengyouquan[$key]['avatar'] = $users['avatar'];
                 $pengyouquan[$key]['user_nicename'] = $users['user_nicename'];
@@ -602,7 +602,7 @@ class IndexController extends HomebaseController
         }
         if ($type == 3) {
             $where = array("user" => $uid, "action" => 'Portal-Article-do_like');
-            $pengyouquan = M("CommonActionLog")->where($where)->order('id DESC')->limit(50)->select();
+            $pengyouquan = M("CommonActionLog")->where($where)->order('last_time DESC')->limit(50)->select();
             foreach ($pengyouquan as $key => &$vl) {
                 $pengyouquan[$key]['last_time'] = date('Y-m-d H:i:s', $pengyouquan[$key]['last_time']);
                 $pengyouquan[$key]['avatar'] = $users['avatar'];
