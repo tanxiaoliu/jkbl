@@ -164,7 +164,7 @@ class SportController extends AdminbaseController
             $time = isset($_POST['time'])?strtotime($_POST['time']):time();
             foreach ($res as $k => $v) {
                 if ($k != 1) {
-                    if ($v[2] != 0) {
+//                    if ($v[2] != 0) {
                         //添加运动记录
                         $data ['openid'] = $v[0];
                         $data ['nick_name'] = $v[1];
@@ -187,7 +187,7 @@ class SportController extends AdminbaseController
                         //更新用户的总腾币
                         $map['user_login'] = $v[0];
                         M('Users')->where($map)->setInc('score', $v[2]);
-                    }
+//                    }
                 }
             }
             $this->_cleanFileCache();

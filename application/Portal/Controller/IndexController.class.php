@@ -168,6 +168,7 @@ class IndexController extends HomebaseController
                 $data['create_time'] = date("Y-m-d H:i:s", time());
                 $data['user_type'] = 2;
                 $data['id'] = D('users')->add($data);
+
                 session('ADMIN_ID', 1);
                 session('user', $data);
                 setcookie('userInfo', $result2);
@@ -869,8 +870,8 @@ class IndexController extends HomebaseController
                 $endLastweek = mktime(23, 59, 59, date('m'), date('d') - date('w') + 7 - 7, date('Y'));
                 $map['add_time'] = array('between', array($beginLastweek, $endLastweek));
             } elseif ($type == 3) {//上月
-                $beginThismonth = mktime(0, 0, 0, date('m'), 1, date('Y'));
-                $endThismonth = mktime(23, 59, 59, date('m'), date('t'), date('Y'));
+                $beginThismonth = mktime(0, 0, 0, date('m')-1, 1, date('Y'));
+                $endThismonth = mktime(23,59,59,date("m") ,0,date("Y"));
                 $map['add_time'] = array('between', array($beginThismonth, $endThismonth));
             } else {
                 $startYesterday = mktime(0, 0, 0, date('m'), date('d') - 1, date('Y'));

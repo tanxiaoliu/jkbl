@@ -10,8 +10,8 @@
     <tc_include file="Public:nav1" />
     <div class="rank-content-nav">
         <ul>
-            <li class="<if condition="$grouptype eq 0">gray_rank</if>"><a href="{:U('Index/rank')}">个人排名</a></li>
-            <li class="<if condition="$grouptype eq 1">gray_rank</if>"><a href="{:U('Index/rank', array('grouptype'=>1))}">联盟排名</a></li>
+            <li><a href="{:U('Index/rank')}">个人排名</a></li>
+            <li class="gray_rank"><a href="{:U('Index/rank', array('grouptype'=>1))}">联盟排名</a></li>
         </ul>
     </div>
     <div class="content" style="margin-top: -0.5rem;">
@@ -19,7 +19,7 @@
             <div style="width:100%; height:14.5rem; overflow-x: hidden; overflow-y: auto; font-size: 0.45rem;">
                 <volist name="data" id="vo" offset="0" length='50'>
                     <ul>
-                        <li class="rank-num1">NO.{$i}</li>
+                        <li class="rank-num1">no.{$i}</li>
                         <li style="text-align: center; width: 13%;"><span class="rank_head1" style="background-image: url('{$vo.avatar|default='__TMPL__Public/assets/images/0.png'}');"></span></li>
                         <li class="ming">
                             <div class="ming-n">{$vo.user_nicename|msubstr=0,6,'utf-8',false}</div>
