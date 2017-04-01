@@ -34,7 +34,11 @@
                         </li>
                         <if condition="$type ==0 ">
                             <li class="count1">连续天数:{$vo.num}</li>
-                            <else />
+                        </if>
+                        <if condition="$type ==1 ">
+                            <li class="count1">腾币:{$vo.num}</li>
+                        </if>
+                        <if condition="$type ==2 ">
                             <li class="count1">步数:{$vo.num}</li>
                         </if>
                         <eq name="i" value="1">
