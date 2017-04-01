@@ -112,7 +112,7 @@ class IndexController extends HomebaseController
      */
     public function checkLogin()
     {
-//        $userInfo->openid = 'admin';
+//        $userInfo->openid = 'oexX2s29EG6CKqQUTgHn4wpsZAKE';
 //        return $userInfo;
         if (sp_is_weixin()) {
             $userInfo = json_decode($_COOKIE['userInfo']);
@@ -193,7 +193,7 @@ class IndexController extends HomebaseController
 
         if ($type == 1) {//腾币
             $map['id'] = array('neq', '1');
-            $data = M('Users')->where($map)->field('user_login as openid,user_nicename as nick_name,score as num,school,avatar')->order('score desc,last_login_time desc')->select();
+            $data = M('Users')->where($map)->field('user_login as openid,user_nicename as nick_name,score as num,school,avatar')->order('score desc, convert(user_nicename using gbk) ASC')->select();
             foreach ($data as $key => $vl) {
                 if ($userInfo->openid == $vl['openid']) {
                     $user['rank'] = $key + 1;
@@ -206,7 +206,7 @@ class IndexController extends HomebaseController
             if(M('good_order')->select()) {
                 $data = M('good_order')->join('cmf_users ON cmf_good_order.openid = cmf_users.user_login')
                     ->field('cmf_users.user_login as openid,cmf_users.school as school,cmf_users.user_nicename as nick_name,cmf_users.avatar,sum(cmf_good_order.price) as num')
-                    ->where('cmf_good_order.type = 2')->order('num DESC')->select();
+                    ->where('cmf_good_order.type = 2')->order('num DESC, convert(cmf_users.user_nicename using gbk) ASC')->select();
                 foreach ($data as $key => $vl) {
                     if ($userInfo->openid == $vl['openid']) {
                         $user['rank'] = $key + 1;
@@ -221,7 +221,7 @@ class IndexController extends HomebaseController
             $startYesterday = mktime(0, 0, 0, date('m'), date('d') - 1, date('Y'));
             $endYesterday = $startYesterday + 3600 * 24;
             $map['add_time'] = array('between', array($startYesterday, $endYesterday));
-            $data = M('sport_record')->where($map)->field('openid')->group('openid')->order('add_time DESC')->select();
+            $data = M('sport_record')->where($map)->field('openid')->group('openid')->select();
             foreach ($data as $key => $vl) {
                 $data[$key]['num'] = $this->getDayCount($vl['openid']);
                 $mapUser['user_login'] = $vl['openid'];
@@ -236,8 +236,9 @@ class IndexController extends HomebaseController
                     $user['avatar'] = $userInfo->headimgurl;
                 }
             }
+            $data = $this->multi_array_sort($data, 'num');
         }
-        $this->assign("data", $this->multi_array_sort($data, 'num'));
+        $this->assign("data", $data);
         $this->assign("user", $user);
         $this->assign("type", $type);
         $this->assign("footer", "fuli");
@@ -306,17 +307,19 @@ class IndexController extends HomebaseController
         $users = M('Users')->where($map)->find();
         $map = array();
         $type = intval(I('type'));
-        $memberCachKey = $users['groupid'] . '_member_' . date('Y-m-d:H', time()) . '_' . $type;
-        S($memberCachKey, null);
-        $data = unserialize(S($memberCachKey));
-//        $data = array();
+//        $memberCachKey = $users['groupid'] . '_member_' . date('Y-m-d:H', time()) . '_' . $type;
+//        S($memberCachKey, null);
+//        $data = unserialize(S($memberCachKey));
+        $data = array();
         $sum = 0;
         $status = empty($users['groupid']) ? 0 : 1;
         if ($status == 1 && (empty($data) || $type == 4 || $data['data'] == '[]')) {
             $typeName = date('Y-m-d', time() - 3600 * 24) . '  累计';//默认时间
             if (!empty($_POST) && $type == 4) {//时间段
+//                $startTime = strtotime(I('startTime'));
+//                $endTime = strtotime(I('endTime'));
                 $startTime = strtotime(I('startTime'));
-                $endTime = strtotime(I('endTime'));
+                $endTime = strtotime(I('endTime')) + 86399;
                 $typeName = date('Y-m-d', $startTime) . ' ~ ' . date('Y-m-d', $endTime) . ' 累计';
                 $map['add_time'] = array('between', array($startTime, $endTime));
             }
@@ -332,8 +335,9 @@ class IndexController extends HomebaseController
                 $map['add_time'] = array('between', array($beginLastweek, $endLastweek));
             } elseif ($type == 3) {//上月
                 $typeName = '上月统计 累计';
-                $beginThismonth = mktime(0, 0, 0, date('m'), 1, date('Y'));
-                $endThismonth = mktime(23, 59, 59, date('m'), date('t'), date('Y'));
+                $beginThismonth = mktime(0, 0, 0, date('m')-1, 1, date('Y'));
+                $t = date('t',strtotime($beginThismonth));
+                $endThismonth = mktime(23, 59, 59, date('m')-1, $t, date('Y'));
                 $map['add_time'] = array('between', array($beginThismonth, $endThismonth));
             }
             $data = '[';
@@ -374,21 +378,22 @@ class IndexController extends HomebaseController
                 }
             }
             $data = rtrim($data, ',') . ']';
-            $list = array(
-                'data' => $data,
-                'sum' => $sum,
-                'status' => $status
-            );
-            S($memberCachKey, serialize($list), 3600);
-        } else {
-            if ($status == 0) {
-                $data = '[]';
-            } else {
-                $sum = $data['sum'];
-                $data = $data['data'];
-                $status = $data['status'];
-            }
+//            $list = array(
+//                'data' => $data,
+//                'sum' => $sum,
+//                'status' => $status
+//            );
         }
+//            S($memberCachKey, serialize($list), 3600);
+//        } else {
+//            if ($status == 0) {
+//                $data = '[]';
+//            } else {
+//                $sum = $data['sum'];
+//                $data = $data['data'];
+//                $status = $data['status'];
+//            }
+//        }
         $this->assign("userInfo", $userInfo);
         $this->assign("status", $status);
         $this->assign("sum", number_format($sum));
@@ -717,8 +722,11 @@ class IndexController extends HomebaseController
         } elseif ($type == 2) {//月
             for ($i = 0; $i < 7; $i++) {
                 $k = 7 - $i;
-                $timeStart = mktime(0, 0, 0, date('m') - ($k - 1), 1, date('Y'));
-                $timeEnd = mktime(23, 59, 59, date('m') - ($k - 1), date('t'), date('Y'));
+//                $timeStart = mktime(0, 0, 0, date('m') - ($k - 1), 1, date('Y'));
+//                $timeEnd = mktime(23, 59, 59, date('m') - ($k - 1), date('t'), date('Y'));
+                $timeStart = mktime(0, 0, 0, date('m')-($k - 1)-1, 1, date('Y'));
+                $t = date('t',strtotime($timeStart));
+                $timeEnd = mktime(23, 59, 59, date('m')-($k - 1)-1, $t, date('Y'));
                 $map['add_time'] = array('between', array($timeStart, $timeEnd));
                 $date = date('m月', $timeStart);
                 $data = D('sport_record')->where($map)->sum('step_nums');
@@ -752,14 +760,16 @@ class IndexController extends HomebaseController
 //        var_dump(date('y-m-d',$timeStart));
 //        var_dump(date('y-m-d',$timeEnd));
         //周
-        $timeStart1=mktime(0,0,0,date('m'),date('d')-date('w')+1,date('Y'));
-        $timeEnd1=mktime(23,59,59,date('m'),date('d')-date('w')+7,date('Y'));
+//       $timeStart1=mktime(0,0,0,date('m'),date('d')-date('w')+1,date('Y'));
+//      $timeEnd1=mktime(23,59,59,date('m'),date('d')-date('w')+7,date('Y'));
+		 $timeStart1=mktime(0,0,0,date('m'),date('d')-date('w')-6,date('Y'));
+        $timeEnd1=mktime(23,59,59,date('m'),date('d')-date('w'),date('Y'));
 //        $timeStart1 = mktime(0, 0, 0, date('m'), date('d') - date('w') - 42, date('Y'));
 //        $timeEnd1 = mktime(23, 59, 59, date('m'), date('d') - date('w') - 6, date('Y'));
         $map1['openid'] = $userInfo->openid;
         $map1['add_time'] = array('between', array($timeStart1, $timeEnd1));
         $nowNum1 = D('sport_record')->where($map1)->sum('step_nums');
-        $nowCount1 = $count = date('w')-1;
+         $nowCount1 = $count = date('w')==0?7:date('w')-1;
 //        var_dump(date('y-m-d',$timeStart1));
 //        var_dump(date('y-m-d',$timeEnd1));
 
@@ -874,8 +884,11 @@ class IndexController extends HomebaseController
                 $endTime = mktime(23, 59, 59, date('m'), date('d') - date('w') + 7 - 7, date('Y'));
                 $map['add_time'] = array('between', array($startTime, $endTime));
             } elseif ($type == 3) {//上月
+//                $startTime = mktime(0, 0, 0, date('m')-1, 1, date('Y'));
+//                $endTime = mktime(23,59,59,date("m") ,0,date("Y"));
                 $startTime = mktime(0, 0, 0, date('m')-1, 1, date('Y'));
-                $endTime = mktime(23,59,59,date("m") ,0,date("Y"));
+                $t = date('t',strtotime($startTime));
+                $endTime = mktime(23, 59, 59, date('m')-1, $t, date('Y'));
                 $map['add_time'] = array('between', array($startTime, $endTime));
             } else {
                 $startTime = mktime(0, 0, 0, date('m'), date('d') - 1, date('Y'));
@@ -1219,7 +1232,7 @@ class IndexController extends HomebaseController
                     $step_nums = D('sport_record')->where($map)->sum('step_nums');
 //                    $step_count = D('sport_record')->where($map)->count();
                     if($i == 1){
-                        $count = date('w')-1;
+                        $count = date('w')==0?7:date('w')-1;
                     } else {
                         $count = 7;
                     }
@@ -1238,8 +1251,13 @@ class IndexController extends HomebaseController
             }
         } elseif ($date == 2) {
             for ($i = 1; $i <= 25; $i++) {
+//                $timeStart = mktime(0, 0, 0, date('m')-($i - 1), 1, date('Y'));
+//                $t = date('t',strtotime($timeStart));
+//                $timeEnd = mktime(23, 59, 59, date('m')-($i - 1), $t, date('Y'));
+
                 $timeStart = mktime(0, 0, 0, date('m') - ($i - 1), 1, date('Y'));
-                $timeEnd = mktime(23, 59, 59, date('m') - ($i - 1), date('t'), date('Y'));
+                $t = date('t',strtotime($timeStart));
+                $timeEnd = mktime(23, 59, 59, date('m') - ($i - 1), $t, date('Y'));
                 if ($timeStart > '1483056000') {
                     $map['add_time'] = array('between', array($timeStart, $timeEnd));
                     $data['add_time'] = date('Y年m月', $timeStart);

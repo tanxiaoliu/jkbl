@@ -48,6 +48,19 @@ class SportController extends AdminbaseController
                 }
                 array_push($where['add_time'], array('ELT',$end_time));
             }
+
+            $sport = $this->sport_model->where($where)->select();
+            foreach ($sport as $vl) {
+                $sport = $this->sport_model->find($vl['id']);
+                $map['user_login'] = $vl['openid'];
+                M('Users')->where($map)->setDec('score', $vl['step_nums']);
+
+                $mapRecord['openid'] = $vl['openid'];
+                $mapRecord['type'] = 1;
+                $mapRecord['type_id'] = $vl['id'];
+                M('coin_record')->where($mapRecord)->delete();
+            }
+
             if ($this->sport_model->where($where)->delete()) {
                 $this->success("清除成功！", U("sport/index"));
             }else{
@@ -120,6 +133,16 @@ class SportController extends AdminbaseController
     public function delete()
     {   
         $id = I("get.id", 0, 'intval');
+
+        $sport = $this->sport_model->find($id);
+        $map['user_login'] = $sport['openid'];
+        M('Users')->where($map)->setDec('score', $sport['step_nums']);
+
+        $mapRecord['openid'] = $sport['openid'];
+        $mapRecord['type'] = 1;
+        $mapRecord['type_id'] = $id;
+        M('coin_record')->where($mapRecord)->delete();
+
         if ($this->sport_model->where(array('id' => $id))->delete() !== false) {
             $this->_cleanFileCache();
             $this->success("删除成功！");
