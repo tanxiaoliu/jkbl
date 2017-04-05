@@ -917,7 +917,7 @@ class IndexController extends HomebaseController
                     if ($flag_rank<=2&&$data[$key+1]['num']<=$vl['num']) {
                         if ($data[$key+1]['num']==$vl['num']) {
                             $data[$key]['rank_image'] = $flag_rank+1;
-                        }else{
+                        }else if($key<=3){
                             $data[$key]['rank_image'] = ++$flag_rank;
                         }
                     }
@@ -946,10 +946,10 @@ class IndexController extends HomebaseController
                 $data = $this->multi_array_sort($groups, 'avgNum');
                 foreach ($data as $key => &$value) {
                     $value['rank_image'] = 0;
-                    if ($flag_rank<=2&&$data[$key+1]['avgNum']<=$vl['avgNum']) {
-                        if ($data[$key+1]['avgNum']==$vl['avgNum']) {
+                    if ($flag_rank<=2&&$data[$key+1]['avgNum']<=$value['avgNum']) {
+                        if ($data[$key+1]['avgNum']==$value['avgNum']) {
                             $value['rank_image'] = $flag_rank+1;
-                        }else{
+                        }else if($key<=3){
                             $value['rank_image'] = ++$flag_rank;
                         }
                     }
