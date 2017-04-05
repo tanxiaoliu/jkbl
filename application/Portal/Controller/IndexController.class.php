@@ -327,17 +327,23 @@ class IndexController extends HomebaseController
                 $typeName = '昨天统计 累计';
                 $startYesterday = mktime(0, 0, 0, date('m'), date('d') - 1, date('Y'));
                 $endYesterday = $startYesterday + 3600 * 24;
+//                var_dump(date('Y-m-d H:i:s', $startYesterday));
+//                var_dump(date('Y-m-d H:i:s', $endYesterday));
                 $map['add_time'] = array('between', array($startYesterday, $endYesterday));
             } elseif ($type == 2) {//上周
                 $typeName = '上周统计 累计';
                 $beginLastweek = mktime(0, 0, 0, date('m'), date('d') - date('w') + 1 - 7, date('Y'));
                 $endLastweek = mktime(23, 59, 59, date('m'), date('d') - date('w') + 7 - 7, date('Y'));
+//                var_dump(date('Y-m-d H:i:s', $beginLastweek));
+//                var_dump(date('Y-m-d H:i:s', $endLastweek));
                 $map['add_time'] = array('between', array($beginLastweek, $endLastweek));
             } elseif ($type == 3) {//上月
                 $typeName = '上月统计 累计';
                 $beginThismonth = mktime(0, 0, 0, date('m')-1, 1, date('Y'));
                 $t = date('t',strtotime($beginThismonth));
                 $endThismonth = mktime(23, 59, 59, date('m')-1, $t, date('Y'));
+//                var_dump(date('Y-m-d H:i:s', $beginThismonth));
+//                var_dump(date('Y-m-d H:i:s', $endThismonth));
                 $map['add_time'] = array('between', array($beginThismonth, $endThismonth));
             }
             $data = '[';
@@ -762,14 +768,15 @@ class IndexController extends HomebaseController
         //周
 //       $timeStart1=mktime(0,0,0,date('m'),date('d')-date('w')+1,date('Y'));
 //      $timeEnd1=mktime(23,59,59,date('m'),date('d')-date('w')+7,date('Y'));
-		 $timeStart1=mktime(0,0,0,date('m'),date('d')-date('w')-6,date('Y'));
-        $timeEnd1=mktime(23,59,59,date('m'),date('d')-date('w'),date('Y'));
+		 $timeStart1=mktime(0,0,0,date('m'),date('d')-date('w')+1,date('Y'));
+        $timeEnd1=mktime(23,59,59,date('m'),date('d')-date('w')+7,date('Y'));
 //        $timeStart1 = mktime(0, 0, 0, date('m'), date('d') - date('w') - 42, date('Y'));
 //        $timeEnd1 = mktime(23, 59, 59, date('m'), date('d') - date('w') - 6, date('Y'));
         $map1['openid'] = $userInfo->openid;
         $map1['add_time'] = array('between', array($timeStart1, $timeEnd1));
         $nowNum1 = D('sport_record')->where($map1)->sum('step_nums');
          $nowCount1 = $count = date('w')==0?7:date('w')-1;
+//        var_dump($nowCount1);
 //        var_dump(date('y-m-d',$timeStart1));
 //        var_dump(date('y-m-d',$timeEnd1));
 
