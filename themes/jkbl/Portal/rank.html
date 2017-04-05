@@ -50,15 +50,9 @@
                         <if condition="$grouptype eq 1">
                             <li class="count1">平均:{$vo.avgNum}</li>
                         </if>
-                        <eq name="i" value="1">
-                            <li class="pai"><img src="__TMPL__Public/assets/images/1.png"></li>
-                        </eq>
-                        <eq name="i" value="2">
-                            <li class="pai"><img src="__TMPL__Public/assets/images/2.png"></li>
-                        </eq>
-                        <eq name="i" value="3">
-                            <li class="pai"><img src="__TMPL__Public/assets/images/3.png"></li>
-                        </eq>
+                        <if condition="$vo['rank_image'] neq 0">
+                            <li class="pai"><img src="__TMPL__Public/assets/images/{$vo.rank_image}.png"></li>
+                        </if>
                     </ul>
                 </volist>
             </div>

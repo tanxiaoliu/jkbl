@@ -905,6 +905,7 @@ class IndexController extends HomebaseController
             $map['openid'] = array('neq', 'admin');
             $data = D('sport_record')->where($map)->field('openid,sum(step_nums) as num')->group('openid')->order('num DESC , convert(nick_name using gbk) ASC')->select();
             $usersModel = D('users');
+            $flag_rank = 0;
             if ($grouptype == 0) {
                 foreach ($data as $key => $vl) {
                     $map['user_login'] = $vl['openid'];
@@ -912,6 +913,14 @@ class IndexController extends HomebaseController
                     $data[$key]['avatar'] = $users['avatar'];
                     $data[$key]['nick_name'] = $users['user_nicename'];
                     $data[$key]['school'] = $users['school'];
+                    $data[$key]['rank_image'] = 0;
+                    if ($flag_rank<=2&&$data[$key+1]['num']<=$vl['num']) {
+                        if ($data[$key+1]['num']==$vl['num']) {
+                            $data[$key]['rank_image'] = $flag_rank+1;
+                        }else{
+                            $data[$key]['rank_image'] = ++$flag_rank;
+                        }
+                    }
                 }
 //                $this->multi_array_sort($data, 'num');
             } elseif ($grouptype == 1) {
@@ -935,6 +944,16 @@ class IndexController extends HomebaseController
                 unset($groups[0]);
                 usort($groups, 'avgNum');
                 $data = $this->multi_array_sort($groups, 'avgNum');
+                foreach ($data as $key => &$value) {
+                    $value['rank_image'] = 0;
+                    if ($flag_rank<=2&&$data[$key+1]['avgNum']<=$vl['avgNum']) {
+                        if ($data[$key+1]['avgNum']==$vl['avgNum']) {
+                            $value['rank_image'] = $flag_rank+1;
+                        }else{
+                            $value['rank_image'] = ++$flag_rank;
+                        }
+                    }
+                }
             }
             $user = $this->_getUserRank($grouptype, $data, $userInfo);
 //            S($rankDataCachKey, serialize($data), 3600);
