@@ -730,9 +730,9 @@ class IndexController extends HomebaseController
                 $k = 7 - $i;
 //                $timeStart = mktime(0, 0, 0, date('m') - ($k - 1), 1, date('Y'));
 //                $timeEnd = mktime(23, 59, 59, date('m') - ($k - 1), date('t'), date('Y'));
-                $timeStart = mktime(0, 0, 0, date('m')-($k - 1)-1, 1, date('Y'));
+                $timeStart = mktime(0, 0, 0, date('m')-($k - 1), 1, date('Y'));
                 $t = date('t',strtotime($timeStart));
-                $timeEnd = mktime(23, 59, 59, date('m')-($k - 1)-1, $t, date('Y'));
+                $timeEnd = mktime(23, 59, 59, date('m')-($k - 1), $t, date('Y'));
                 $map['add_time'] = array('between', array($timeStart, $timeEnd));
                 $date = date('m月', $timeStart);
                 $data = D('sport_record')->where($map)->sum('step_nums');
