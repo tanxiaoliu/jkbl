@@ -238,6 +238,21 @@ class IndexController extends HomebaseController
             }
             $data = $this->multi_array_sort($data, 'num');
         }
+        $flag_rank = 0;
+        foreach ($data as $key => &$value) {
+            $value['rank_image'] = 0;
+            if ($flag_rank==0&&$data[$key+1]['num']<=$value['num']) {
+                if ($data[0]['num']==$value['num']) {
+                    $value['rank_image'] = 1;
+                }else if($data[1]['num']==$value['num']){
+                    $value['rank_image'] = 2;
+                }else if($data[2]['num']==$value['num']){
+                    $value['rank_image'] = 3;
+                }else{
+                    $flag_rank = 1;
+                }
+            }
+        }
         $this->assign("data", $data);
         $this->assign("user", $user);
         $this->assign("type", $type);
@@ -912,15 +927,7 @@ class IndexController extends HomebaseController
                     $users = $usersModel->where($map)->find();
                     $data[$key]['avatar'] = $users['avatar'];
                     $data[$key]['nick_name'] = $users['user_nicename'];
-                    $data[$key]['school'] = $users['school'];
-                    $data[$key]['rank_image'] = 0;
-                    if ($flag_rank<=2&&$data[$key+1]['num']<=$vl['num']) {
-                        if ($data[0]['num']==$vl['num']) {
-                            $data[$key]['rank_image'] = $flag_rank+1;
-                        }else if($key<=3){
-                            $data[$key]['rank_image'] = ++$flag_rank;
-                        }
-                    }
+                    $data[$key]['school'] = $users['school'];                    
                 }
 //                $this->multi_array_sort($data, 'num');
             } elseif ($grouptype == 1) {
@@ -944,16 +951,6 @@ class IndexController extends HomebaseController
                 unset($groups[0]);
                 usort($groups, 'avgNum');
                 $data = $this->multi_array_sort($groups, 'avgNum');
-                foreach ($data as $key => &$value) {
-                    $value['rank_image'] = 0;
-                    if ($flag_rank<=2&&$data[$key+1]['avgNum']<=$value['avgNum']) {
-                        if ($data[$key+1]['avgNum']==$value['avgNum']) {
-                            $value['rank_image'] = $flag_rank+1;
-                        }else if($key<=3){
-                            $value['rank_image'] = ++$flag_rank;
-                        }
-                    }
-                }
             }
             $user = $this->_getUserRank($grouptype, $data, $userInfo);
 //            S($rankDataCachKey, serialize($data), 3600);
@@ -979,7 +976,22 @@ class IndexController extends HomebaseController
             $this->assign("status", $status);
             $typeName = $typeName . '无记录';
         }
-
+        $flag_rank = 0;
+        $flag_key = $grouptype?'avgNum':'num';
+        foreach ($data as $key => &$value) {
+            $value['rank_image'] = 0;
+            if ($flag_rank==0&&$data[$key+1][$flag_key]<=$value[$flag_key]) {
+                if ($data[0][$flag_key]==$value[$flag_key]) {
+                    $value['rank_image'] = 1;
+                }else if($data[1][$flag_key]==$value[$flag_key]){
+                    $value['rank_image'] = 2;
+                }else if($data[2][$flag_key]==$value[$flag_key]){
+                    $value['rank_image'] = 3;
+                }else{
+                    $flag_rank = 1;
+                }
+            }
+        }
         $this->assign("startTime", $startTime);
         $this->assign("endTime", $endTime);
         $this->assign("grouptype", $grouptype);
