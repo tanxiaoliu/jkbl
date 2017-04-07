@@ -915,7 +915,7 @@ class IndexController extends HomebaseController
                     $data[$key]['school'] = $users['school'];
                     $data[$key]['rank_image'] = 0;
                     if ($flag_rank<=2&&$data[$key+1]['num']<=$vl['num']) {
-                        if ($data[$key+1]['num']==$vl['num']) {
+                        if ($data[0]['num']==$vl['num']) {
                             $data[$key]['rank_image'] = $flag_rank+1;
                         }else if($key<=3){
                             $data[$key]['rank_image'] = ++$flag_rank;
