@@ -210,6 +210,7 @@ class IndexController extends HomebaseController
                 $data[$key]['num'] = $this->getDayCount($vl['openid']);
                 $mapUser['user_login'] = $vl['openid'];
                 $users = $usersModel->where($mapUser)->find();
+                //隐藏分组
                 if ($users['groupid']==20) {
                     unset($data[$key]);
                     continue;
@@ -222,6 +223,7 @@ class IndexController extends HomebaseController
         }
         $flag_rank = 0;
         foreach ($data as $key => &$value) {
+            //隐藏分组
             if ($value['groupid']==20) {
                 unset($data[$key]);
                 continue;
