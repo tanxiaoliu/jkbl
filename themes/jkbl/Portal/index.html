@@ -32,15 +32,10 @@
                             <div class="ming-n">{$vo.nick_name|msubstr=0,6,'utf-8',false}</div>
                             <div class="ming-s">{$vo.school|default='暂无'|msubstr=0,6,'utf-8',false}</div>
                         </li>
-                        <if condition="$type ==0 ">
-                            <li class="count1">连续天数:{$vo.num}</li>
-                        </if>
-                        <if condition="$type ==1 ">
-                            <li class="count1">腾币:{$vo.num}</li>
-                        </if>
-                        <if condition="$type ==2 ">
-                            <li class="count1">步数:{$vo.num}</li>
-                        </if>
+                        <eq name="{type}" value="0"><li class="count1">连续天数:{$vo.num}</li></eq>
+                        <eq name="{type}" value="1"><li class="count1">腾币:{$vo.num}</li></eq>
+                        <eq name="{type}" value="2"><li class="count1">步数:{$vo.num}</li></eq>
+                        
                         <if condition="$vo['rank_image'] neq 0">
                             <li class="pai"><img src="__TMPL__Public/assets/images/{$vo.rank_image}.png"></li>
                         </if>
@@ -63,7 +58,9 @@
                 <li class="ming" style="line-height: 2rem; font-size: 0.55rem;">
                     <if condition="$grouptype eq 0">当前自己排名<else/>当前联盟排名</if>
                 </li>
-                <li class="count1">步数：{$user['num']|default='0'}</li>
+                <eq name="{type}" value="0"><li class="count1">连续天数:{$user['num']|default='0'}</li></eq>
+                <eq name="{type}" value="1"><li class="count1">腾币:{$user['num']|default='0'}</li></eq>
+                <eq name="{type}" value="2"><li class="count1">步数:{$user['num']|default='0'}</li></eq>
             </ul>
         </div>
     </div>

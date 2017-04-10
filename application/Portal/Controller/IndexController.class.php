@@ -193,28 +193,12 @@ class IndexController extends HomebaseController
 
         if ($type == 1) {//腾币
             $map['id'] = array('neq', '1');
-            $data = M('Users')->where($map)->field('user_login as openid,user_nicename as nick_name,score as num,school,avatar')->order('score desc, convert(user_nicename using gbk) ASC')->select();
-            foreach ($data as $key => $vl) {
-                if ($userInfo->openid == $vl['openid']) {
-                    $user['rank'] = $key + 1;
-                    $user['nick_name'] = $vl['nick_name'];
-                    $user['num'] = $vl['num'];
-                    $user['avatar'] = $userInfo->headimgurl;
-                }
-            }
+            $data = M('Users')->where($map)->field('user_login as openid,user_nicename as nick_name,groupid,score as num,school,avatar')->order('score desc, convert(user_nicename using gbk) ASC')->select();
         } elseif ($type == 2) {//爱心
             if(M('good_order')->select()) {
                 $data = M('good_order')->join('cmf_users ON cmf_good_order.openid = cmf_users.user_login')
-                    ->field('cmf_users.user_login as openid,cmf_users.school as school,cmf_users.user_nicename as nick_name,cmf_users.avatar,sum(cmf_good_order.price) as num')
+                    ->field('cmf_users.user_login as openid,cmf_users.groupid as groupid,cmf_users.school as school,cmf_users.user_nicename as nick_name,cmf_users.avatar,sum(cmf_good_order.price) as num')
                     ->where('cmf_good_order.type = 2')->order('num DESC, convert(cmf_users.user_nicename using gbk) ASC')->select();
-                foreach ($data as $key => $vl) {
-                    if ($userInfo->openid == $vl['openid']) {
-                        $user['rank'] = $key + 1;
-                        $user['nick_name'] = $vl['nick_name'];
-                        $user['num'] = $vl['num'];
-                        $user['avatar'] = $userInfo->headimgurl;
-                    }
-                }
             }
         } else {//毅力
             $map['step_nums'] = array('gt', 10000);
@@ -226,20 +210,28 @@ class IndexController extends HomebaseController
                 $data[$key]['num'] = $this->getDayCount($vl['openid']);
                 $mapUser['user_login'] = $vl['openid'];
                 $users = $usersModel->where($mapUser)->find();
+                if ($users['groupid']==20) {
+                    unset($data[$key]);
+                    continue;
+                }
                 $data[$key]['avatar'] = $users['avatar'];
                 $data[$key]['nick_name'] = $users['user_nicename'];
                 $data[$key]['school'] = $users['school'];
-                if ($userInfo->openid == $vl['openid']) {
-                    $user['rank'] = $key + 1;
-                    $user['nick_name'] = $users['user_nicename'];
-                    $user['num'] = $this->getDayCount($vl['openid']);
-                    $user['avatar'] = $userInfo->headimgurl;
-                }
             }
             $data = $this->multi_array_sort($data, 'num');
         }
         $flag_rank = 0;
         foreach ($data as $key => &$value) {
+            if ($value['groupid']==20) {
+                unset($data[$key]);
+                continue;
+            }
+            if ($userInfo->openid == $value['openid']&&($type == 2||$type == 1)) {
+                $user['rank'] = $key + 1;
+                $user['nick_name'] = $value['nick_name'];
+                $user['num'] = $value['num'];
+                $user['avatar'] = $value->avatar;
+            }
             $value['rank_image'] = 0;
             if ($flag_rank==0&&$data[$key+1]['num']<=$value['num']) {
                 if ($data[0]['num']==$value['num']) {
@@ -322,17 +314,12 @@ class IndexController extends HomebaseController
         $users = M('Users')->where($map)->find();
         $map = array();
         $type = intval(I('type'));
-//        $memberCachKey = $users['groupid'] . '_member_' . date('Y-m-d:H', time()) . '_' . $type;
-//        S($memberCachKey, null);
-//        $data = unserialize(S($memberCachKey));
         $data = array();
         $sum = 0;
         $status = empty($users['groupid']) ? 0 : 1;
         if ($status == 1 && (empty($data) || $type == 4 || $data['data'] == '[]')) {
             $typeName = date('Y-m-d', time() - 3600 * 24) . '  累计';//默认时间
             if (!empty($_POST) && $type == 4) {//时间段
-//                $startTime = strtotime(I('startTime'));
-//                $endTime = strtotime(I('endTime'));
                 $startTime = strtotime(I('startTime'));
                 $endTime = strtotime(I('endTime')) + 86399;
                 $typeName = date('Y-m-d', $startTime) . ' ~ ' . date('Y-m-d', $endTime) . ' 累计';
@@ -342,23 +329,17 @@ class IndexController extends HomebaseController
                 $typeName = '昨天统计 累计';
                 $startYesterday = mktime(0, 0, 0, date('m'), date('d') - 1, date('Y'));
                 $endYesterday = $startYesterday + 3600 * 24;
-//                var_dump(date('Y-m-d H:i:s', $startYesterday));
-//                var_dump(date('Y-m-d H:i:s', $endYesterday));
                 $map['add_time'] = array('between', array($startYesterday, $endYesterday));
             } elseif ($type == 2) {//上周
                 $typeName = '上周统计 累计';
                 $beginLastweek = mktime(0, 0, 0, date('m'), date('d') - date('w') + 1 - 7, date('Y'));
                 $endLastweek = mktime(23, 59, 59, date('m'), date('d') - date('w') + 7 - 7, date('Y'));
-//                var_dump(date('Y-m-d H:i:s', $beginLastweek));
-//                var_dump(date('Y-m-d H:i:s', $endLastweek));
                 $map['add_time'] = array('between', array($beginLastweek, $endLastweek));
             } elseif ($type == 3) {//上月
                 $typeName = '上月统计 累计';
                 $beginThismonth = mktime(0, 0, 0, date('m')-1, 1, date('Y'));
                 $t = date('t',strtotime($beginThismonth));
                 $endThismonth = mktime(23, 59, 59, date('m')-1, $t, date('Y'));
-//                var_dump(date('Y-m-d H:i:s', $beginThismonth));
-//                var_dump(date('Y-m-d H:i:s', $endThismonth));
                 $map['add_time'] = array('between', array($beginThismonth, $endThismonth));
             }
             $data = '[';
@@ -375,46 +356,21 @@ class IndexController extends HomebaseController
                     $map['user_login'] = $value['openid'];
                     $users = M('Users')->where($map)->find();
                     $sum += $value['num'];
-//                    if (empty($users['school'])) {
-//                        $name = $users['school'] . $users['user_nicename'];
-//                    } else {
-//                        $name = $users['school'] . '-' . $users['user_nicename'];
-//                    }
                     $name = $users['user_nicename'];
-
                     $data .= "{value:{$value['num']}, name:'{$name}'},";
                 }
             } else {
                 $users = M('Users')->field('user_nicename,groupid,score,school')->where(array('groupid' => $users['groupid']))->order('score DESC')->select();
                 foreach ($users as $value) {
                     $sum += $value['score'];
-//                    if (empty($value['school'])) {
-//                        $name = $value['school'] . $value['user_nicename'];
-//                    } else {
-//                        $name = $value['school'] . '-' . $value['user_nicename'];
-//                    }
+
                     $name = $value['user_nicename'];
 
                     $data .= "{value:{$value['score']}, name:'{$name}'},";
                 }
             }
             $data = rtrim($data, ',') . ']';
-//            $list = array(
-//                'data' => $data,
-//                'sum' => $sum,
-//                'status' => $status
-//            );
         }
-//            S($memberCachKey, serialize($list), 3600);
-//        } else {
-//            if ($status == 0) {
-//                $data = '[]';
-//            } else {
-//                $sum = $data['sum'];
-//                $data = $data['data'];
-//                $status = $data['status'];
-//            }
-//        }
         $this->assign("userInfo", $userInfo);
         $this->assign("status", $status);
         $this->assign("sum", number_format($sum));
@@ -774,39 +730,23 @@ class IndexController extends HomebaseController
         //天
         $timeStart=mktime(0,0,0,date('m'),date('d')-1,date('Y'));
         $timeEnd=mktime(0,0,0,date('m'),date('d'),date('Y'))-1;
-//        $timeStart = mktime(0, 0, 0, date('m'), date('d') - 6, date('Y'));
-//        $timeEnd = mktime(0, 0, 0, date('m'), date('d'), date('Y')) - 1;
         $map['add_time'] = array('between', array($timeStart, $timeEnd));
         $nowNum = D('sport_record')->where($map)->sum('step_nums');
-//        var_dump(date('y-m-d',$timeStart));
-//        var_dump(date('y-m-d',$timeEnd));
         //周
-//       $timeStart1=mktime(0,0,0,date('m'),date('d')-date('w')+1,date('Y'));
-//      $timeEnd1=mktime(23,59,59,date('m'),date('d')-date('w')+7,date('Y'));
-		 $timeStart1=mktime(0,0,0,date('m'),date('d')-date('w')+1,date('Y'));
+        $timeStart1=mktime(0,0,0,date('m'),date('d')-date('w')+1,date('Y'));
         $timeEnd1=mktime(23,59,59,date('m'),date('d')-date('w')+7,date('Y'));
-//        $timeStart1 = mktime(0, 0, 0, date('m'), date('d') - date('w') - 42, date('Y'));
-//        $timeEnd1 = mktime(23, 59, 59, date('m'), date('d') - date('w') - 6, date('Y'));
         $map1['openid'] = $userInfo->openid;
         $map1['add_time'] = array('between', array($timeStart1, $timeEnd1));
         $nowNum1 = D('sport_record')->where($map1)->sum('step_nums');
-         $nowCount1 = $count = date('w')==0?7:date('w')-1;
-//        var_dump($nowCount1);
-//        var_dump(date('y-m-d',$timeStart1));
-//        var_dump(date('y-m-d',$timeEnd1));
-
+        $nowCount1 = $count = date('w')==0?7:date('w')-1;
+        
         //月
-//        $timeStart2 = mktime(0, 0, 0, date('m') - 6, 1, date('Y'));
-//        $timeEnd2 = mktime(23, 59, 59, date('m'), date('t'), date('Y'));
         $timeStart2=mktime(0,0,0,date('m'),1,date('Y'));
         $timeEnd2=mktime(23,59,59,date('m'),date('t'),date('Y'));
         $map2['openid'] = $userInfo->openid;
         $map2['add_time'] = array('between', array($timeStart2, $timeEnd2));
         $nowNum2 = D('sport_record')->where($map2)->sum('step_nums');
         $nowCount2 = $count = date('d')-1;
-//        var_dump(date('y-m-d',$timeStart2));
-//        var_dump(date('y-m-d',$timeEnd2));
-//        var_dump($nowCount2);
 
         $num = D('sport_record')->where(array('openid' => $userInfo->openid))->sum('step_nums');
         $umap['user_login'] = $userInfo->openid;
@@ -885,82 +825,72 @@ class IndexController extends HomebaseController
         $grouptype = I('grouptype', '', 'intval');
         $rankDataCachKey = 'rankData_' . date('Y-m-d:H', time()) . '_' . $type . '_' . $grouptype;
         $rankUserCachKey = $userInfo->openid . 'rankUser_' . date('Y-m-d:H', time()) . '_' . $type . '_' . $grouptype;
-//        $data = unserialize(S($rankDataCachKey));
         $data = array();
-//        if (!empty($data)) {
-//            $user = unserialize(S($rankUserCachKey));
-//            $data = array();
-//        }
-//        if (empty($data) || $type == 4) {
-            $map = '';
-            if (!empty($_POST) && $type == 4) {//时间段
-                $startTime = strtotime(I('startTime'));
-                $endTime = strtotime(I('endTime')) + 86399;
-                $map['add_time'] = array('between', array($startTime, $endTime));
-            } elseif ($type == 1) {//昨天
-                $startTime = mktime(0, 0, 0, date('m'), date('d') - 1, date('Y'));
-                $endTime = $startTime + 3600 * 24;
-                $map['add_time'] = array('between', array($startTime, $endTime));
-            } elseif ($type == 2) {//上周
-                $startTime = mktime(0, 0, 0, date('m'), date('d') - date('w') + 1 - 7, date('Y'));
-                $endTime = mktime(23, 59, 59, date('m'), date('d') - date('w') + 7 - 7, date('Y'));
-                $map['add_time'] = array('between', array($startTime, $endTime));
-            } elseif ($type == 3) {//上月
-//                $startTime = mktime(0, 0, 0, date('m')-1, 1, date('Y'));
-//                $endTime = mktime(23,59,59,date("m") ,0,date("Y"));
-                $startTime = mktime(0, 0, 0, date('m')-1, 1, date('Y'));
-                $t = date('t',strtotime($startTime));
-                $endTime = mktime(23, 59, 59, date('m')-1, $t, date('Y'));
-                $map['add_time'] = array('between', array($startTime, $endTime));
-            } else {
-                $startTime = mktime(0, 0, 0, date('m'), date('d') - 1, date('Y'));
-                $endTime = $startTime + 3600 * 24;
-                $map['add_time'] = array('between', array($startTime, $endTime));
-            }
-            $map['openid'] = array('neq', 'admin');
-            $data = D('sport_record')->where($map)->field('openid,sum(step_nums) as num')->group('openid')->order('num DESC , convert(nick_name using gbk) ASC')->select();
-            $usersModel = D('users');
-            $flag_rank = 0;
-            if ($grouptype == 0) {
-                foreach ($data as $key => $vl) {
-                    $map['user_login'] = $vl['openid'];
-                    $users = $usersModel->where($map)->find();
-                    $data[$key]['avatar'] = $users['avatar'];
-                    $data[$key]['nick_name'] = $users['user_nicename'];
-                    $data[$key]['school'] = $users['school'];                    
+        $map = '';
+        if (!empty($_POST) && $type == 4) {//时间段
+            $startTime = strtotime(I('startTime'));
+            $endTime = strtotime(I('endTime')) + 86399;
+            $map['add_time'] = array('between', array($startTime, $endTime));
+        } elseif ($type == 1) {//昨天
+            $startTime =strtotime(date('Y-m-d 00::00::00',time()))-24*3600;
+            $endTime = strtotime(date('Y-m-d 00::00::00',time()))-1;
+            $map['add_time'] = array('between', array($startTime, $endTime));
+        } elseif ($type == 2) {//上周
+            $startTime = time()-(intval(7+date('N', time()))*24*3600);
+            $endTime = time()-(intval(date('N', time()))*24*3600);
+            $map['add_time'] = array('between', array($startTime, $endTime));
+        } elseif ($type == 3) {//上月
+            $startTime = mktime(0, 0, 0, date('m')-1, 1, date('Y'));
+            $t = date('t',strtotime($startTime));
+            $endTime = mktime(23, 59, 59, date('m')-1, $t, date('Y'));
+            $map['add_time'] = array('between', array($startTime, $endTime));
+        } else {
+            $startTime = mktime(0, 0, 0, date('m'), date('d') - 1, date('Y'));
+            $endTime = $startTime + 3600 * 24;
+            $map['add_time'] = array('between', array($startTime, $endTime));
+        }
+        $map['openid'] = array('neq', 'admin');
+        $data = D('sport_record')->where($map)->field('openid,sum(step_nums) as num')->group('openid')->order('num DESC , convert(nick_name using gbk) ASC')->select();
+        $usersModel = D('users');
+        $flag_rank = 0;
+        if ($grouptype == 0) {
+            foreach ($data as $key => $vl) {
+                $map['user_login'] = $vl['openid'];
+                $users = $usersModel->where($map)->find();
+                if ($users['groupid']==20) {
+                    unset($data[$key]);
+                    continue;
                 }
-//                $this->multi_array_sort($data, 'num');
-            } elseif ($grouptype == 1) {
-                $groups = array();
-                foreach ($data as $key => $vl) {
-                    $map['user_login'] = $vl['openid'];
-                    $users = $usersModel->where($map)->find();
-                    if ($users['groupid'] > 0) {
-                        if (!isset($groups[$users['groupid']])) {
-                            $groups[$users['groupid']]['num'] = 0;
-                            $group = M('Group')->find($users['groupid']);
-                            $groups[$users['groupid']]['id'] = $group['id'];
-                            $groups[$users['groupid']]['nick_name'] = $group['name'];
-                            $groups[$users['groupid']]['avatar'] = '/data/upload/' . $group['logo'];
-                        }
-                        $count = $usersModel->where(array('groupid' => $users['groupid']))->count();
-                        $groups[$users['groupid']]['num'] += $vl['num'];
-                        $groups[$users['groupid']]['avgNum'] = intval($groups[$users['groupid']]['num'] / $count);
+                $data[$key]['avatar'] = $users['avatar'];
+                $data[$key]['nick_name'] = $users['user_nicename'];
+                $data[$key]['school'] = $users['school'];                    
+            }
+        } elseif ($grouptype == 1) {
+            $groups = array();
+            foreach ($data as $key => $vl) {
+                $map['user_login'] = $vl['openid'];
+                $users = $usersModel->where($map)->find();
+                if ($users['groupid'] > 0) {
+                    if (!isset($groups[$users['groupid']])) {
+                        $groups[$users['groupid']]['num'] = 0;
+                        $group = M('Group')->find($users['groupid']);
+                        $groups[$users['groupid']]['id'] = $group['id'];
+                        $groups[$users['groupid']]['nick_name'] = $group['name'];
+                        $groups[$users['groupid']]['avatar'] = '/data/upload/' . $group['logo'];
                     }
+                    $count = $usersModel->where(array('groupid' => $users['groupid']))->count();
+                    $groups[$users['groupid']]['num'] += $vl['num'];
+                    $groups[$users['groupid']]['avgNum'] = intval($groups[$users['groupid']]['num'] / $count);
                 }
-                unset($groups[0]);
-                usort($groups, 'avgNum');
-                $data = $this->multi_array_sort($groups, 'avgNum');
             }
-            $user = $this->_getUserRank($grouptype, $data, $userInfo);
-//            S($rankDataCachKey, serialize($data), 3600);
-//        }
-//        else {
-//            if (empty($user)) {
-//                $user = $this->_getUserRank($grouptype, $data, $userInfo);
-//                S($rankUserCachKey, serialize($user), 60);
-//            }
-//        }
+            unset($groups[0]);
+            if (isset($groups[20])) {
+                unset($groups[20]);
+            }
+            usort($groups, 'avgNum');
+            $data = $this->multi_array_sort($groups, 'avgNum');
+        }
+        $user = $this->_getUserRank($grouptype, $data, $userInfo);
 
         if (!empty($_POST) && $type == 4) {//时间段
             $typeName = date('Y-m-d', $startTime) . '~' . date('Y-m-d', $endTime);
