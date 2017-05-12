@@ -834,8 +834,10 @@ class IndexController extends HomebaseController
             $endTime = strtotime(I('endTime')) + 86399;
             $map['add_time'] = array('between', array($startTime, $endTime));
         } elseif ($type == 1) {//昨天
-            $startTime =strtotime(date('Y-m-d 00::00::00',time()))-24*3600;
-            $endTime = strtotime(date('Y-m-d 00::00::00',time()))-1;
+            // $startTime =strtotime(date('Y-m-d 00::00::00',time()))-24*3600;
+            // $endTime = strtotime(date('Y-m-d 00::00::00',time()))-1;
+            $startTime = mktime(0, 0, 0, date('m'), date('d') - 2, date('Y'));
+            $endTime = $startTime + 3600 * 24;
             $map['add_time'] = array('between', array($startTime, $endTime));
         } elseif ($type == 2) {//上周
             $startTime = time()-(intval(7+date('N', time()))*24*3600);
