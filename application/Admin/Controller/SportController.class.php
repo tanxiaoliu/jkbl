@@ -187,9 +187,12 @@ class SportController extends AdminbaseController
             $time = isset($_POST['time'])?strtotime($_POST['time']):time();
             foreach ($res as $k => $v) {
                 if ($k != 1) {
+                        $map['user_login'] = $v[0];
+                        $group = M('Users')->where($map)->find();
 //                    if ($v[2] != 0) {
                         //添加运动记录
                         $data ['openid'] = $v[0];
+                        $data ['groupid'] = $group['groupid'];
                         $data ['nick_name'] = $v[1];
                         $data ['add_time'] = $time;
                         $data ['step_nums'] = $v[2];
@@ -227,7 +230,7 @@ class SportController extends AdminbaseController
      */
     public function pushExcel()
     {
-        $data = D('users')->field('user_login as openid, user_nicename as nick_name')->select();
+        $data = D('users')->field('user_login as openid, user_nicename as nick_name')->where(array('user_status'=>array('neq','0')))->select();
         $this->push($data, '运动记录' . date('Ymd', time()));
     }
 

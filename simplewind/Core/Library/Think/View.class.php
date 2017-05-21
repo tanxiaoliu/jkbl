@@ -105,7 +105,8 @@ class View {
      */
     public function fetch($templateFile='',$content='',$prefix='') {
         if(empty($content)) {
-            $templateFile   =   $this->parseTemplate($templateFile);
+            $templateFile   =   $this->parseTemplate(SITE_PATH.$templateFile);
+            // $templateFile   =   $this->parseTemplate($templateFile);
             // 模板文件不存在直接返回
             if(!is_file($templateFile)) E(L('_TEMPLATE_NOT_EXIST_').':'.$templateFile);
         }else{

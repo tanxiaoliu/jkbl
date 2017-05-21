@@ -16,6 +16,17 @@ if (file_exists("data/conf/route.php")) {
     $routes = array();
 }
 
+if(file_exists(SITE_PATH."data/conf/db.php"))
+
+{   
+
+$db=include SITE_PATH."data/conf/db.php";
+
+ }else{  
+
+ $db=array(); 
+
+} 
 $configs= array(
         "LOAD_EXT_FILE"=>"extend",
         'UPLOADPATH' => 'data/upload/',

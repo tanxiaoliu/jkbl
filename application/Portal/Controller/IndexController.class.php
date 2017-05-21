@@ -105,24 +105,46 @@ class IndexController extends HomebaseController
             redirect(U('invite'));
         }
     }
-
+    private function cleanTengbi()
+    {
+        $m = date('m');
+        $time = date('Y-'.$m.'-02 00:00:00',time());
+        $time = strtotime($time);
+        $insertKey['key'] = $time;
+        $insertKey['value'] = 1;
+        $KeyValue = M('KeyValue')->where($insertKey)->find();
+        if (empty($KeyValue)) {
+            $data = M('Users')->where($map)->field('id,user_login,score')->select();
+            foreach ($data as $key => $value) {
+                $coin = M('CoinRecord')->where(array('openid'=>$value['user_login'],'type'=>1,'add_time'=>array('gt',$time)))->sum('coin');
+                $last = $value['score'];
+                if (($value['score']-$coin)<0) {
+                $value['score'] = $value['score'];
+                }else{
+                    $value['score'] = ($value['score']-$coin)/2+$coin;
+                }
+                M('Users')->save($value);
+            }
+            $insertKey['add_time'] = time();
+            $insertKey['status'] = 1;
+            M('KeyValue')->add($insertKey);
+        }
+    }
     public function cleanInvite()
     {
-//        return true;
-        // $this->checkLogin();
-        // $user = session('user');
-        $users = D('users')->select();
-        foreach ($users as $key => $value) {
-           $where = array(
-                'id' => $value['id']
-            );
-            $invite = M('InviteCode')->where($where)->find();
-            if (empty($invite)) {
-                print_r($where);exit();
-                D('users')->where($where)->delete();
-            }
+        $map['id'] = array('neq', '1');
+
+        $data = M('Users')->where($map)->field('id,user_login as openid,user_nicename as nick_name,groupid,score as num,school,avatar')->order('score desc, convert(user_nicename using gbk) ASC')->select();
+        foreach ($data as $key => $value) {
+                $where = array(
+                    'userid' => $value['id']
+                );
+                $invite = M('InviteCode')->where($where)->find();
+                if (empty($invite)&&!empty($value)) {
+                    echo D('Users')->where(array('id'=>$value['id']))->delete();
+                }
         }
-        
+        exit();
     }
 
     /**
@@ -212,11 +234,12 @@ class IndexController extends HomebaseController
 
         if ($type == 1) {//腾币
             $map['id'] = array('neq', '1');
+            $map['user_status'] = array('neq','0');
             $data = M('Users')->where($map)->field('user_login as openid,user_nicename as nick_name,groupid,score as num,school,avatar')->order('score desc, convert(user_nicename using gbk) ASC')->select();
         } elseif ($type == 2) {//爱心
             if(M('good_order')->select()) {
                 $data = M('good_order')->join('cmf_users ON cmf_good_order.openid = cmf_users.user_login')
-                    ->field('cmf_users.user_login as openid,cmf_users.groupid as groupid,cmf_users.school as school,cmf_users.user_nicename as nick_name,cmf_users.avatar,sum(cmf_good_order.price) as num')
+                    ->field('cmf_users.user_status,cmf_users.user_login as openid,cmf_users.groupid as groupid,cmf_users.school as school,cmf_users.user_nicename as nick_name,cmf_users.avatar,sum(cmf_good_order.price) as num')
                     ->where('cmf_good_order.type = 2')->order('num DESC, convert(cmf_users.user_nicename using gbk) ASC')->select();
             }
         } else {//毅力
@@ -230,7 +253,7 @@ class IndexController extends HomebaseController
                 $mapUser['user_login'] = $vl['openid'];
                 $users = $usersModel->where($mapUser)->find();
                 //隐藏分组
-                if ($users['groupid']==20) {
+                if ($users['groupid']==20||$users['user_status']==0) {
                     unset($data[$key]);
                     continue;
                 }
@@ -243,7 +266,7 @@ class IndexController extends HomebaseController
         $flag_rank = 0;
         foreach ($data as $key => &$value) {
             //隐藏分组
-            if ($value['groupid']==20) {
+            if ($value['groupid']==20||$users['user_status']==0) {
                 unset($data[$key]);
                 continue;
             }
@@ -365,7 +388,7 @@ class IndexController extends HomebaseController
             }
             $data = '[';
             if (!empty($map)) {
-                $users = M('Users')->field('user_login,groupid,score,school')->where(array('groupid' => $users['groupid']))->select();
+                $users = M('Users')->field('user_login,groupid,score,school')->where(array('groupid' => $users['groupid'],'user_status'=>array('neq','0')))->select();
                 $ids = '';
                 foreach ($users as $value) {
                     $ids .= $value["user_login"] . ',';
@@ -381,7 +404,7 @@ class IndexController extends HomebaseController
                     $data .= "{value:{$value['num']}, name:'{$name}'},";
                 }
             } else {
-                $users = M('Users')->field('user_nicename,groupid,score,school')->where(array('groupid' => $users['groupid']))->order('score DESC')->select();
+                $users = M('Users')->field('user_nicename,groupid,score,school')->where(array('groupid' => $users['groupid'],'user_status'=>array('neq','0')))->order('score DESC')->select();
                 foreach ($users as $value) {
                     $sum += $value['score'];
 
@@ -876,15 +899,15 @@ class IndexController extends HomebaseController
             $endTime = $startTime + 3600 * 24;
             $map['add_time'] = array('between', array($startTime, $endTime));
         }
-        $map['openid'] = array('neq', 'admin');
-        $data = D('sport_record')->where($map)->field('openid,sum(step_nums) as num')->group('openid')->order('num DESC , convert(nick_name using gbk) ASC')->select();
         $usersModel = D('users');
         $flag_rank = 0;
         if ($grouptype == 0) {
+            $map['openid'] = array('neq', 'admin');
+            $data = D('sport_record')->where($map)->field('openid,sum(step_nums) as num')->group('openid')->order('num DESC , convert(nick_name using gbk) ASC')->select();
             foreach ($data as $key => $vl) {
                 $map['user_login'] = $vl['openid'];
                 $users = $usersModel->where($map)->find();
-                if ($users['groupid']==20) {
+                if ($users['groupid']==20||$users['user_status']==0) {
                     unset($data[$key]);
                     continue;
                 }
@@ -893,24 +916,27 @@ class IndexController extends HomebaseController
                 $data[$key]['school'] = $users['school'];                    
             }
         } elseif ($grouptype == 1) {
+            $data = D('SportRecord')->where($map)->field('groupid,sum(step_nums) as num')->group('groupid')->order('num DESC , convert(nick_name using gbk) ASC')->select();
             $groups = array();
             foreach ($data as $key => $vl) {
-                $map['user_login'] = $vl['openid'];
-                $users = $usersModel->where($map)->find();
-                if ($users['groupid'] > 0) {
-                    if (!isset($groups[$users['groupid']])) {
-                        $groups[$users['groupid']]['num'] = 0;
-                        $group = M('Group')->find($users['groupid']);
-                        $groups[$users['groupid']]['id'] = $group['id'];
-                        $groups[$users['groupid']]['nick_name'] = $group['name'];
-                        $groups[$users['groupid']]['avatar'] = '/data/upload/' . $group['logo'];
+                if ($vl['groupid'] > 0) {
+                    if (!isset($groups[$vl['groupid']])) {
+                        $groups[$vl['groupid']]['num'] = 0;
+                        $group = M('Group')->find($vl['groupid']);
+                        $groups[$vl['groupid']]['id'] = $group['id'];
+                        $groups[$vl['groupid']]['nick_name'] = $group['name'];
+                        $groups[$vl['groupid']]['avatar'] = '/data/upload/' . $group['logo'];
                     }
-                    $count = $usersModel->where(array('groupid' => $users['groupid']))->count();
-                    $groups[$users['groupid']]['num'] += $vl['num'];
-                    $groups[$users['groupid']]['avgNum'] = intval($groups[$users['groupid']]['num'] / $count);
+                    $count = M('SportRecord')->where(array_merge($map,array('groupid'=>$vl['groupid'])))->group('openid')->select();
+                    $count = count($count);
+                    // $count = $usersModel->where(array('groupid' => $vl['groupid'],'user_status'=>array('neq','0')))->count();
+                    $groups[$vl['groupid']]['num'] += $vl['num'];
+                    $day = ceil(($endTime-$startTime)/(3600*24));
+                    // echo $day.'-day-';
+                    // echo $count.'-count-';
+                    $groups[$vl['groupid']]['avgNum'] = intval($groups[$vl['groupid']]['num'] / ($day*$count));
                 }
             }
-            unset($groups[0]);
             if (isset($groups[20])) {
                 unset($groups[20]);
             }
@@ -980,7 +1006,7 @@ class IndexController extends HomebaseController
                 $map['user_login'] = $userInfo->openid;
                 $users = M('Users')->where($map)->find();
                 if ($vl['id'] == $users['groupid']) {
-                    $count = M('Users')->where(array('groupid' => $users['groupid']))->count();
+                    $count = M('Users')->where(array('groupid' => $users['groupid'],'user_status'=>array('neq','0')))->count();
                     $user['rank'] = $rank;
                     $user['groupid'] = $vl['id'];
                     $user['nick_name'] = $vl['nick_name'];
@@ -1303,7 +1329,7 @@ class IndexController extends HomebaseController
         $map['user_login'] = $userInfo->openid;
         $groupid = I('groupid', 0, 'int');
         $group = M('Group')->find($groupid);
-        $users = M('Users')->field('user_nicename,avatar,school,user_login')->where(array('groupid' => $groupid))->order('score DESC')->select();
+        $users = M('Users')->field('user_nicename,avatar,school,user_login')->where(array('groupid' => $groupid,'user_status' => array('neq','0')))->order('score DESC')->select();
 
         $startYesterday = I('startTime');
         $endYesterday = I('endTime');

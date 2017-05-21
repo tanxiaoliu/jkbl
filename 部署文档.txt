@@ -2,7 +2,7 @@
 
 2.执行jkbl.sql生成相应的数据跟表
 
-3:改data/conf/db.php的数据库用户名密码；
+3:修改改data/conf/db.php的数据库用户名密码；
 
 4:修改微信配置
 改/application/Portal/Controller/IndexController.class.php的
@@ -16,38 +16,11 @@ URL
 5:绑定host域名指定到入口文件index.php
 
 
-如：
-apache服务器：
-<VirtualHost *:80>
-    DocumentRoot "G:/work/jkbl"
-    ServerName    www.jkbl.com
-    ##ServerAlias www.dummy-host.liqiang.com
-    ## ErrorLog  "logs/dummy-host.liqiang.com-error.log"
-    ## CustomLog "logs/dummy-host.liqiang.com-access.log" common
-</VirtualHost>
-
-nginx服务器：
-server {
-server_name www.jkbl.com;
-listen 80 ;
-        root /data/work/jkbl;
-        index index.html index.htm index.php;
-location ~ .php$ {
-        fastcgi_pass 127.0.0.1:9000;
-        fastcgi_index index.php;
-        fastcgi_param SCRIPT_FILENAME  /data$fastcgi_script_name;
-        include fastcgi_params;
-    }
-location / { // …..省略部分代码
-   if (!-e $request_filename) {
-   rewrite  ^(.*)$  /index.php?s=$1  last;
-   break;
-    }
-}
-}
 
 部署有问题致电：
 李强 13631318054  qq:455019211
 
-后台路径是
+后台初始账号
+admin
+123456
 
