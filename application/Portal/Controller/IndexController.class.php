@@ -220,7 +220,7 @@ class IndexController extends HomebaseController
                     ->where('cmf_good_order.type = 2')->order('num DESC, convert(cmf_users.user_nicename using gbk) ASC')->select();
             }
         } else {//毅力
-            $map['step_nums'] = array('gt', 10000);
+            $map['step_nums'] = array('gt', 9999);
             $startYesterday = mktime(0, 0, 0, date('m'), date('d') - 1, date('Y'));
             $endYesterday = $startYesterday + 3600 * 24;
             $map['add_time'] = array('between', array($startYesterday, $endYesterday));
@@ -309,7 +309,7 @@ class IndexController extends HomebaseController
      */
     public function getDayCount($openid, $num = 1, $count = 2)
     {
-        $map['step_nums'] = array('gt', 10000);
+        $map['step_nums'] = array('gt', 9999);
         $startYesterday = strtotime(date('Y-m-d' . '00:00:00', time())) - 3600 * 24 * $count;
         $endYesterday = $startYesterday + 3600 * 24;
         $map['add_time'] = array('between', array($startYesterday, $endYesterday));
@@ -857,8 +857,10 @@ class IndexController extends HomebaseController
             $endTime = strtotime(I('endTime')) + 86399;
             $map['add_time'] = array('between', array($startTime, $endTime));
         } elseif ($type == 1) {//昨天
-            $startTime =strtotime(date('Y-m-d 00::00::00',time()))-24*3600;
-            $endTime = strtotime(date('Y-m-d 00::00::00',time()))-1;
+            // $startTime =strtotime(date('Y-m-d 00::00::00',time()))-24*3600;
+            // $endTime = strtotime(date('Y-m-d 00::00::00',time()))-1;
+            $startTime = mktime(0, 0, 0, date('m'), date('d') - 2, date('Y'));
+            $endTime = $startTime + 3600 * 24;
             $map['add_time'] = array('between', array($startTime, $endTime));
         } elseif ($type == 2) {//上周
             $startTime = time()-(intval(7+date('N', time()))*24*3600);
