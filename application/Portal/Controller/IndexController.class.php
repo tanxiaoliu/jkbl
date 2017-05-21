@@ -106,6 +106,25 @@ class IndexController extends HomebaseController
         }
     }
 
+    public function cleanInvite()
+    {
+//        return true;
+        // $this->checkLogin();
+        // $user = session('user');
+        $users = D('users')->select();
+        foreach ($users as $key => $value) {
+           $where = array(
+                'id' => $value['id']
+            );
+            $invite = M('InviteCode')->where($where)->find();
+            if (empty($invite)) {
+                print_r($where);exit();
+                D('users')->where($where)->delete();
+            }
+        }
+        
+    }
+
     /**
      * 检查登录
      * @return mixed
@@ -386,6 +405,7 @@ class IndexController extends HomebaseController
     {
         $uid = intval(I('uid', 0, 'intval'));
         $this->checkLogin();
+        $this->checkInvite();
         $user = session('user');
         $map = array(
             'uid' => $user['id'],
@@ -411,6 +431,7 @@ class IndexController extends HomebaseController
     public function community()
     {
         $this->checkLogin();
+        $this->checkInvite();
         // $data = D('users')->find(1);
         // session('user', $data);
         $user = session('user');
@@ -462,6 +483,7 @@ class IndexController extends HomebaseController
     public function myhuati()
     {
         $this->checkLogin();
+        $this->checkInvite();
         $user = session('user');
         // $user['id'] = 1;
         $map['post_author'] = $user['id'];
@@ -541,6 +563,7 @@ class IndexController extends HomebaseController
     public function huati()
     {
         $this->checkLogin();
+        $this->checkInvite();
         $uid = intval(I('uid', '0', 'intval'));
         $map['post_author'] = $uid;
         $map['post_type'] = 1;
