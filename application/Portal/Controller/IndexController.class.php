@@ -44,6 +44,7 @@ class IndexController extends HomebaseController
     public function __construct()
     {
         parent::__construct();
+        $this->cleanTengbi();
     }
 
     /**
@@ -108,22 +109,38 @@ class IndexController extends HomebaseController
     private function cleanTengbi()
     {
         $m = date('m');
-        $time = date('Y-'.$m.'-02 00:00:00',time());
-        $time = strtotime($time);
-        $insertKey['key'] = $time;
+        $time = intval(strtotime(date('Y-'.$m.'-01 00:00:00',time())))-1;
+        $time1 = date('Y-'.$m.'-02 00:00:01',time());
+        $insertKey['key'] = $time1;
         $insertKey['value'] = 1;
         $KeyValue = M('KeyValue')->where($insertKey)->find();
-        if (empty($KeyValue)) {
-            $data = M('Users')->where($map)->field('id,user_login,score')->select();
-            foreach ($data as $key => $value) {
-                $coin = M('CoinRecord')->where(array('openid'=>$value['user_login'],'type'=>1,'add_time'=>array('gt',$time)))->sum('coin');
-                $last = $value['score'];
-                if (($value['score']-$coin)<0) {
-                $value['score'] = $value['score'];
+        if (intval(time())>$time1&&empty($KeyValue)) {
+            $data = M('Users')->field('id,user_login,score,limit_score')->select();
+            foreach ($data as $key => &$value) {
+                $sum = M('CoinRecord')->where(array('openid'=>$value['user_login'],'type'=>1))->sum('coin');
+                $thisMon = M('CoinRecord')->where(array('openid'=>$value['user_login'],'type'=>1,'add_time'=>array('gt',$time)))->sum('coin');
+                $use = M('CoinRecord')->where(array('openid'=>$value['user_login'],'type'=>2))->sum('coin');
+                $limit = $sum -$use;
+                $value['score'] = $sum;
+                if ($limit<$thisMon) {
+                    $value['limit_score'] = $limit;
                 }else{
-                    $value['score'] = ($value['score']-$coin)/2+$coin;
+                    $value['limit_score'] = ceil(($limit-$thisMon)/2+$thisMon);
                 }
-                M('Users')->save($value);
+                /*echo 'sum:'.$sum;
+                echo 'thisMon:'.$thisMon;
+                echo 'use:'.$use;
+                echo 'score:'.$value['limit_score'];
+                print_r($value);
+                exit();*/
+                // M('Users')->where(array('id'=>$value['id']))->setField('limit_score',$value['limit_score']);
+                $id = $value['id'];
+                unset($value['id']);
+                $users = D('users')->find($id);
+                $users['score'] = $value['score'];
+                $users['limit_score'] = $value['limit_score'];
+                D('users')->save($users);
+                // M('Users')->where(array('id'=>$id))->save($value);
             }
             $insertKey['add_time'] = time();
             $insertKey['status'] = 1;
@@ -235,11 +252,11 @@ class IndexController extends HomebaseController
         if ($type == 1) {//腾币
             $map['id'] = array('neq', '1');
             $map['user_status'] = array('neq','0');
-            $data = M('Users')->where($map)->field('user_login as openid,user_nicename as nick_name,groupid,score as num,school,avatar')->order('score desc, convert(user_nicename using gbk) ASC')->select();
+            $data = M('Users')->where($map)->field('user_status,user_login as openid,user_nicename as nick_name,groupid,score as num,school,avatar')->order('score desc, convert(user_nicename using gbk) ASC')->select();
         } elseif ($type == 2) {//爱心
             if(M('good_order')->select()) {
                 $data = M('good_order')->join('cmf_users ON cmf_good_order.openid = cmf_users.user_login')
-                    ->field('cmf_users.user_status,cmf_users.user_login as openid,cmf_users.groupid as groupid,cmf_users.school as school,cmf_users.user_nicename as nick_name,cmf_users.avatar,sum(cmf_good_order.price) as num')
+                    ->field('cmf_users.user_login as openid,cmf_users.groupid as groupid,cmf_users.school as school,cmf_users.user_nicename as nick_name,cmf_users.user_status,cmf_users.avatar,sum(cmf_good_order.price) as num')
                     ->where('cmf_good_order.type = 2')->order('num DESC, convert(cmf_users.user_nicename using gbk) ASC')->select();
             }
         } else {//毅力
@@ -253,10 +270,11 @@ class IndexController extends HomebaseController
                 $mapUser['user_login'] = $vl['openid'];
                 $users = $usersModel->where($mapUser)->find();
                 //隐藏分组
-                if ($users['groupid']==20||$users['user_status']==0) {
+                if ($users['groupid']==20||(isset($users['user_status'])&&$users['user_status']==0)) {
                     unset($data[$key]);
                     continue;
                 }
+                $data[$key]['user_status'] = $users['user_status'];
                 $data[$key]['avatar'] = $users['avatar'];
                 $data[$key]['nick_name'] = $users['user_nicename'];
                 $data[$key]['school'] = $users['school'];
@@ -266,7 +284,7 @@ class IndexController extends HomebaseController
         $flag_rank = 0;
         foreach ($data as $key => &$value) {
             //隐藏分组
-            if ($value['groupid']==20||$users['user_status']==0) {
+            if ($value['groupid']==20||$value['user_status']==0) {
                 unset($data[$key]);
                 continue;
             }
@@ -927,14 +945,15 @@ class IndexController extends HomebaseController
                         $groups[$vl['groupid']]['nick_name'] = $group['name'];
                         $groups[$vl['groupid']]['avatar'] = '/data/upload/' . $group['logo'];
                     }
-                    $count = M('SportRecord')->where(array_merge($map,array('groupid'=>$vl['groupid'])))->group('openid')->select();
-                    $count = count($count);
-                    // $count = $usersModel->where(array('groupid' => $vl['groupid'],'user_status'=>array('neq','0')))->count();
+                    $count = M('SportRecord')->where(array_merge($map,array('groupid'=>$vl['groupid'])))->count();
                     $groups[$vl['groupid']]['num'] += $vl['num'];
-                    $day = ceil(($endTime-$startTime)/(3600*24));
-                    // echo $day.'-day-';
-                    // echo $count.'-count-';
-                    $groups[$vl['groupid']]['avgNum'] = intval($groups[$vl['groupid']]['num'] / ($day*$count));
+                    $groups[$vl['groupid']]['avgNum'] = intval($groups[$vl['groupid']]['num'] / $count);
+                    // $count = M('SportRecord')->where(array_merge($map,array('groupid'=>$vl['groupid'])))->group('openid')->select();
+                    // $count = count($count);
+                    // $groups[$vl['groupid']]['num'] += $vl['num'];
+                    // $count = $usersModel->where(array('groupid' => $vl['groupid'],'user_status'=>array('neq','0')))->count();
+                    // $day = ceil(($endTime-$startTime)/(3600*24));
+                    // $groups[$vl['groupid']]['avgNum'] = intval($groups[$vl['groupid']]['num'] / ($day*$count));
                 }
             }
             if (isset($groups[20])) {
@@ -1030,10 +1049,10 @@ class IndexController extends HomebaseController
         $data['openid'] = $userInfo->openid;
         // $data['openid'] = 'admin';
         $map['user_login'] = $data['openid'];
-        $score = current(M('Users')->where($map)->getField('user_login,score,coin', 1));
+        $score = current(M('Users')->where($map)->getField('user_login,score,limit_score', 1));
         $selfgood = M("Good")->where(array('type' => 1))->order('add_time desc')->select();
         $othergood = M("Good")->where(array('type' => 2))->order('add_time desc')->select();
-        $this->assign("nowscore", number_format($score['score'] - $score['coin']));
+        $this->assign("nowscore", number_format($score['limit_score']));
         $this->assign("allscore", number_format($score['score']));
         $this->assign("selfgood", $selfgood);
         $this->assign("selfgood", $selfgood);
@@ -1055,11 +1074,12 @@ class IndexController extends HomebaseController
             $this->checkInvite();
             $data['openid'] = $userInfo->openid;
             $map['user_login'] = $data['openid'];
-            $score = current(M('Users')->where($map)->getField('user_login,score,coin', 1));
+            $score = current(M('Users')->where($map)->getField('user_login,limit_score,score,coin', 1));
             if ($score['score'] <= $score['coin'] || $score['score'] <= 0) {
                 $this->error("腾币不足", U('Index/shop'), true);
             }
-            $score = $score['score'] - $score['coin'];//余额
+            // $score = $score['score'] - $score['coin'];//余额
+            $score = $score['limit_score'];//余额
             $data['goodid'] = I('goodid', 0, 'intval');
             $data['username'] = I('username', '公益', 'htmlspecialchars');
             $data['address'] = I('address', '公益', 'htmlspecialchars');
@@ -1085,6 +1105,7 @@ class IndexController extends HomebaseController
                     $users = M('users')->where($map)->find();
                     if ($users) {
                         $users['coin'] += $good['price'];
+                        $users['limit_score'] -= $good['price'];
                         if (M('users')->save($users)) {
                             $data1 = array(
                                 'openid' => $map['user_login'],
