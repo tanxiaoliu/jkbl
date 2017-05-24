@@ -1350,7 +1350,6 @@ class IndexController extends HomebaseController
         $map['user_login'] = $userInfo->openid;
         $groupid = I('groupid', 0, 'int');
         $group = M('Group')->find($groupid);
-        $users = M('Users')->field('user_nicename,avatar,school,user_login')->where(array('groupid' => $groupid,'user_status' => array('neq','0')))->order('score DESC')->select();
 
         $startYesterday = I('startTime');
         $endYesterday = I('endTime');
@@ -1359,9 +1358,13 @@ class IndexController extends HomebaseController
             $endYesterday = $startYesterday + 3600 * 24;
         }
         $mapRec['add_time'] = array('between', array($startYesterday, $endYesterday));
-        foreach ($users as $key => $value) {
+        $users = M('sport_record')->field('openid')->where(array_merge($mapRec,array('groupid' => $groupid)))->group('openid')->select();
+        foreach ($users as $key => &$value) {
+            $value = M('Users')->field('user_nicename,avatar,school,user_login')->where(array('user_login'=>$value['openid']))->find();
             $mapRec['openid'] = $value['user_login'];
-            $users[$key]['score'] = M('sport_record')->where($mapRec)->getField('sum(step_nums) as step_nums');
+            $value['score'] = M('sport_record')->where($mapRec)->getField('sum(step_nums) as step_nums');
+            $count = M('sport_record')->where($mapRec)->count();
+            $value['score'] = intval($value['score']/$count);
         }
         $this->assign("userInfo", $userInfo);
         $this->assign("data", $this->multi_array_sort($users, 'score'));
