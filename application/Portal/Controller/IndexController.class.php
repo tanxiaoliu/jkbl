@@ -1366,6 +1366,8 @@ class IndexController extends HomebaseController
             $count = M('sport_record')->where($mapRec)->count();
             $value['score'] = intval($value['score']/$count);
         }
+        $typeName = date('Y-m-d', $startYesterday) . '~' . date('Y-m-d', $endYesterday);
+        $this->assign("type", $typeName);
         $this->assign("userInfo", $userInfo);
         $this->assign("data", $this->multi_array_sort($users, 'score'));
         $this->assign("group", $group);
