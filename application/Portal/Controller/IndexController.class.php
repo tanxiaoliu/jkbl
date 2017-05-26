@@ -110,7 +110,7 @@ class IndexController extends HomebaseController
     {
         $m = date('m');
         $time = intval(strtotime(date('Y-'.$m.'-01 00:00:00',time())))-1;
-        $time1 = date('Y-'.$m.'-02 00:00:01',time());
+        $time1 = date('Y-'.$m.'-02 00:00:10',time());
         $insertKey['key'] = $time1;
         $insertKey['value'] = 1;
         $KeyValue = M('KeyValue')->where($insertKey)->find();
