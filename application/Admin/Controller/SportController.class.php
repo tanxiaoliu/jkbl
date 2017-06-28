@@ -54,6 +54,7 @@ class SportController extends AdminbaseController
                 $sport = $this->sport_model->find($vl['id']);
                 $map['user_login'] = $vl['openid'];
                 M('Users')->where($map)->setDec('score', $vl['step_nums']);
+                M('Users')->where($map)->setDec('limit_score', $vl['step_nums']);
 
                 $mapRecord['openid'] = $vl['openid'];
                 $mapRecord['type'] = 1;
@@ -212,6 +213,7 @@ class SportController extends AdminbaseController
                         }
                         //更新用户的总腾币
                         $map['user_login'] = $v[0];
+                        M('Users')->where($map)->setInc('limit_score', $v[2]);
                         M('Users')->where($map)->setInc('score', $v[2]);
 //                    }
                 }
