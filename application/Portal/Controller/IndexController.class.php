@@ -106,15 +106,27 @@ class IndexController extends HomebaseController
             redirect(U('invite'));
         }
     }
+    //php  cli.php Portal/Index/clicli
+    //php  /var/www/html/tg/jkbl/cli.php  Portal/Index/clicli
+    public function clicli(){
+
+        echo 1;
+        exit();
+
+    }
     private function cleanTengbi()
     {
         $m = date('m');
+        // $time = intval(strtotime(date('Y-05-01 00:00:00',time())))-1;
         $time = intval(strtotime(date('Y-'.$m.'-01 00:00:00',time())))-1;
-        $time1 = date('Y-'.$m.'-02 00:00:01',time());
+        // $time1 = date('Y-05-02 00:00:11',time());
+        $time1 = date('Y-'.$m.'-02 00:00:11',time());
+        $timeStra = intval(strtotime(date('Y-'.$m.'-02 00:00:11',time())));
         $insertKey['key'] = $time1;
         $insertKey['value'] = 1;
         $KeyValue = M('KeyValue')->where($insertKey)->find();
-        if (intval(time())>$time1&&empty($KeyValue)) {
+        if (intval(time())>$timeStra&&empty($KeyValue)) {
+        // if (empty($KeyValue)) {
             $data = M('Users')->field('id,user_login,score,limit_score')->select();
             foreach ($data as $key => &$value) {
                 $sum = M('CoinRecord')->where(array('openid'=>$value['user_login'],'type'=>1))->sum('coin');
@@ -350,7 +362,27 @@ class IndexController extends HomebaseController
      */
     public function getDayCount($openid, $num = 1, $count = 2)
     {
-        $map['step_nums'] = array('gt', 9999);
+        $map['openid'] = $openid;
+        $sport_record = M('sport_record')->where($map)->order('add_time desc')->select();
+        $i = 0;
+        $nums = array();
+        foreach ($sport_record as $key => $value) {
+            if (isset($sport_record[$key-1])) {
+                $t1 = strtotime(date('Y-m-d' . '00:00:00', $sport_record[$key-1]['add_time']));
+                $t2 = strtotime(date('Y-m-d' . '00:00:00', $sport_record[$key]['add_time']));
+                if (($t1-$t2)==(24*3600)&&$value['step_nums']>9999) {
+                    $nums[$i]++;
+                }else{
+                    $i++;
+                    $nums[$i] = 1;
+                }
+            }else{
+                $nums[$i] = 1;
+            }
+        }
+        rsort($nums,SORT_NUMERIC);
+        return current($nums);
+        /*$map['step_nums'] = array('gt', 9999);
         $startYesterday = strtotime(date('Y-m-d' . '00:00:00', time())) - 3600 * 24 * $count;
         $endYesterday = $startYesterday + 3600 * 24;
         $map['add_time'] = array('between', array($startYesterday, $endYesterday));
@@ -360,8 +392,7 @@ class IndexController extends HomebaseController
             $num = $num + 1;
             $num = $this->getDayCount($openid, $num, $num + 1);
         }
-        return $num;
-
+        return $num;*/
     }
 
     /**
@@ -1366,6 +1397,8 @@ class IndexController extends HomebaseController
             $count = M('sport_record')->where($mapRec)->count();
             $value['score'] = intval($value['score']/$count);
         }
+        $typeName = date('Y-m-d', $startYesterday) . '~' . date('Y-m-d', $endYesterday);
+        $this->assign("type", $typeName);
         $this->assign("userInfo", $userInfo);
         $this->assign("data", $this->multi_array_sort($users, 'score'));
         $this->assign("group", $group);
